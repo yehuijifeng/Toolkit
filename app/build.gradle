@@ -1,0 +1,136 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+def conf = rootProject.ext
+android {
+    //编译sdk版本
+    compileSdkVersion conf.android.compileSdkVersion
+    //buildTools版本
+    buildToolsVersion conf.android.buildToolsVersion
+    //任务栏编辑编码格式
+    tasks.withType(JavaCompile) {
+        options.encoding = conf.android.encoding
+    }
+    //兼容java8
+    compileOptions {
+        sourceCompatibility conf.android.sourceCompatibility
+        targetCompatibility conf.android.targetCompatibility
+    }
+    //默认配置
+    defaultConfig {
+        //统一资源维度
+        flavorDimensions conf.android.flavorDimensions
+        //敏捷开发
+        multiDexEnabled conf.android.multiDexEnabled
+        //最小支持版本
+        minSdkVersion conf.android.minSdkVersion
+        //最大支持版本
+        targetSdkVersion conf.android.targetSdkVersion
+        //测试仪器
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //ndk编译配置
+        ndk {
+            moduleName 'stock'
+            //设置支持的SO库架构
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'//, 'x86', 'x86_64'
+        }
+        //公共资源
+        manifestPlaceholders = [
+                //icon
+                icon     : conf.dependencies.icon,
+                roundIcon: conf.dependencies.roundIcon,
+        ]
+        //appid
+        applicationId conf.dependencies.applicationId
+        //版本号
+        versionCode conf.android.versionCode
+        versionName conf.dependencies.versionName
+        //app名
+        resValue "string", "app_name", conf.dependencies.app_name
+    }
+    //执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。
+    lintOptions {
+        abortOnError false
+    }
+    //签名
+    signingConfigs {
+        config {
+            storeFile file("../stock.jks")
+            storePassword "lh19941223"
+            keyAlias "luhao"
+            keyPassword "lh19941223"
+        }
+    }
+    //构建
+    buildTypes {
+        //调试
+        debug {
+            signingConfig signingConfigs.config
+            //显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            //java debug
+            debuggable true
+            //jni debug
+            jniDebuggable true
+        }
+        //发布
+        release {
+            signingConfig signingConfigs.config
+            //显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            //java debug
+            debuggable false
+            //jni debug
+            jniDebuggable false
+            //混淆
+            minifyEnabled false
+            //混淆文件
+            //proguard-android-optimize.txt代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明
+            //proguard-rules.pro是自己的定义混淆文件
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //移除无用的resource文件
+            shrinkResources false
+            //Zipalign优化
+            zipAlignEnabled true
+            //拼接生成的包名
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "${defaultConfig.versionName}_${productFlavors.name}.apk"
+                }
+            }
+        }
+    }
+    //渠道
+    productFlavors {
+        rests {}
+    }
+
+    //渠道包通用配置
+    productFlavors.all {
+        flavor ->
+            flavor.manifestPlaceholders = [
+                    channel_name: name,
+            ]
+    }
+    // 解决重复加载第三方那个jar包问题
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    testImplementation conf.dependencies.junit
+    implementation conf.dependencies.appcompat
+    implementation conf.dependencies.design
+    implementation conf.dependencies.runner
+    implementation conf.dependencies.espresso_core
+    implementation conf.dependencies.core_ktx
+    implementation conf.dependencies.kotlin_stdlib
+}

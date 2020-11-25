@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="BaseTheme">
+        <item name="android:navigationBarColor">@color/getNavigationBarColor</item>
+        <!--状态栏字体颜色，true为浅色（白色）；false为深色（黑色）-->
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="LoadingTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+</resources>

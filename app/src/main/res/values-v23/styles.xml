@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="BaseTheme">
+        <item name="android:navigationBarColor">@color/getNavigationBarColor</item>
+        <!--状态栏字体颜色，false为浅色（白色）；true为深色（黑色）-->
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="LoadingTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+</resources>
