@@ -1,2 +1,6 @@
+include ':base'
+include ':pyramid'
+include ':utils'
+include ':calculator'
 include ':app'
 rootProject.name = "StockCalculator"

@@ -1,5 +1,12 @@
 <resources>
-    <string name="app_name">Stock Calculator</string>
     <string name="str_home_menu_title">yehuijifeng@gmail.com</string>
-    <string name="str_pyramid">金字塔</string>
+    <string name="str_pyramid">StockPyramid</string>
+    <string name="str_the_day_price">Opening price of the day</string>
+    <string name="str_buy">Buy</string>
+    <string name="str_sell">Sell</string>
+    <string name="str_calculator">Calculator</string>
+    <string name="str_setting">设置</string>
+    <string name="str_about">关于</string>
+    <string name="str_exceptional">打赏</string>
+    <string name="str_feedback">意见反馈</string>
 </resources>

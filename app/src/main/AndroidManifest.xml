@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.stock.calculator">
+    package="com.wwxd.toolkit">
     <!--读sd卡-->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -23,7 +23,7 @@
         android:required="true" />
 
     <application
-        android:name=".app.App"
+        android:name="com.wwxd.toolkit.app.App"
         android:allowBackup="true"
         android:fullBackupContent="false"
         android:hardwareAccelerated="true"
@@ -40,7 +40,7 @@
         <!--android6.0以上更新apk权限-->
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.stock.calculator.fileProvider"
+            android:authorities="com.wwxd.toolkit.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -49,7 +49,7 @@
         </provider>
 
         <activity
-            android:name=".activity.LoadingActivity"
+            android:name="com.wwxd.toolkit.activity.LoadingActivity"
             android:launchMode="singleTop"
             android:theme="@style/LoadingTheme">
             <intent-filter>
@@ -60,7 +60,7 @@
         </activity>
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.wwxd.toolkit.activity.MainActivity"
             android:launchMode="singleTask" />
     </application>
 

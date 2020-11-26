@@ -133,4 +133,8 @@ dependencies {
     implementation conf.dependencies.espresso_core
     implementation conf.dependencies.core_ktx
     implementation conf.dependencies.kotlin_stdlib
+    implementation project(":base")
+    implementation project(":utils")
+    implementation project(":calculator")
+    implementation project(":pyramid")
 }

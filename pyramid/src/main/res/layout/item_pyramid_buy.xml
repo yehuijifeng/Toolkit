@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textPyramidBuy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_pyramid_buy_item"
+        android:paddingLeft="@dimen/space_10_dp"
+        android:paddingTop="@dimen/space_5_dp"
+        android:paddingBottom="@dimen/space_5_dp"
+        android:text="-1%     -->    2.275"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_16_sp" />
+</RelativeLayout>

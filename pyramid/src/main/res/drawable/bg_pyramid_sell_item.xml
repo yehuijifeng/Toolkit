@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="0"
+        android:centerColor="@color/color_pyramid_sell_item_center"
+        android:endColor="@color/color_pyramid_sell_item_end"
+        android:startColor="@color/color_pyramid_sell_item_start" />
+</shape>

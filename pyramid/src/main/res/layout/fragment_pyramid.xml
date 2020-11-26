@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/color_99cc00"
+                android:gravity="center"
+                android:padding="@dimen/space_5_dp"
+                android:text="@string/str_buy"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16_sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/color_ff4444"
+                android:gravity="center"
+                android:padding="@dimen/space_5_dp"
+                android:text="@string/str_sell"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_16_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/llPyramidBuy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <ScrollView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:id="@+id/llPyramidSell"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/etPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_10_dp"
+        android:layout_marginTop="@dimen/space_5_dp"
+        android:layout_marginRight="@dimen/space_10_dp"
+        android:layout_marginBottom="@dimen/space_10_dp"
+        android:background="@drawable/bg_pyramid_start_edit"
+        android:digits="0123456789."
+        android:hint="@string/str_the_day_price"
+        android:imeOptions="actionGo"
+        android:inputType="number"
+        android:singleLine="true"
+        android:paddingLeft="@dimen/space_10_dp"
+        android:paddingTop="@dimen/space_5_dp"
+        android:paddingRight="@dimen/space_10_dp"
+        android:paddingBottom="@dimen/space_5_dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_17_sp" />
+</LinearLayout>

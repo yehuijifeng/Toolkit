@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textNumber1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:paddingLeft="@dimen/space_10_dp"
+        android:paddingTop="@dimen/space_5_dp"
+        android:paddingRight="@dimen/space_10_dp"
+        android:paddingBottom="@dimen/space_5_dp"
+        android:text="10*15"
+        android:textColor="@color/color_888888"
+        android:textSize="@dimen/text_size_15_sp" />
+
+    <TextView
+        android:id="@+id/textNumber2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:paddingLeft="@dimen/space_10_dp"
+        android:paddingTop="@dimen/space_5_dp"
+        android:paddingRight="@dimen/space_10_dp"
+        android:paddingBottom="@dimen/space_5_dp"
+        android:text="9"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_28_sp"
+        android:textStyle="bold" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="*">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:paddingTop="@dimen/space_10_dp"
+                android:paddingBottom="@dimen/space_10_dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_25_sp"
+                android:text="+/-"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="1dp"
+                android:text="normal1" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="normal2" />
+
+        </TableRow>
+    </TableLayout>
+</LinearLayout>
