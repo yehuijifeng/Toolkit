@@ -9,4 +9,5 @@
     <string name="str_about">关于</string>
     <string name="str_exceptional">打赏</string>
     <string name="str_feedback">意见反馈</string>
+    <string name="str_again_click_exit">再按一次退出应用</string>
 </resources>

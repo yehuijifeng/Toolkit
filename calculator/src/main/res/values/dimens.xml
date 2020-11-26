@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="calculator_item_radius">2dp</dimen>
+    <dimen name="space_calculator_hour">2dp</dimen>
+    <dimen name="calculator_item_stroke">0.5dp</dimen>
+</resources>

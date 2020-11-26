@@ -4,12 +4,13 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
+import com.wwdx.toolkit.utils.DateUtil
 import com.wwdx.toolkit.utils.ToastUtil
 import com.wwxd.toolkit.R
 import com.wwxd.toolkit.base.BaseActivity
+import com.wwxd.toolkit.calculator.CalculatorFragment
 import com.wwxd.toolkit.fragment.HomeFragment
 import com.wwxd.toolkit.fragment.PyramidFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,6 +25,7 @@ import kotlin.reflect.KClass
 class MainActivity : BaseActivity() {
     private var pyramidFragment: PyramidFragment? = null
     private var homeFragment: HomeFragment? = null
+    private var calculatorFragment: CalculatorFragment? = null
 
     override fun isFullWindow(): Boolean {
         return true
@@ -47,7 +49,10 @@ class MainActivity : BaseActivity() {
             showFragment(PyramidFragment::class)
             dlHome.closeDrawers()
         }
-        llCalculator.setOnClickListener { }
+        llCalculator.setOnClickListener {
+            showFragment(CalculatorFragment::class)
+            dlHome.closeDrawers()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -95,6 +100,19 @@ class MainActivity : BaseActivity() {
                 fragmentTransaction.setMaxLifecycle(homeFragment!!, Lifecycle.State.RESUMED)
                 fragmentTransaction.show(homeFragment!!)
             }
+        } else if (name.equals(CalculatorFragment::class.simpleName)) {
+            if (calculatorFragment == null || calculatorFragment!!.isHidden) {
+                if (calculatorFragment == null) {
+                    calculatorFragment = CalculatorFragment()
+                    fragmentTransaction.add(R.id.flHome, calculatorFragment!!)
+                    fragmentTransaction.setMaxLifecycle(
+                        calculatorFragment!!,
+                        Lifecycle.State.CREATED
+                    )
+                }
+                fragmentTransaction.setMaxLifecycle(calculatorFragment!!, Lifecycle.State.RESUMED)
+                fragmentTransaction.show(calculatorFragment!!)
+            }
         }
         hideFragment(clazz, fragmentTransaction)
         fragmentTransaction.commitAllowingStateLoss()
@@ -115,17 +133,29 @@ class MainActivity : BaseActivity() {
         ) {
             fragmentTransaction.hide(homeFragment!!)
         }
+        if (!CalculatorFragment::class.simpleName.equals(fragmentName)
+            && calculatorFragment != null
+            && !calculatorFragment!!.isHidden
+        ) {
+            fragmentTransaction.hide(calculatorFragment!!)
+        }
     }
+
+    protected var exitTime: Long = 0 //计算用户点击返回键的时间
+
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) { //表示按返回键时的操作
-            //此处写退向后台的处理
-            if (homeFragment != null && homeFragment!!.isHidden) {
-                showFragment(HomeFragment::class)
+            exitTime = if (DateUtil.getServerTime() - exitTime > 2000) {
+                ToastUtil.showLongToast(R.string.str_again_click_exit)
+                DateUtil.getServerTime()
             } else {
+                ToastUtil.cancelToast()
+                //此处写退向后台的处理
                 moveTaskToBack(true)
+                return true
             }
-            return true
+            return false
         }
         return super.onKeyDown(keyCode, event)
     }

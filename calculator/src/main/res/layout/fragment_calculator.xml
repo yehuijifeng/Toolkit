@@ -2,66 +2,186 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_E6E6E6"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textNumber1"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:paddingLeft="@dimen/space_10_dp"
-        android:paddingTop="@dimen/space_5_dp"
-        android:paddingRight="@dimen/space_10_dp"
-        android:paddingBottom="@dimen/space_5_dp"
-        android:text="10*15"
-        android:textColor="@color/color_888888"
-        android:textSize="@dimen/text_size_15_sp" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <TextView
-        android:id="@+id/textNumber2"
+        android:id="@+id/textShow1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:paddingLeft="@dimen/space_10_dp"
-        android:paddingTop="@dimen/space_5_dp"
-        android:paddingRight="@dimen/space_10_dp"
-        android:paddingBottom="@dimen/space_5_dp"
-        android:text="9"
+        android:paddingLeft="@dimen/space_15_dp"
+        android:paddingTop="@dimen/space_10_dp"
+        android:paddingRight="@dimen/space_15_dp"
+        android:paddingBottom="@dimen/space_10_dp"
+        android:textColor="@color/color_888888"
+        android:textSize="@dimen/text_size_20_sp" />
+
+    <TextView
+        android:id="@+id/textShow2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:paddingLeft="@dimen/space_15_dp"
+        android:paddingTop="@dimen/space_10_dp"
+        android:paddingRight="@dimen/space_15_dp"
+        android:paddingBottom="@dimen/space_10_dp"
         android:textColor="@color/black"
-        android:textSize="@dimen/text_size_28_sp"
+        android:textSize="@dimen/text_size_35_sp"
         android:textStyle="bold" />
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_2_dp"
+        android:layout_marginRight="@dimen/space_2_dp"
+        android:layout_marginBottom="@dimen/space_2_dp"
+        android:background="@color/color_E6E6E6"
         android:stretchColumns="*">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:divider="@drawable/divider_calculator_table_row"
+            android:showDividers="middle">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:paddingTop="@dimen/space_10_dp"
-                android:paddingBottom="@dimen/space_10_dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="@dimen/text_size_25_sp"
-                android:text="+/-"/>
+                android:id="@+id/textPositive"
+                style="@style/calculator_item_text_style"
+                android:text="+/-" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="1dp"
-                android:text="normal1" />
+                android:id="@+id/textPercent"
+                style="@style/calculator_item_text_style"
+                android:text="%" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="normal2" />
+                android:id="@+id/textClean"
+                style="@style/calculator_item_text_style"
+                android:text="C" />
 
+            <ImageView
+                android:id="@+id/imgRemove"
+                style="@style/calculator_item_image_style"
+                android:src="@drawable/ic_calculator_delete" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_calculator_hour"
+            android:divider="@drawable/divider_calculator_table_row"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/textNumber7"
+                style="@style/calculator_item_text_style_number"
+                android:text="7" />
+
+            <TextView
+                android:id="@+id/textNumber8"
+                style="@style/calculator_item_text_style_number"
+                android:text="8" />
+
+            <TextView
+                android:id="@+id/textNumber9"
+                style="@style/calculator_item_text_style_number"
+                android:text="9" />
+
+            <TextView
+                android:id="@+id/textDivision"
+                style="@style/calculator_item_text_style"
+                android:text="÷" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_calculator_hour"
+            android:divider="@drawable/divider_calculator_table_row"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/textNumber4"
+                style="@style/calculator_item_text_style_number"
+                android:text="4" />
+
+            <TextView
+                android:id="@+id/textNumber5"
+                style="@style/calculator_item_text_style_number"
+                android:text="5" />
+
+            <TextView
+                android:id="@+id/textNumber6"
+                style="@style/calculator_item_text_style_number"
+                android:text="6" />
+
+            <TextView
+                android:id="@+id/textMultiplication"
+                style="@style/calculator_item_text_style"
+                android:text="×" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_calculator_hour"
+            android:divider="@drawable/divider_calculator_table_row"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/textNumber1"
+                style="@style/calculator_item_text_style_number"
+                android:text="1" />
+
+            <TextView
+                android:id="@+id/textNumber2"
+                style="@style/calculator_item_text_style_number"
+                android:text="2" />
+
+            <TextView
+                android:id="@+id/textNumber3"
+                style="@style/calculator_item_text_style_number"
+                android:text="3" />
+
+            <TextView
+                android:id="@+id/textSubtraction"
+                style="@style/calculator_item_text_style"
+                android:text="-" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_calculator_hour"
+            android:divider="@drawable/divider_calculator_table_row"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/textNumber_"
+                style="@style/calculator_item_text_style_number"
+                android:text="·" />
+
+            <TextView
+                android:id="@+id/textNumber0"
+                style="@style/calculator_item_text_style_number"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/textNumberResult"
+                style="@style/calculator_item_text_style"
+                android:background="@drawable/bg_calculator_item_three"
+                android:text="=" />
+
+            <TextView
+                android:id="@+id/textAddition"
+                style="@style/calculator_item_text_style"
+                android:text="+" />
         </TableRow>
     </TableLayout>
 </LinearLayout>
