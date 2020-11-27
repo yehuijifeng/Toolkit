@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_picture">拍照</string>
+    <string name="str_photo">相册</string>
+    <string name="str_code_tips2">扫描二维码</string>
+    <string name="str_generate">生成二维码</string>
+    <string name="str_code_edit_tips">输入网址生成二维码</string>
+    <string name="str_code_tips1">生成二维码</string>
+</resources>

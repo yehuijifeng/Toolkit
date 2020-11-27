@@ -137,4 +137,5 @@ dependencies {
     implementation project(":utils")
     implementation project(":calculator")
     implementation project(":pyramid")
+    implementation project(":QR_code")
 }

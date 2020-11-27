@@ -1,3 +1,4 @@
+include ':QR_code'
 include ':base'
 include ':pyramid'
 include ':utils'

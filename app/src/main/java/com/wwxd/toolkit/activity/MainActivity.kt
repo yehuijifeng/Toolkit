@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import com.wwdx.toolkit.utils.DateUtil
 import com.wwdx.toolkit.utils.ToastUtil
+import com.wwxd.toolkit.QR_code.QR_codeFragment
 import com.wwxd.toolkit.R
 import com.wwxd.toolkit.base.BaseActivity
 import com.wwxd.toolkit.calculator.CalculatorFragment
@@ -26,6 +27,7 @@ class MainActivity : BaseActivity() {
     private var pyramidFragment: PyramidFragment? = null
     private var homeFragment: HomeFragment? = null
     private var calculatorFragment: CalculatorFragment? = null
+    private var qR_codeFragment: QR_codeFragment? = null
 
     override fun isFullWindow(): Boolean {
         return true
@@ -47,11 +49,12 @@ class MainActivity : BaseActivity() {
         showFragment(HomeFragment::class)
         llPyramid.setOnClickListener {
             showFragment(PyramidFragment::class)
-            dlHome.closeDrawers()
         }
         llCalculator.setOnClickListener {
             showFragment(CalculatorFragment::class)
-            dlHome.closeDrawers()
+        }
+        llQrCode.setOnClickListener {
+            showFragment(QR_codeFragment::class)
         }
     }
 
@@ -113,9 +116,23 @@ class MainActivity : BaseActivity() {
                 fragmentTransaction.setMaxLifecycle(calculatorFragment!!, Lifecycle.State.RESUMED)
                 fragmentTransaction.show(calculatorFragment!!)
             }
+        } else if (name.equals(QR_codeFragment::class.simpleName)) {
+            if (qR_codeFragment == null || qR_codeFragment!!.isHidden) {
+                if (qR_codeFragment == null) {
+                    qR_codeFragment = QR_codeFragment()
+                    fragmentTransaction.add(R.id.flHome, qR_codeFragment!!)
+                    fragmentTransaction.setMaxLifecycle(
+                        qR_codeFragment!!,
+                        Lifecycle.State.CREATED
+                    )
+                }
+                fragmentTransaction.setMaxLifecycle(qR_codeFragment!!, Lifecycle.State.RESUMED)
+                fragmentTransaction.show(qR_codeFragment!!)
+            }
         }
         hideFragment(clazz, fragmentTransaction)
         fragmentTransaction.commitAllowingStateLoss()
+        dlHome.closeDrawers()
     }
 
     //隐藏出目标外的fragment
@@ -138,6 +155,12 @@ class MainActivity : BaseActivity() {
             && !calculatorFragment!!.isHidden
         ) {
             fragmentTransaction.hide(calculatorFragment!!)
+        }
+        if (!QR_codeFragment::class.simpleName.equals(fragmentName)
+            && qR_codeFragment != null
+            && !qR_codeFragment!!.isHidden
+        ) {
+            fragmentTransaction.hide(qR_codeFragment!!)
         }
     }
 
