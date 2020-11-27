@@ -45,4 +45,20 @@
     <color name="color_pyramid_sell_item_end">#ffffffff</color>
     <color name="color_5D6067">#5D6067</color>
     <color name="color_27e8e4">#27e8e4</color>
+
+    <color name="contents_text">#ff000000</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="possible_result_points">#c0ffbd21</color> <!-- Android standard ICS color -->
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c099cc00</color> <!-- Android standard ICS color -->
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="viewfinder_laser">#ffcc0000</color> <!-- Android standard ICS color -->
+    <color name="viewfinder_mask">#50000000</color>
+    <color name="color_BFF3F1">#BFF3F1</color>
+    <color name="color_a3a3a3">#a3a3a3</color>
+    <color name="color_242424">#242424</color>
+    <color name="color_e3e3e3">#e3e3e3</color>
+
 </resources>

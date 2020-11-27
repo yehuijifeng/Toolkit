@@ -7,5 +7,8 @@
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
+    <application>
+        <activity android:name=".CaptureActivity"
+            android:launchMode="singleTask"/>
+    </application>
 </manifest>

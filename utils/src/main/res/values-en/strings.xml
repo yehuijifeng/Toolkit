@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_num_yi">B</string>
+    <string name="str_num_wan">M</string>
+    <string name="str_num_qian">k</string>
+</resources>
