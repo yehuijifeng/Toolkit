@@ -63,4 +63,8 @@ dependencies {
     implementation conf.dependencies.core_ktx
     implementation conf.dependencies.kotlin_stdlib
     implementation project(":base")
+    //EventBus 事件分发
+    api 'org.greenrobot:eventbus:3.2.0'
+    //rxjava
+    api 'io.reactivex.rxjava3:rxjava:3.0.7'
 }

@@ -1,155 +1,139 @@
+package com.wwxd.toolkit.QR_code.view
 
-package com.wwxd.toolkit.QR_code.view;
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.*
+import android.util.AttributeSet
+import android.view.View
+import androidx.core.content.ContextCompat
+import com.google.zxing.ResultPoint
+import com.wwxd.toolkit.QR_code.R
+import com.wwxd.toolkit.QR_code.camera.CameraManager
+import java.util.*
+//取景框
+class ViewfinderView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
+    private var cameraManager: CameraManager? = null
+    private val paint: Paint
+    private var resultBitmap: Bitmap? = null
+    private val maskColor // 取景框外的背景颜色
+            : Int
+    private val resultColor // result Bitmap的颜色
+            : Int
+    private val laserColor // 红色扫描线的颜色
+            : Int
+    private val resultPointColor // 特征点的颜色
+            : Int
+    private val statusColor // 提示文字颜色
+            : Int
+    private val scannerAlpha: Int
+    private var possibleResultPoints: MutableList<ResultPoint>
+    private var lastPossibleResultPoints: List<ResultPoint>?
 
-
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.util.AttributeSet;
-import android.view.View;
-
-import com.google.zxing.ResultPoint;
-import com.wwxd.toolkit.QR_code.R;
-import com.wwxd.toolkit.QR_code.camera.CameraManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public final class ViewfinderView extends View {
-
-    /*界面刷新间隔时间*/
-    private static final long ANIMATION_DELAY = 80L;
-    private static final int CURRENT_POINT_OPACITY = 0xA0;
-    private static final int MAX_RESULT_POINTS = 20;
-    private static final int POINT_SIZE = 6;
-
-    private CameraManager cameraManager;
-    private final Paint paint;
-    private Bitmap resultBitmap;
-    private final int maskColor; // 取景框外的背景颜色
-    private final int resultColor;// result Bitmap的颜色
-    private final int laserColor; // 红色扫描线的颜色
-    private final int resultPointColor; // 特征点的颜色
-    private final int statusColor; // 提示文字颜色
-    private int scannerAlpha;
-    private List<ResultPoint> possibleResultPoints;
-    private List<ResultPoint> lastPossibleResultPoints;
     // 扫描线移动的y
-    private int scanLineTop;
+    private var scanLineTop = 0
+
     // 扫描线移动速度
-    private int SCAN_VELOCITY = 10;
+    private var SCAN_VELOCITY = 10
+
     //扫描线高度
-    private int scanLightHeight = 20;
+    private val scanLightHeight = 20
+
     // 扫描线
-    Bitmap scanLight;
-
-
-    public ViewfinderView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-
-        // Initialize these once for performance rather than calling them every
-        // time in onDraw().
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        Resources resources = getResources();
-        maskColor = resources.getColor(R.color.viewfinder_mask);
-        resultColor = resources.getColor(R.color.result_view);
-        laserColor = resources.getColor(R.color.viewfinder_laser);
-        resultPointColor = resources.getColor(R.color.possible_result_points);
-        statusColor = resources.getColor(R.color.status_text);
-        scannerAlpha = 0;
-        possibleResultPoints = new ArrayList<ResultPoint>(5);
-        lastPossibleResultPoints = null;
-        scanLight = BitmapFactory.decodeResource(resources, R.drawable.scan_light);
-    }
-
-    public void setCameraManager(CameraManager cameraManager) {
-        this.cameraManager = cameraManager;
+    var scanLight: Bitmap
+    fun setCameraManager(cameraManager: CameraManager?) {
+        this.cameraManager = cameraManager
     }
 
     @SuppressLint("DrawAllocation")
-    @Override
-    public void onDraw(Canvas canvas) {
+    public override fun onDraw(canvas: Canvas) {
         if (cameraManager == null) {
-            return; // not ready yet, early draw before done configuring
+            return  // not ready yet, early draw before done configuring
         }
 
         // frame为取景框
-        Rect frame = cameraManager.getFramingRect();
-        Rect previewFrame = cameraManager.getFramingRectInPreview();
+        val frame = cameraManager!!.getFramingRect()
+        val previewFrame = cameraManager!!.getFramingRectInPreview()
         if (frame == null || previewFrame == null) {
-            return;
+            return
         }
-        int width = canvas.getWidth();
-        int height = canvas.getHeight();
-
+        val width1 = this.width
+        val height1 = this.height
 
         // Draw the exterior (i.e. outside the framing rect) darkened
         // 绘制取景框外的暗灰色的表面，分四个矩形绘制
-        paint.setColor(resultBitmap != null ? resultColor : maskColor);
-        /*上面的框*/
-        canvas.drawRect(0, 0, width, frame.top, paint);
-        /*绘制左边的框*/
-        canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
-        /*绘制右边的框*/
-        canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1,
-                paint);
-        /*绘制下面的框*/
-        canvas.drawRect(0, frame.bottom + 1, width, height, paint);
-
+        paint.color = if (resultBitmap != null) resultColor else maskColor
+        /*上面的框*/canvas.drawRect(0f, 0f, width1.toFloat(), frame.top.toFloat(), paint)
+        /*绘制左边的框*/canvas.drawRect(
+            0f,
+            frame.top.toFloat(),
+            frame.left.toFloat(),
+            (frame.bottom + 1).toFloat(),
+            paint
+        )
+        /*绘制右边的框*/canvas.drawRect(
+            (frame.right + 1).toFloat(),
+            frame.top.toFloat(),
+            width1.toFloat(),
+            (frame.bottom + 1).toFloat(),
+            paint
+        )
+        /*绘制下面的框*/canvas.drawRect(
+            0f,
+            (frame.bottom + 1).toFloat(),
+            width1.toFloat(),
+            height1.toFloat(),
+            paint
+        )
         if (resultBitmap != null) {
             // Draw the opaque result bitmap over the scanning rectangle
             // 如果有二维码结果的Bitmap，在扫取景框内绘制不透明的result Bitmap
-            paint.setAlpha(CURRENT_POINT_OPACITY);
-            canvas.drawBitmap(resultBitmap, null, frame, paint);
+            paint.alpha = CURRENT_POINT_OPACITY
+            canvas.drawBitmap(resultBitmap!!, null, frame, paint)
         } else {
 
             /*绘制取景框边框*/
-            drawFrameBounds(canvas, frame);
+            drawFrameBounds(canvas, frame)
 
             /*绘制提示文字*/
             //  drawStatusText(canvas, frame, width);
-            /*绘制扫描线*/
-            drawScanLight(canvas, frame);
-
-            float scaleX = frame.width() / (float) previewFrame.width();
-            float scaleY = frame.height() / (float) previewFrame.height();
+            /*绘制扫描线*/drawScanLight(canvas, frame)
+            val scaleX = frame.width() / previewFrame.width().toFloat()
+            val scaleY = frame.height() / previewFrame.height().toFloat()
 
             // 绘制扫描线周围的特征点
-            List<ResultPoint> currentPossible = possibleResultPoints;
-            List<ResultPoint> currentLast = lastPossibleResultPoints;
-            int frameLeft = frame.left;
-            int frameTop = frame.top;
+            val currentPossible: List<ResultPoint> = possibleResultPoints
+            val currentLast = lastPossibleResultPoints
+            val frameLeft = frame.left
+            val frameTop = frame.top
             if (currentPossible.isEmpty()) {
-                lastPossibleResultPoints = null;
+                lastPossibleResultPoints = null
             } else {
-                possibleResultPoints = new ArrayList<ResultPoint>(5);
-                lastPossibleResultPoints = currentPossible;
-                paint.setAlpha(CURRENT_POINT_OPACITY);
-                paint.setColor(resultPointColor);
-                synchronized (currentPossible) {
-                    for (ResultPoint point : currentPossible) {
-                        canvas.drawCircle(frameLeft
-                                        + (int) (point.getX() * scaleX), frameTop
-                                        + (int) (point.getY() * scaleY), POINT_SIZE,
-                                paint);
+                possibleResultPoints = ArrayList(5)
+                lastPossibleResultPoints = currentPossible
+                paint.alpha = CURRENT_POINT_OPACITY
+                paint.color = resultPointColor
+                synchronized(currentPossible) {
+                    for (point in currentPossible) {
+                        canvas.drawCircle(
+                            (frameLeft
+                                    + (point.x * scaleX).toInt()).toFloat(), (frameTop
+                                    + (point.y * scaleY).toInt()).toFloat(), POINT_SIZE.toFloat(),
+                            paint
+                        )
                     }
                 }
             }
             if (currentLast != null) {
-                paint.setAlpha(CURRENT_POINT_OPACITY / 2);
-                paint.setColor(resultPointColor);
-                synchronized (currentLast) {
-                    float radius = POINT_SIZE / 2.0f;
-                    for (ResultPoint point : currentLast) {
-                        canvas.drawCircle(frameLeft
-                                + (int) (point.getX() * scaleX), frameTop
-                                + (int) (point.getY() * scaleY), radius, paint);
+                paint.alpha = CURRENT_POINT_OPACITY / 2
+                paint.color = resultPointColor
+                synchronized(currentLast) {
+                    val radius = POINT_SIZE / 2.0f
+                    for (point in currentLast) {
+                        canvas.drawCircle(
+                            (frameLeft
+                                    + (point.x * scaleX).toInt()).toFloat(), (frameTop
+                                    + (point.y * scaleY).toInt()).toFloat(), radius, paint
+                        )
                     }
                 }
             }
@@ -157,12 +141,13 @@ public final class ViewfinderView extends View {
             // Request another update at the animation interval, but only
             // repaint the laser line,
             // not the entire viewfinder mask.
-            postInvalidateDelayed(ANIMATION_DELAY, frame.left - POINT_SIZE,
-                    frame.top - POINT_SIZE, frame.right + POINT_SIZE,
-                    frame.bottom + POINT_SIZE);
+            postInvalidateDelayed(
+                ANIMATION_DELAY, frame.left - POINT_SIZE,
+                frame.top - POINT_SIZE, frame.right + POINT_SIZE,
+                frame.bottom + POINT_SIZE
+            )
         }
     }
-
 
     /**
      * 绘制取景框边框
@@ -170,8 +155,7 @@ public final class ViewfinderView extends View {
      * @param canvas
      * @param frame
      */
-    private void drawFrameBounds(Canvas canvas, Rect frame) {
-
+    private fun drawFrameBounds(canvas: Canvas, frame: Rect) {
 
 
         /*扫描框的边框线*/
@@ -182,42 +166,56 @@ public final class ViewfinderView extends View {
 //        canvas.drawRect(frame, paint);
 
         /*扫描框的四个角*/
-        paint.setColor(Color.BLUE);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setStrokeWidth(1);
+        paint.color = Color.BLUE
+        paint.style = Paint.Style.FILL
+        paint.strokeWidth = 1f
 
         /*四个角的长度和宽度*/
-        int width = frame.width();
-        int corLength = (int) (width * 0.1);
-        int corWidth = (int) (corLength * 0.2);
-
-
+        val width = frame.width()
+        val corLength = (width * 0.1).toInt()
+        var corWidth = (corLength * 0.2).toInt()
         if (corWidth > 15) {
-            corWidth = 15;
+            corWidth = 15
         }
 
 
         /*角在线外*/
         // 左上角
-        canvas.drawRect(frame.left - corWidth, frame.top, frame.left, frame.top
-                + corLength, paint);
-        canvas.drawRect(frame.left - corWidth, frame.top - corWidth, frame.left
-                + corLength, frame.top, paint);
+        canvas.drawRect(
+            (frame.left - corWidth).toFloat(), frame.top.toFloat(), frame.left.toFloat(), (frame.top
+                    + corLength).toFloat(), paint
+        )
+        canvas.drawRect(
+            (frame.left - corWidth).toFloat(), (frame.top - corWidth).toFloat(), (frame.left
+                    + corLength).toFloat(), frame.top.toFloat(), paint
+        )
         // 右上角
-        canvas.drawRect(frame.right, frame.top, frame.right + corWidth,
-                frame.top + corLength, paint);
-        canvas.drawRect(frame.right - corLength, frame.top - corWidth,
-                frame.right + corWidth, frame.top, paint);
+        canvas.drawRect(
+            frame.right.toFloat(), frame.top.toFloat(), (frame.right + corWidth).toFloat(), (
+                    frame.top + corLength).toFloat(), paint
+        )
+        canvas.drawRect(
+            (frame.right - corLength).toFloat(), (frame.top - corWidth).toFloat(), (
+                    frame.right + corWidth).toFloat(), frame.top.toFloat(), paint
+        )
         // 左下角
-        canvas.drawRect(frame.left - corWidth, frame.bottom - corLength,
-                frame.left, frame.bottom, paint);
-        canvas.drawRect(frame.left - corWidth, frame.bottom, frame.left
-                + corLength, frame.bottom + corWidth, paint);
+        canvas.drawRect(
+            (frame.left - corWidth).toFloat(), (frame.bottom - corLength).toFloat(),
+            frame.left.toFloat(), frame.bottom.toFloat(), paint
+        )
+        canvas.drawRect(
+            (frame.left - corWidth).toFloat(), frame.bottom.toFloat(), (frame.left
+                    + corLength).toFloat(), (frame.bottom + corWidth).toFloat(), paint
+        )
         // 右下角
-        canvas.drawRect(frame.right, frame.bottom - corLength, frame.right
-                + corWidth, frame.bottom, paint);
-        canvas.drawRect(frame.right - corLength, frame.bottom, frame.right
-                + corWidth, frame.bottom + corWidth, paint);
+        canvas.drawRect(
+            frame.right.toFloat(), (frame.bottom - corLength).toFloat(), (frame.right
+                    + corWidth).toFloat(), frame.bottom.toFloat(), paint
+        )
+        canvas.drawRect(
+            (frame.right - corLength).toFloat(), frame.bottom.toFloat(), (frame.right
+                    + corWidth).toFloat(), (frame.bottom + corWidth).toFloat(), paint
+        )
     }
 
     /**
@@ -227,38 +225,36 @@ public final class ViewfinderView extends View {
      * @param frame
      * @param width
      */
-    private void drawStatusText(Canvas canvas, Rect frame, int width) {
+    private fun drawStatusText(canvas: Canvas, frame: Rect, width: Int) {
+        val statusText1 = resources.getString(
+            R.string.viewfinderview_status_text1
+        )
+        val statusText2 = resources.getString(
+            R.string.viewfinderview_status_text2
+        )
+        val statusTextSize: Int
 
-        String statusText1 = getResources().getString(
-                R.string.viewfinderview_status_text1);
-        String statusText2 = getResources().getString(
-                R.string.viewfinderview_status_text2);
-
-        int statusTextSize;
-
-         /*低分辨率处理*/
-        if (width >= 480 && width <= 600) {
-            statusTextSize = 22;
+        /*低分辨率处理*/statusTextSize = if (width >= 480 && width <= 600) {
+            22
         } else if (width > 600 && width <= 720) {
-            statusTextSize = 26;
+            26
         } else {
-            statusTextSize = 45;
+            45
         }
-
-        int statusPaddingTop = 180;
-
-        paint.setColor(statusColor);
-        paint.setTextSize(statusTextSize);
-
-        int textWidth1 = (int) paint.measureText(statusText1);
-        canvas.drawText(statusText1, (width - textWidth1) / 2, frame.top
-                - statusPaddingTop, paint);
-
-        int textWidth2 = (int) paint.measureText(statusText2);
-        canvas.drawText(statusText2, (width - textWidth2) / 2, frame.top
-                - statusPaddingTop + 60, paint);
+        val statusPaddingTop = 180
+        paint.color = statusColor
+        paint.textSize = statusTextSize.toFloat()
+        val textWidth1 = paint.measureText(statusText1).toInt()
+        canvas.drawText(
+            statusText1, ((width - textWidth1) / 2).toFloat(), (frame.top
+                    - statusPaddingTop).toFloat(), paint
+        )
+        val textWidth2 = paint.measureText(statusText2).toInt()
+        canvas.drawText(
+            statusText2, ((width - textWidth2) / 2).toFloat(), (frame.top
+                    - statusPaddingTop + 60).toFloat(), paint
+        )
     }
-
 
     /**
      * 绘制移动扫描线
@@ -266,29 +262,29 @@ public final class ViewfinderView extends View {
      * @param canvas
      * @param frame
      */
-    private void drawScanLight(Canvas canvas, Rect frame) {
-
+    private fun drawScanLight(canvas: Canvas, frame: Rect) {
         if (scanLineTop == 0 || scanLineTop + SCAN_VELOCITY >= frame.bottom) {
-            scanLineTop = frame.top;
+            scanLineTop = frame.top
         } else {
 
             /*缓动动画*/
-            SCAN_VELOCITY = (frame.bottom - scanLineTop) / 12;
-            SCAN_VELOCITY = (int) (SCAN_VELOCITY > 10 ? Math.ceil(SCAN_VELOCITY) : 10);
-            scanLineTop += SCAN_VELOCITY;
+            SCAN_VELOCITY = (frame.bottom - scanLineTop) / 12
+            SCAN_VELOCITY =
+                (if (SCAN_VELOCITY > 10) Math.ceil(SCAN_VELOCITY.toDouble()) else 10) as Int
+            scanLineTop += SCAN_VELOCITY
         }
-        Rect scanRect = new Rect(frame.left, scanLineTop, frame.right,
-                scanLineTop + scanLightHeight);
-        canvas.drawBitmap(scanLight, null, scanRect, paint);
+        val scanRect = Rect(
+            frame.left, scanLineTop, frame.right,
+            scanLineTop + scanLightHeight
+        )
+        canvas.drawBitmap(scanLight, null, scanRect, paint)
     }
 
-    public void drawViewfinder() {
-        Bitmap resultBitmap = this.resultBitmap;
-        this.resultBitmap = null;
-        if (resultBitmap != null) {
-            resultBitmap.recycle();
-        }
-        invalidate();
+    fun drawViewfinder() {
+        val resultBitmap = resultBitmap
+        this.resultBitmap = null
+        resultBitmap?.recycle()
+        invalidate()
     }
 
     /**
@@ -297,21 +293,39 @@ public final class ViewfinderView extends View {
      *
      * @param barcode An image of the decoded barcode.
      */
-    public void drawResultBitmap(Bitmap barcode) {
-        resultBitmap = barcode;
-        invalidate();
+    fun drawResultBitmap(barcode: Bitmap?) {
+        resultBitmap = barcode
+        invalidate()
     }
 
-    public void addPossibleResultPoint(ResultPoint point) {
-        List<ResultPoint> points = possibleResultPoints;
-        synchronized (points) {
-            points.add(point);
-            int size = points.size();
-            if (size > MAX_RESULT_POINTS) {
-                // trim it
-                points.subList(0, size - MAX_RESULT_POINTS / 2).clear();
-            }
+    @Synchronized
+    fun addPossibleResultPoint(point: ResultPoint) {
+        val points = possibleResultPoints
+        points.add(point)
+        val size = points.size
+        if (size > MAX_RESULT_POINTS) {
+            points.subList(0, size - MAX_RESULT_POINTS / 2).clear()
         }
     }
 
+    companion object {
+        /*界面刷新间隔时间*/
+        private const val ANIMATION_DELAY = 80L
+        private const val CURRENT_POINT_OPACITY = 0xA0
+        private const val MAX_RESULT_POINTS = 20
+        private const val POINT_SIZE = 6
+    }
+
+    init {
+        paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        maskColor = ContextCompat.getColor(context,R.color.viewfinder_mask)
+        resultColor = ContextCompat.getColor(context,R.color.result_view)
+        laserColor = ContextCompat.getColor(context,R.color.viewfinder_laser)
+        resultPointColor = ContextCompat.getColor(context,R.color.possible_result_points)
+        statusColor = ContextCompat.getColor(context,R.color.status_text)
+        scannerAlpha = 0
+        possibleResultPoints = ArrayList(5)
+        lastPossibleResultPoints = null
+        scanLight = BitmapFactory.decodeResource(resources, R.drawable.scan_light)
+    }
 }

@@ -37,29 +37,44 @@ object PermissionsUtil {
     private const val MANUFACTURER_MEIZU = "Meizu" //魅族
     const val permissionSettingForResult = 8888
 
-    //检查相机
-    fun checkCamera(): Boolean {
-        return !lacksPermission(Manifest.permission.CAMERA)
-    }
-
     //检查sd卡权限
-    fun checkSdCard(): Boolean {
-        return !lacksPermission(
-            Manifest.permission.READ_EXTERNAL_STORAGE,  //读sd卡
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
+    fun getSdCardPermissions(): Array<String> {
+        return if (AppUtil.isAndroidQ()) {
+            arrayOf(
+                Manifest.permission.ACCESS_MEDIA_LOCATION,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        } else {
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        }
     }
 
     //检查定位权限
-    fun checkAddress(): Boolean {
-        return !lacksPermission(
+    fun getAddress(): Array<String> {
+        return arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,  //精准定位
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
     }
 
     // 判断是否缺少权限。true，缺少；false，已有权限
-    fun lacksPermission(vararg permissions: String): Boolean {
+    fun lacksPermission(permission: String): Boolean {
+        if (ContextCompat.checkSelfPermission(
+                getApp(),
+                permission
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            return true
+        }
+        return false
+    }
+
+    // 判断是否缺少权限。true，缺少；false，已有权限
+    fun lacksPermission(permissions: Array<String>): Boolean {
         for (permission in permissions) {
             if (ContextCompat.checkSelfPermission(
                     getApp(),
@@ -72,20 +87,6 @@ object PermissionsUtil {
         return false
     }
 
-    //检查缺少什么权限，并返回
-    fun lacksPermissionByBack(vararg permissions: String): Array<String> {
-        val permissionsList: MutableList<String> = ArrayList()
-        for (permission in permissions) {
-            if (ContextCompat.checkSelfPermission(
-                    getApp(),
-                    permission
-                ) == PackageManager.PERMISSION_DENIED
-            ) {
-                permissionsList.add(permission)
-            }
-        }
-        return permissionsList.toTypedArray()
-    }
 
     //去请求权限
     fun requestPermissions(activity: Activity, permission: String, callBack: Int) {
@@ -213,4 +214,5 @@ object PermissionsUtil {
             activity.startActivity(intent)
         }
     }
+
 }

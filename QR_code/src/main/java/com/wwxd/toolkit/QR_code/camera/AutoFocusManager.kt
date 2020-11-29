@@ -13,118 +13,102 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.wwxd.toolkit.QR_code.camera
 
-package com.wwxd.toolkit.QR_code.camera;
-
-import android.annotation.SuppressLint;
-import android.hardware.Camera;
-import android.os.AsyncTask;
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.concurrent.RejectedExecutionException;
-
+import android.annotation.SuppressLint
+import android.hardware.Camera
+import android.hardware.Camera.AutoFocusCallback
+import android.os.AsyncTask
+import java.util.concurrent.RejectedExecutionException
 
 /*
-* 聚焦管理
-* */
-final class AutoFocusManager implements Camera.AutoFocusCallback {
+ * 聚焦管理
+ * */
+internal class AutoFocusManager(private val camera: Camera) : AutoFocusCallback {
+    private var stopped = false
+    private var focusing = false
+    private val useAutoFocus = true
+    private var outstandingTask: AsyncTask<*, *, *>? = null
 
-    private static final String TAG = AutoFocusManager.class.getSimpleName();
-
-    /*聚焦间隔*/
-    private static final long AUTO_FOCUS_INTERVAL_MS = 1000L;
-    private static final Collection<String> FOCUS_MODES_CALLING_AF;
-
-    static {
-        FOCUS_MODES_CALLING_AF = new ArrayList<String>(2);
-        FOCUS_MODES_CALLING_AF.add(Camera.Parameters.FOCUS_MODE_AUTO);
-        FOCUS_MODES_CALLING_AF.add(Camera.Parameters.FOCUS_MODE_MACRO);
+    init {
+        start()
     }
 
-    private boolean stopped;
-    private boolean focusing;
-    private final boolean useAutoFocus;
-    private final Camera camera;
-    private AsyncTask<?, ?, ?> outstandingTask;
-
-    AutoFocusManager(Camera camera) {
-        this.camera = camera;
-        useAutoFocus = true;
-        start();
-    }
-
-    @Override
-    public synchronized void onAutoFocus(boolean success, Camera theCamera) {
-        focusing = false;
-        autoFocusAgainLater();
+    @Synchronized
+    override fun onAutoFocus(success: Boolean, theCamera: Camera) {
+        focusing = false
+        autoFocusAgainLater()
     }
 
     @SuppressLint("NewApi")
-    private synchronized void autoFocusAgainLater() {
+    @Synchronized
+    private fun autoFocusAgainLater() {
         if (!stopped && outstandingTask == null) {
-            AutoFocusTask newTask = new AutoFocusTask();
+            val newTask = AutoFocusTask()
             try {
-                newTask.execute();
-                outstandingTask = newTask;
-            } catch (RejectedExecutionException ree) {
-                Log.w(TAG, "Could not request auto focus", ree);
+                newTask.execute()
+                outstandingTask = newTask
+            } catch (ree: RejectedExecutionException) {
+                ree.printStackTrace()
             }
         }
     }
 
-    synchronized void start() {
+    @Synchronized
+    private fun start() {
         if (useAutoFocus) {
-            outstandingTask = null;
+            outstandingTask = null
             if (!stopped && !focusing) {
                 try {
-                    camera.autoFocus(this);
-                    focusing = true;
-                } catch (RuntimeException re) {
+                    camera.autoFocus(this)
+                    focusing = true
+                } catch (re: RuntimeException) {
                     // Have heard RuntimeException reported in Android 4.0.x+; continue?
-                    Log.w(TAG, "Unexpected exception while focusing", re);
                     // Try again later to keep cycle going
-                    autoFocusAgainLater();
+                    autoFocusAgainLater()
                 }
             }
         }
     }
 
-    private synchronized void cancelOutstandingTask() {
+    @Synchronized
+    private fun cancelOutstandingTask() {
         if (outstandingTask != null) {
-            if (outstandingTask.getStatus() != AsyncTask.Status.FINISHED) {
-                outstandingTask.cancel(true);
+            if (outstandingTask!!.status != AsyncTask.Status.FINISHED) {
+                outstandingTask!!.cancel(true)
             }
-            outstandingTask = null;
+            outstandingTask = null
         }
     }
 
-    synchronized void stop() {
-        stopped = true;
+    @Synchronized
+    fun stop() {
+        stopped = true
         if (useAutoFocus) {
-            cancelOutstandingTask();
+            cancelOutstandingTask()
             // Doesn't hurt to call this even if not focusing
             try {
-                camera.cancelAutoFocus();
-            } catch (RuntimeException re) {
+                camera.cancelAutoFocus()
+            } catch (re: RuntimeException) {
                 // Have heard RuntimeException reported in Android 4.0.x+; continue?
-                Log.w(TAG, "Unexpected exception while cancelling focusing", re);
+                re.printStackTrace()
             }
         }
     }
 
-    private final class AutoFocusTask extends AsyncTask<Object, Object, Object> {
-        @Override
-        protected Object doInBackground(Object... voids) {
+    private inner class AutoFocusTask : AsyncTask<Any, Any, Any>() {
+        override fun doInBackground(vararg voids: Any): Any? {
             try {
-                Thread.sleep(AUTO_FOCUS_INTERVAL_MS);
-            } catch (InterruptedException e) {
+                /*聚焦间隔*/
+                Thread.sleep(1000L)
+            } catch (e: InterruptedException) {
                 // continue
+                e.printStackTrace()
             }
-            start();
-            return null;
+            start()
+            return null
         }
     }
+
 
 }

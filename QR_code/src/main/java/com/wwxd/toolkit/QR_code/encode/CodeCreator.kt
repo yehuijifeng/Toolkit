@@ -1,92 +1,105 @@
-package com.wwxd.toolkit.QR_code.encode;
+package com.wwxd.toolkit.QR_code.encode
 
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
-import android.text.TextUtils;
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.text.TextUtils
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import com.wwdx.toolkit.utils.rxandroid.schedulers.AndroidSchedulers
+import com.wwxd.toolkit.QR_code.R
+import com.wwxd.toolkit.base.AppConstant
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableEmitter
+import io.reactivex.rxjava3.core.ObservableOnSubscribe
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import java.io.File
+import java.util.*
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
-import java.util.Hashtable;
-
-public class CodeCreator {
-
+//生成二维码
+object CodeCreator {
     /*logo*/
-    private static Bitmap logoBitmap;
+    private var logoBitmap: Bitmap? = null
 
     /*生成二维码*/
-    public static Bitmap createQRCode(String content, int w, int h,Bitmap logo) throws WriterException {
-
-
-        if (TextUtils.isEmpty(content)) {
-            return null;
-        }
+    fun createQRCode(content: String): Bitmap? {
         /*偏移量*/
-        int offsetX = w / 2;
-        int offsetY = h / 2;
-
+        val w = AppConstant.getApp().getWindowWidth()
+        val h = AppConstant.getApp().getWindowWidth()
+        var offsetX = w / 2
+        var offsetY = h / 2
         /*生成logo*/
-        if (logo!=null){
-            Matrix matrix = new Matrix();
-            float scaleFactor = Math.min(w * 1.0f / 5 / logo.getWidth(), h * 1.0f / 5 /logo.getHeight());
-            matrix.postScale(scaleFactor,scaleFactor);
-            logoBitmap= Bitmap.createBitmap(logo, 0, 0, logo.getWidth(),   logo.getHeight(), matrix, true);
+        if (logoBitmap == null) {
+            val logo = BitmapFactory.decodeResource(
+                AppConstant.getApp().resources,
+                R.drawable.ic_qr_code_logo,
+                null
+            )
+            if (logo != null) {
+                val matrix = Matrix()
+                val scaleFactor = Math.min(w * 1.0f / 5 / logo.width, h * 1.0f / 5 / logo.height)
+                matrix.postScale(scaleFactor, scaleFactor)
+                logoBitmap = Bitmap.createBitmap(logo, 0, 0, logo.width, logo.height, matrix, true)
+            }
         }
-
-
         /*如果log不为null,重新计算偏移量*/
-        int logoW = 0;
-        int logoH = 0;
+        var logoW = 0
+        var logoH = 0
         if (logoBitmap != null) {
-            logoW = logoBitmap.getWidth();
-            logoH = logoBitmap.getHeight();
-            offsetX = (w - logoW) / 2;
-            offsetY = (h - logoH) / 2;
+            logoW = logoBitmap!!.width
+            logoH = logoBitmap!!.height
+            offsetX = (w - logoW) / 2
+            offsetY = (h - logoH) / 2
         }
 
         /*指定为UTF-8*/
-        Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
-        hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+        val hints = Hashtable<EncodeHintType, Any?>()
+        hints[EncodeHintType.CHARACTER_SET] = "utf-8"
         //容错级别
-        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+        hints[EncodeHintType.ERROR_CORRECTION] = ErrorCorrectionLevel.H
         //设置空白边距的宽度
-        hints.put(EncodeHintType.MARGIN, 0);
+        hints[EncodeHintType.MARGIN] = 0
         // 生成二维矩阵,编码时指定大小,不要生成了图片以后再进行缩放,这样会模糊导致识别失败
-        BitMatrix matrix = new MultiFormatWriter().encode(content,
-                BarcodeFormat.QR_CODE, w, h, hints);
+        val matrix = MultiFormatWriter().encode(
+            content,
+            BarcodeFormat.QR_CODE, w, h, hints
+        )
 
         // 二维矩阵转为一维像素数组,也就是一直横着排了
-        int[] pixels = new int[w * h];
-        for (int y = 0; y < h; y++) {
-            for (int x = 0; x < w; x++) {
-                if(x >= offsetX && x < offsetX + logoW && y>= offsetY && y < offsetY + logoH){
-                    int pixel = logoBitmap.getPixel(x-offsetX,y-offsetY);
-                    if(pixel == 0){
-                        if(matrix.get(x, y)){
-                            pixel = 0xff000000;
-                        }else{
-                            pixel = 0xffffffff;
+        val pixels = IntArray(w * h)
+        for (y in 0 until h) {
+            for (x in 0 until w) {
+                if (x >= offsetX && x < offsetX + logoW && y >= offsetY && y < offsetY + logoH) {
+                    var pixel = logoBitmap!!.getPixel(x - offsetX, y - offsetY)
+                    if (pixel == 0) {
+                        pixel = if (matrix[x, y]) {
+                            -0x1000000
+                        } else {
+                            -0x1
                         }
                     }
-                    pixels[y * w + x] = pixel;
-                }else{
-                    if (matrix.get(x, y)) {
-                        pixels[y * w + x] = 0xff000000;
+                    pixels[y * w + x] = pixel
+                } else {
+                    if (matrix[x, y]) {
+                        pixels[y * w + x] = -0x1000000
                     } else {
-                        pixels[y * w + x] = 0xffffffff;
+                        pixels[y * w + x] = -0x1
                     }
                 }
             }
         }
-
-        Bitmap bitmap = Bitmap.createBitmap(w, h,
-                Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
-        return bitmap;
+        val bitmap = Bitmap.createBitmap(
+            w, h,
+            Bitmap.Config.RGB_565
+        )
+        bitmap.setPixels(pixels, 0, w, 0, 0, w, h)
+        return bitmap
     }
+
 
 }

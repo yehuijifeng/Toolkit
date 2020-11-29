@@ -13,78 +13,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.wwxd.toolkit.QR_code.camera
 
-package com.wwxd.toolkit.QR_code.camera;
+import android.annotation.SuppressLint
+import android.hardware.Camera
+import android.hardware.Camera.CameraInfo
 
-import android.annotation.SuppressLint;
-import android.hardware.Camera;
-import android.util.Log;
-
-public final class OpenCameraInterface {
-
-  private static final String TAG = OpenCameraInterface.class.getName();
-
-  private OpenCameraInterface() {
-  }
-
-  
-  /**
-   * Opens the requested camera with {@link Camera#open(int)}, if one exists.
-   *
-   * @param cameraId camera ID of the camera to use. A negative value means "no preference"
-   * @return handle to {@link Camera} that was opened
-   */
-  @SuppressLint("NewApi")
-public static Camera open(int cameraId) {
-    
-    int numCameras = Camera.getNumberOfCameras();
-    if (numCameras == 0) {
-      Log.w(TAG, "No cameras!");
-      return null;
-    }
-
-    boolean explicitRequest = cameraId >= 0;
-
-    if (!explicitRequest) {
-      // Select a camera if no explicit camera requested
-      int index = 0;
-      while (index < numCameras) {
-        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-        Camera.getCameraInfo(index, cameraInfo);
-        if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
-          break;
+//打开相机接口
+object OpenCameraInterface {
+    /**
+     * Opens the requested camera with [Camera.open], if one exists.
+     *
+     * @param cameraId camera ID of the camera to use. A negative value means "no preference"
+     * @return handle to [Camera] that was opened
+     */
+    @SuppressLint("NewApi")
+    fun open(cameraId: Int): Camera? {
+        val numCameras = Camera.getNumberOfCameras()
+        if (numCameras == 0) {
+            return null
         }
-        index++;
-      }
-      
-      cameraId = index;
+        val explicitRequest = cameraId >= 0
+        var cameraId1 = cameraId
+        if (!explicitRequest) {
+            // Select a camera if no explicit camera requested
+            var index = 0
+            while (index < numCameras) {
+                val cameraInfo = CameraInfo()
+                Camera.getCameraInfo(index, cameraInfo)
+                if (cameraInfo.facing == CameraInfo.CAMERA_FACING_BACK) {
+                    break
+                }
+                index++
+            }
+            cameraId1 = index
+        }
+        val camera: Camera?
+        camera = if (cameraId1 < numCameras) {
+            Camera.open(cameraId1)
+        } else {
+            if (explicitRequest) {
+                null
+            } else {
+                Camera.open(0)
+            }
+        }
+        return camera
     }
 
-    Camera camera;
-    if (cameraId < numCameras) {
-      Log.i(TAG, "Opening camera #" + cameraId);
-      camera = Camera.open(cameraId);
-    } else {
-      if (explicitRequest) {
-        Log.w(TAG, "Requested camera does not exist: " + cameraId);
-        camera = null;
-      } else {
-        Log.i(TAG, "No camera facing back; returning camera #0");
-        camera = Camera.open(0);
-      }
+    /**
+     * Opens a rear-facing camera with [Camera.open], if one exists, or opens camera 0.
+     *
+     * @return handle to [Camera] that was opened
+     */
+    @JvmStatic
+    fun open(): Camera? {
+        return open(-1)
     }
-    
-    return camera;
-  }
-  
-  
-  /**
-   * Opens a rear-facing camera with {@link Camera#open(int)}, if one exists, or opens camera 0.
-   *
-   * @return handle to {@link Camera} that was opened
-   */
-  public static Camera open() {
-    return open(-1);
-  }
-
 }

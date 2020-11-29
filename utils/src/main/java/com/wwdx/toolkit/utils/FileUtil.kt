@@ -1,6 +1,9 @@
 package com.wwdx.toolkit.utils
 
 import android.Manifest
+import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -432,7 +435,7 @@ object FileUtil {
     }
 
     //保存bitmap到sd卡中
-    fun saveImageFilePath(bitmap: Bitmap?, newFilePath: String?): Boolean {
+    fun saveImageFilePath(bitmap: Bitmap?, newFilePath: String): Boolean {
         return if (bitmap == null) false else try {
             deleteFile(newFilePath)
             val file = File(newFilePath)
@@ -582,6 +585,5 @@ object FileUtil {
         }
         return false
     }
-
 
 }

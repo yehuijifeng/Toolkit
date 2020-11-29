@@ -10,14 +10,14 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:required="true" />
-    <uses-permission
-        android:name="android.permission.ACCESS_MEDIA_LOCATION"
-        android:required="true" />
     <!--安装卸载文件系统-->
     <uses-permission
         android:name="android.permission.REQUEST_INSTALL_PACKAGES"
         android:required="true" />
-
+    <!--读取媒体信息-->
+    <uses-permission
+        android:name="android.permission.ACCESS_MEDIA_LOCATION"
+        android:required="true" />
     <application>
         <!--android6.0以上更新apk权限-->
         <provider

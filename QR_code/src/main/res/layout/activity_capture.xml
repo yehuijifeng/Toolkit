@@ -7,107 +7,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <RelativeLayout
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_gravity="top"
-            android:background="#99000000">
+            android:layout_height="@dimen/space_48_dp"
+            android:background="@color/transparent_black_60"
+            android:gravity="center"
+            android:text="@string/str_sao"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_20_sp" />
 
-            <!--<ImageButton-->
-                <!--android:id="@+id/capture_imageview_back"-->
-                <!--android:layout_width="48dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:background="@drawable/selector_capture_back"-->
-                <!--android:scaleType="centerInside" />-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="扫一扫"
-                android:textColor="#ffffffff"
-                android:textSize="20sp" />
-
-
-        </RelativeLayout>
-        <!--<include layout="@layout/toolbar" />-->
-        <!-- 扫描取景框 -->
-        <com.wwxd.toolkit.QR_code.view.ViewfinderView
-            android:id="@+id/viewfinderView"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1">
 
+            <!-- 扫描取景框 -->
+            <com.wwxd.toolkit.QR_code.view.ViewfinderView
+                android:id="@+id/viewfinderView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-        <LinearLayout
-            android:id="@+id/bottomLayout"
-            android:layout_width="match_parent"
-            android:layout_height="96dp"
-            android:layout_gravity="bottom"
-            android:background="#99000000"
-
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/flashLightLayout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/flashLightIv"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:scaleType="centerCrop"
-                    android:tint="#ffffffff"
-                    app:srcCompat="@drawable/ic_toast_failure" />
-
-                <TextView
-                    android:id="@+id/flashLightTv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="打开闪光灯"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/albumLayout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatImageView
-
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:scaleType="centerCrop"
-                    android:tint="#ffffffff"
-                    app:srcCompat="@drawable/ic_toast_success" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="相册"
-                    android:textColor="@color/white" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-
+            <ImageView
+                android:id="@+id/imgFlashLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:padding="@dimen/space_15_dp"
+                android:src="@drawable/selector_flashlight" />
+        </FrameLayout>
     </LinearLayout>
 </merge>

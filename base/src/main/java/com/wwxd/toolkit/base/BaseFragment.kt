@@ -8,6 +8,7 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import java.util.ArrayList
 import kotlin.reflect.KClass
@@ -68,6 +69,26 @@ abstract class BaseFragment : Fragment() {
         isActivity = true
     }
 
+    //软键盘监听对象
+    private var inputMethodManager: InputMethodManager? = null
+
+    //获得软键盘实例
+    private fun getInputMethodManager(): InputMethodManager {
+        if (inputMethodManager == null) inputMethodManager =
+            requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        return inputMethodManager!!
+    }
+
+    //隐藏软键盘
+    fun hideSoftInputFromWindow(view: View) {
+        getInputMethodManager().hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    //显示软键盘
+    fun showSoftInputFromWindow(view: View) {
+        getInputMethodManager().showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+    }
+
     protected fun startActivity(cla: KClass<*>) {
         startActivity(cla, null)
     }
@@ -90,11 +111,11 @@ abstract class BaseFragment : Fragment() {
 
     private var defaultDialog: DefaultDialog? = null
 
-    private fun getDefaultDialog(): DefaultDialog {
+    fun getDefaultDialog(): DefaultDialog {
         if (defaultDialog == null && context != null)
             synchronized(DefaultDialog::class) {
                 if (defaultDialog == null)
-                    defaultDialog = DefaultDialog(context)
+                    defaultDialog = DefaultDialog(context!!)
             }
         return defaultDialog!!
     }

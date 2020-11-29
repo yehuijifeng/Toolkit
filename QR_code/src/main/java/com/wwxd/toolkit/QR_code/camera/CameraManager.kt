@@ -13,226 +13,215 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.wwxd.toolkit.QR_code.camera
 
-package com.wwxd.toolkit.QR_code.camera;
+import android.graphics.Rect
+import android.hardware.Camera
+import android.view.SurfaceHolder
+import com.google.zxing.BinaryBitmap
+import com.google.zxing.PlanarYUVLuminanceSource
+import com.google.zxing.ReaderException
+import com.google.zxing.Result
+import com.google.zxing.common.HybridBinarizer
+import com.wwxd.toolkit.QR_code.DecodeEvent
+import com.wwxd.toolkit.QR_code.camera.OpenCameraInterface.open
+import com.wwxd.toolkit.QR_code.Constant
+import com.wwxd.toolkit.QR_code.decode.DecodeThread
+import org.greenrobot.eventbus.EventBus
+import java.io.IOException
 
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.hardware.Camera;
-import android.os.Handler;
-import android.os.Message;
-import android.view.SurfaceHolder;
-
-import com.google.zxing.PlanarYUVLuminanceSource;
-import com.wwxd.toolkit.QR_code.android.CaptureActivityHandler;
-import com.wwxd.toolkit.QR_code.common.Constant;
-import com.wwxd.toolkit.base.AppConstant;
-
-import java.io.IOException;
 
 /**
  * 该对象封装了相机服务对象,预计将是唯一一个和它说话。
  * 实现封装的步骤需要采取preview-sized图像,用于预览和解码。;
- *
- * @author dswitkin@google.com (Daniel Switkin)
  */
-public final class CameraManager {
-
-    private CameraConfigurationManager configManager;
-    private Camera camera;
-    private AutoFocusManager autoFocusManager;
-    private Rect framingRect;
-    private Rect framingRectInPreview;
-    private boolean initialized;
-    private boolean previewing;
-    private int requestedCameraId = -1;
-    private int requestedFramingRectWidth;
-    private int requestedFramingRectHeight;
-    private final PreviewCallback previewCallback;
-
-    public CameraManager() {
-        this.configManager = new CameraConfigurationManager(AppConstant.INSTANCE.getApp());
-        previewCallback = new PreviewCallback(configManager);
-    }
+class CameraManager {
+    private val configManager: CameraConfigurationManager
+    private var camera: Camera? = null
+    private var autoFocusManager: AutoFocusManager? = null
+    private var framingRect: Rect? = null
+    private var framingRectInPreview: Rect? = null
+    private var initialized = false
+    private var previewing = false
+    private var requestedCameraId = -1
+    private var requestedFramingRectWidth = 0
+    private var requestedFramingRectHeight = 0
+    private val previewCallback: PreviewCallback
 
     /**
      * 打开摄像头驱动程序和硬件初始化参数
      *
      * @param holder 物体表面的相机将预览帧
      */
-    public synchronized void openDriver(SurfaceHolder holder) {
-        Camera theCamera = camera;
+    @Synchronized
+    fun openDriver(holder: SurfaceHolder?) {
+        var theCamera = camera
         if (theCamera == null) {
-            if (requestedCameraId >= 0) {
-                theCamera = OpenCameraInterface.open(requestedCameraId);
+            theCamera = if (requestedCameraId >= 0) {
+                open(requestedCameraId)
             } else {
-                theCamera = OpenCameraInterface.open();
+                open()
             }
             if (theCamera != null) {
-                camera = theCamera;
+                camera = theCamera
             }
         }
         if (theCamera != null) {
             try {
-                theCamera.setPreviewDisplay(holder);
-            } catch (IOException e) {
-                e.printStackTrace();
+                theCamera.setPreviewDisplay(holder)
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
             if (!initialized) {
-                initialized = true;
-                configManager.initFromCameraParameters(theCamera);
+                initialized = true
+                configManager.initFromCameraParameters(theCamera)
                 if (requestedFramingRectWidth > 0 && requestedFramingRectHeight > 0) {
-                    setManualFramingRect(requestedFramingRectWidth,
-                            requestedFramingRectHeight);
-                    requestedFramingRectWidth = 0;
-                    requestedFramingRectHeight = 0;
+                    setManualFramingRect(
+                        requestedFramingRectWidth,
+                        requestedFramingRectHeight
+                    )
+                    requestedFramingRectWidth = 0
+                    requestedFramingRectHeight = 0
                 }
             }
-            Camera.Parameters parameters = theCamera.getParameters();
+            var parameters = theCamera.parameters
             // 保存这些,暂时
-            String parametersFlattened = parameters == null ? null : parameters.flatten();
+            val parametersFlattened = parameters?.flatten()
             try {
-                configManager.setDesiredCameraParameters(theCamera);
-            } catch (RuntimeException re) {
+                configManager.setDesiredCameraParameters(theCamera)
+            } catch (re: RuntimeException) {
                 if (parametersFlattened != null) {
-                    parameters = theCamera.getParameters();
-                    parameters.unflatten(parametersFlattened);
+                    parameters = theCamera.parameters
+                    parameters.unflatten(parametersFlattened)
                     try {
-                        theCamera.setParameters(parameters);
-                        configManager.setDesiredCameraParameters(theCamera);
-                    } catch (RuntimeException re2) {
-                        re2.printStackTrace();
+                        theCamera.parameters = parameters
+                        configManager.setDesiredCameraParameters(theCamera)
+                    } catch (re2: RuntimeException) {
+                        re2.printStackTrace()
                     }
                 }
             }
         }
     }
 
-    public synchronized boolean isOpen() {
-        return camera != null;
-    }
+    @get:Synchronized
+    val isOpen: Boolean
+        get() = camera != null
 
     /**
      * 关闭摄像头驱动程序是否仍在使用
      */
-    public synchronized void closeDriver() {
+    @Synchronized
+    fun closeDriver() {
         if (camera != null) {
-            camera.release();
-            camera = null;
-            framingRect = null;
-            framingRectInPreview = null;
+            camera!!.release()
+            camera = null
+            framingRect = null
+            framingRectInPreview = null
         }
     }
-
 
     /*切换闪光灯*/
-    public void switchFlashLight(CaptureActivityHandler handler) {
-        Camera.Parameters parameters = camera.getParameters();
-        Message msg = new Message();
-        String flashMode = parameters.getFlashMode();
-        if (flashMode.equals(Camera.Parameters.FLASH_MODE_TORCH)) {
+    fun switchFlashLight(): Boolean {
+        val parameters = camera!!.parameters
+        val isOpen: Boolean
+        val flashMode = parameters.flashMode
+        if (flashMode == Camera.Parameters.FLASH_MODE_TORCH) {
             /*关闭闪光灯*/
-            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-            msg.what = Constant.FLASH_CLOSE;
+            parameters.flashMode = Camera.Parameters.FLASH_MODE_OFF
+            isOpen = false
         } else {
             /*打开闪光灯*/
-            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            msg.what = Constant.FLASH_OPEN;
+            parameters.flashMode = Camera.Parameters.FLASH_MODE_TORCH
+            isOpen = true
         }
-        camera.setParameters(parameters);
-        handler.sendMessage(msg);
+        camera!!.parameters = parameters
+        return isOpen
     }
-
 
     /**
      * 问相机硬件开始画预览帧到屏幕上。
      */
-    public synchronized void startPreview() {
-        Camera theCamera = camera;
+    @Synchronized
+    fun startPreview() {
+        val theCamera = camera
         if (theCamera != null && !previewing) {
-            theCamera.startPreview();
-            previewing = true;
-            autoFocusManager = new AutoFocusManager(camera);
+            theCamera.startPreview()
+            previewing = true
+            autoFocusManager = AutoFocusManager(camera!!)
         }
     }
 
     /**
      * 告诉相机停止预览帧。
      */
-    public synchronized void stopPreview() {
+    @Synchronized
+    fun stopPreview() {
         if (autoFocusManager != null) {
-            autoFocusManager.stop();
-            autoFocusManager = null;
+            autoFocusManager!!.stop()
+            autoFocusManager = null
         }
         if (camera != null && previewing) {
-            camera.stopPreview();
-            previewCallback.setHandler(null, 0);
-            previewing = false;
+            camera!!.stopPreview()
+            previewCallback.decodeThread = null
+            previewing = false
         }
     }
 
     /**
      * 一个预览帧将被返回给处理程序提供
-     *
-     * @param handler The handler to send the message to.
-     * @param message The what field of the message to be sent.
      */
-    public synchronized void requestPreviewFrame(Handler handler, int message) {
-        Camera theCamera = camera;
+    @Synchronized
+    fun requestPreviewFrame(decodeThread: DecodeThread) {
+        val theCamera = camera
         if (theCamera != null && previewing) {
-            previewCallback.setHandler(handler, message);
-            theCamera.setOneShotPreviewCallback(previewCallback);
+            previewCallback.decodeThread = decodeThread
+            theCamera.setOneShotPreviewCallback(previewCallback)
         }
     }
 
     /*取景框*/
-    public synchronized Rect getFramingRect() {
+    @Synchronized
+    fun getFramingRect(): Rect? {
         if (framingRect == null) {
             if (camera == null) {
-                return null;
+                return null
             }
-            Point screenResolution = configManager.getScreenResolution();
-            if (screenResolution == null) {
-                return null;
-            }
-            int screenResolutionX = screenResolution.x;
-            int width = (int) (screenResolutionX * 0.6);
-            int height = width;
+            val screenResolution = configManager.screenResolution ?: return null
+            val screenResolutionX = screenResolution.x
+            val width = (screenResolutionX * 0.6).toInt()
             /*水平居中  偏上显示*/
-            int leftOffset = (screenResolution.x - width) / 2;
-            int topOffset = (screenResolution.y - height) / 5;
-            framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
+            val leftOffset = (screenResolution.x - width) / 2
+            val topOffset = (screenResolution.y - width) / 5
+            framingRect = Rect(leftOffset, topOffset, leftOffset + width, topOffset + width)
         }
-        return framingRect;
+        return framingRect
     }
-
 
     /**
      * 但坐标的预览帧,不是UI /屏幕。
      *
-     * @return {@link Rect} 表达条形码扫描区域的预览
+     * @return [Rect] 表达条形码扫描区域的预览
      */
-    public synchronized Rect getFramingRectInPreview() {
+    @Synchronized
+    fun getFramingRectInPreview(): Rect? {
         if (framingRectInPreview == null) {
-            Rect framingRect = getFramingRect();
-            if (framingRect == null) {
-                return null;
-            }
-            Rect rect = new Rect(framingRect);
-            Point cameraResolution = configManager.getCameraResolution();
-            Point screenResolution = configManager.getScreenResolution();
+            val framingRect = getFramingRect() ?: return null
+            val rect = Rect(framingRect)
+            val cameraResolution = configManager.cameraResolution
+            val screenResolution = configManager.screenResolution
             if (cameraResolution == null || screenResolution == null) {
                 // Called early, before init even finished
-                return null;
+                return null
             }
             //竖屏更改1(cameraResolution.x/y互换)
-            rect.left = rect.left * cameraResolution.y / screenResolution.x;
-            rect.right = rect.right * cameraResolution.y / screenResolution.x;
-            rect.top = rect.top * cameraResolution.x / screenResolution.y;
-            rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y;
-            framingRectInPreview = rect;
+            rect.left = rect.left * cameraResolution.y / screenResolution.x
+            rect.right = rect.right * cameraResolution.y / screenResolution.x
+            rect.top = rect.top * cameraResolution.x / screenResolution.y
+            rect.bottom = rect.bottom * cameraResolution.x / screenResolution.y
+            framingRectInPreview = rect
         }
-        return framingRectInPreview;
+        return framingRectInPreview
     }
 
     /**
@@ -240,8 +229,9 @@ public final class CameraManager {
      *
      * @param cameraId 相机相机使用的ID。一个负值意味着“没有偏好
      */
-    public synchronized void setManualCameraId(int cameraId) {
-        requestedCameraId = cameraId;
+    @Synchronized
+    fun setManualCameraId(cameraId: Int) {
+        requestedCameraId = cameraId
     }
 
     /**
@@ -251,46 +241,79 @@ public final class CameraManager {
      * @param width  The width in pixels to scan.
      * @param height The height in pixels to scan.
      */
-    public synchronized void setManualFramingRect(int width, int height) {
+    @Synchronized
+    private fun setManualFramingRect(width: Int, height: Int) {
+        var width1 = width
+        var height1 = height
         if (initialized) {
-            Point screenResolution = configManager.getScreenResolution();
-            if (width > screenResolution.x) {
-                width = screenResolution.x;
+            val screenResolution = configManager.screenResolution
+            if (screenResolution == null) return
+            if (width1 > screenResolution.x) {
+                width1 = screenResolution.x
             }
-            if (height > screenResolution.y) {
-                height = screenResolution.y;
+            if (height1 > screenResolution.y) {
+                height1 = screenResolution.y
             }
-            int leftOffset = (screenResolution.x - width) / 2;
-            int topOffset = (screenResolution.y - height) / 2;
-            framingRect = new Rect(leftOffset, topOffset, leftOffset + width,
-                    topOffset + height);
-            framingRectInPreview = null;
+            val leftOffset = (screenResolution.x - width1) / 2
+            val topOffset = (screenResolution.y - height1) / 2
+            framingRect = Rect(
+                leftOffset, topOffset, leftOffset + width1,
+                topOffset + height1
+            )
+            framingRectInPreview = null
         } else {
-            requestedFramingRectWidth = width;
-            requestedFramingRectHeight = height;
+            requestedFramingRectWidth = width1
+            requestedFramingRectHeight = height1
         }
     }
 
-    /**
-     * A factory method to build the appropriate LuminanceSource object based on
-     * the format of the preview buffers, as described by Camera.Parameters.
-     *
-     * @param data   A preview frame.
-     * @param width  The width of the image.
-     * @param height The height of the image.
-     * @return A PlanarYUVLuminanceSource instance.
-     */
-    public PlanarYUVLuminanceSource buildLuminanceSource(byte[] data,
-                                                         int width, int height) {
-        Rect rect = getFramingRectInPreview();
-        if (rect == null) {
-            return null;
-        }
-        // Go ahead and assume it's YUV rather than die.
-//        return new PlanarYUVLuminanceSource(data, width, height, rect.left,
-//                rect.top, rect.width(), rect.height(), false);
-        return new PlanarYUVLuminanceSource(data, width, height, 0,
-                0, width, height, false);
+    init {
+        configManager = CameraConfigurationManager()
+        previewCallback = PreviewCallback()
     }
 
+    //预览回调
+    private inner class PreviewCallback : Camera.PreviewCallback {
+        var decodeThread: DecodeThread? = null
+        override fun onPreviewFrame(data: ByteArray, camera: Camera) {
+            if (decodeThread == null) return
+            val cameraResolution = configManager.cameraResolution
+            if (cameraResolution == null) return
+            var rawResult: Result? = null
+            var data1 = data
+            val rotatedData = ByteArray(data1.size)
+            var width = cameraResolution.x
+            var height = cameraResolution.y
+            for (y in 0 until height) {
+                for (x in 0 until width)
+                    rotatedData[x * height + height - y - 1] = data1.get(x + y * width)
+            }
+            val tmp: Int = width
+            width = height
+            height = tmp
+            data1 = rotatedData
+            if (getFramingRectInPreview() == null) return
+            val source = PlanarYUVLuminanceSource(
+                data1, width, height, 0,
+                0, width, height, false
+            )
+            val bitmap = BinaryBitmap(HybridBinarizer(source))
+            try {
+                rawResult = decodeThread!!.multiFormatReader.decodeWithState(bitmap)
+            } catch (re: ReaderException) {
+                re.printStackTrace()
+            } finally {
+                decodeThread!!.multiFormatReader.reset()
+            }
+            val decodeEvent = DecodeEvent()
+            if (rawResult != null) {
+                decodeEvent.code = Constant.DECODE_SUCCEEDED
+                decodeEvent.result = rawResult
+            } else {
+                decodeEvent.code = Constant.DECODE_FAILED
+                decodeEvent.result = rawResult
+            }
+            EventBus.getDefault().post(decodeEvent)
+        }
+    }
 }

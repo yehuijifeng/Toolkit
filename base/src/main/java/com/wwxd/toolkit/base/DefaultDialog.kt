@@ -1,90 +1,75 @@
-package com.wwxd.toolkit.base;
+package com.wwxd.toolkit.base
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.text.Html;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
+import android.text.Html
+import android.text.TextUtils
+import android.view.Gravity
+import android.view.KeyEvent
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 
 /**
  * user：LuHao
  * time：2019/10/28 10:00
  * describe：默认的提示框
  */
-public class DefaultDialog extends AlertDialog {
+class DefaultDialog(context: Context) : AlertDialog(context) {
+    private var textTitle: TextView
+    private var textContent: TextView
+    private var btnCancel: TextView
+    private var btnOk: TextView
+    private var lyBtnTwo: LinearLayout
+    private var btnOkTwo: TextView
+    private var root: View
+    private var isBackDismiss = false
+    private var isClickDismiss = true //是否按返回键关闭；true,关闭；false，不关闭；
+    private var builder: Builder
 
-   private EditText textTitle;
-   private EditText textContent;
-   private TextView btnCancel;
-   private TextView btnOk;
-   private LinearLayout lyBtnTwo;
-   private TextView btnOkTwo;
-
-    private View view;
-    private boolean isBackDismiss, isClickDismiss = true;//是否按返回键关闭；true,关闭；false，不关闭；
-    private Builder builder;//建造者
-
-    public DefaultDialog(Context context) {
-        super(context);
-        initView(context);
+    @Synchronized
+    fun getBuilder(): Builder {
+        defaultSetting()
+        return builder
     }
 
-    private void initView(Context context) {
-        setOnKeyListener(new OnKeyListener());
-        view = View.inflate(context, R.layout.dialog_default, null);
-    }
-
-    public synchronized Builder getBuilder() {
-        if (builder == null) {
-            builder = new Builder();
-        }
-        defaultSetting(builder);
-        return builder;
-    }
 
     //每次调用builder的时候需要初始化
-    private void defaultSetting(Builder builder) {
+    private fun defaultSetting() {
         builder
-                .isBackDismiss(true)
-                .isNoCancle(false)
-                .isShowTiltle(true)
-                .setTitle("")
-                .setContent("")
-                .setOkText("")
-                .setCancelText("")
-                .setCancelClick(null)
-                .setOkClick(null)
-                .setCancelTextColor(R.color.color_242424)
-                .setOkTextColor(R.color.white)
-                .setCancelBackground(R.drawable.bg_dialog_default_clean_btn)
-                .setOkBackground(R.drawable.bg_dialog_default_ok_btn);
+            .isBackDismiss(true)
+            .isNoCancle(false)
+            .isShowTiltle(true)
+            .setTitle("")
+            .setContent("")
+            .setOkText("")
+            .setCancelText("")
+            .setCancelClick(null)
+            .setOkClick(null)
+            .setCancelTextColor(R.color.color_242424)
+            .setOkTextColor(R.color.white)
+            .setCancelBackground(R.drawable.bg_dialog_default_clean_btn)
+            .setOkBackground(R.drawable.bg_dialog_default_ok_btn)
     }
 
     //清除内存
-    public void clear() {
-        dismiss();
+    fun clear() {
+        dismiss()
     }
 
-    public class Builder {
-
+    inner class Builder {
         //是否点击返回键关闭。true,可以点击返回键关闭
-        public Builder isBackDismiss(boolean bl) {
-            isBackDismiss = bl;
-            return this;
+        fun isBackDismiss(bl: Boolean): Builder {
+            isBackDismiss = bl
+            return this
         }
 
         //是否点击之后弹窗消失
-        public Builder isClickDismiss(boolean bl) {
-            isClickDismiss = bl;
-            return this;
+        fun isClickDismiss(bl: Boolean): Builder {
+            isClickDismiss = bl
+            return this
         }
 
         /**
@@ -92,15 +77,15 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param bl true,一个确定按钮；false，取消和确定按钮
          */
-        public Builder isNoCancle(boolean bl) {
+        fun isNoCancle(bl: Boolean): Builder {
             if (bl) {
-                lyBtnTwo.setVisibility(View.INVISIBLE);
-                btnOkTwo.setVisibility(View.VISIBLE);
+                lyBtnTwo!!.visibility = View.INVISIBLE
+                btnOkTwo!!.visibility = View.VISIBLE
             } else {
-                lyBtnTwo.setVisibility(View.VISIBLE);
-                btnOkTwo.setVisibility(View.INVISIBLE);
+                lyBtnTwo!!.visibility = View.VISIBLE
+                btnOkTwo!!.visibility = View.INVISIBLE
             }
-            return this;
+            return this
         }
 
         /**
@@ -108,9 +93,9 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param bl true,显示；false，不显示
          */
-        public Builder isShowTiltle(boolean bl) {
-            textTitle.setVisibility(bl ? View.VISIBLE : View.GONE);
-            return this;
+        fun isShowTiltle(bl: Boolean): Builder {
+            textTitle!!.visibility = if (bl) View.VISIBLE else View.GONE
+            return this
         }
 
         /**
@@ -118,11 +103,11 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param title 标题内容
          */
-        public Builder setTitle(String title) {
-            if (TextUtils.isEmpty(title))
-                title = "";
-            textTitle.setText(title);
-            return this;
+        fun setTitle(title: String?): Builder {
+            var title = title
+            if (TextUtils.isEmpty(title)) title = ""
+            textTitle!!.text = title
+            return this
         }
 
         /**
@@ -130,11 +115,11 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param content 内容
          */
-        public Builder setContent(String content) {
-            if (TextUtils.isEmpty(content))
-                content = "";
-            textContent.setText(content);
-            return this;
+        fun setContent(content: String?): Builder {
+            var content = content
+            if (TextUtils.isEmpty(content)) content = ""
+            textContent!!.text = content
+            return this
         }
 
         /**
@@ -142,11 +127,11 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param htmlContent 带有html标签的内容
          */
-        public Builder setHtmlContent(String htmlContent) {
-            if (TextUtils.isEmpty(htmlContent))
-                htmlContent = "";
-            textContent.setText(Html.fromHtml(htmlContent));
-            return this;
+        fun setHtmlContent(htmlContent: String?): Builder {
+            var htmlContent = htmlContent
+            if (TextUtils.isEmpty(htmlContent)) htmlContent = ""
+            textContent!!.text = Html.fromHtml(htmlContent)
+            return this
         }
 
         /**
@@ -154,12 +139,12 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param ok 文字
          */
-        public Builder setOkText(String ok) {
-            if (TextUtils.isEmpty(ok))
-                ok = "";
-            btnOkTwo.setText(ok);
-            btnOk.setText(ok);
-            return this;
+        fun setOkText(ok: String?): Builder {
+            var ok = ok
+            if (TextUtils.isEmpty(ok)) ok = ""
+            btnOkTwo!!.text = ok
+            btnOk!!.text = ok
+            return this
         }
 
         /**
@@ -167,11 +152,11 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param cancle 文字
          */
-        public Builder setCancelText(String cancle) {
-            if (TextUtils.isEmpty(cancle))
-                cancle = "";
-            btnCancel.setText(cancle);
-            return this;
+        fun setCancelText(cancle: String?): Builder {
+            var cancle = cancle
+            if (TextUtils.isEmpty(cancle)) cancle = ""
+            btnCancel!!.text = cancle
+            return this
         }
 
         /**
@@ -179,11 +164,11 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param color 色值
          */
-        public Builder setOkTextColor(int color) {
-            if (color == 0) return this;
-            btnOkTwo.setTextColor(ContextCompat.getColor(getContext(), color));
-            btnOk.setTextColor(ContextCompat.getColor(getContext(), color));
-            return this;
+        fun setOkTextColor(color: Int): Builder {
+            if (color == 0) return this
+            btnOkTwo!!.setTextColor(ContextCompat.getColor(context, color))
+            btnOk!!.setTextColor(ContextCompat.getColor(context, color))
+            return this
         }
 
         /**
@@ -191,10 +176,10 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param color 色值
          */
-        public Builder setCancelTextColor(int color) {
-            if (color == 0) return this;
-            btnCancel.setTextColor(ContextCompat.getColor(getContext(), color));
-            return this;
+        fun setCancelTextColor(color: Int): Builder {
+            if (color == 0) return this
+            btnCancel!!.setTextColor(ContextCompat.getColor(context, color))
+            return this
         }
 
         /**
@@ -202,11 +187,11 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param res 资源
          */
-        public Builder setOkBackground(int res) {
-            if (res == 0) return this;
-            btnOkTwo.setBackgroundResource(res);
-            btnOk.setBackgroundResource(res);
-            return this;
+        fun setOkBackground(res: Int): Builder {
+            if (res == 0) return this
+            btnOkTwo!!.setBackgroundResource(res)
+            btnOk!!.setBackgroundResource(res)
+            return this
         }
 
         /**
@@ -214,10 +199,10 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param res 色值
          */
-        public Builder setCancelBackground(int res) {
-            if (res == 0) return this;
-            btnCancel.setBackgroundResource(res);
-            return this;
+        fun setCancelBackground(res: Int): Builder {
+            if (res == 0) return this
+            btnCancel!!.setBackgroundResource(res)
+            return this
         }
 
         /**
@@ -225,10 +210,10 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param onClickListener 点击事件
          */
-        public Builder setOkClick(IDefaultDialogClickListener onClickListener) {
-            btnOkTwo.setOnClickListener(new OnDialogClick(onClickListener));
-            btnOk.setOnClickListener(new OnDialogClick(onClickListener));
-            return this;
+        fun setOkClick(onClickListener: IDefaultDialogClickListener?): Builder {
+            btnOkTwo!!.setOnClickListener(OnDialogClick(onClickListener))
+            btnOk!!.setOnClickListener(OnDialogClick(onClickListener))
+            return this
         }
 
         /**
@@ -236,69 +221,66 @@ public class DefaultDialog extends AlertDialog {
          *
          * @param onClickListener 点击事件
          */
-        public Builder setCancelClick(IDefaultDialogClickListener onClickListener) {
-            btnCancel.setOnClickListener(new OnDialogClick(onClickListener));
-            return this;
+        fun setCancelClick(onClickListener: IDefaultDialogClickListener?): Builder {
+            btnCancel!!.setOnClickListener(OnDialogClick(onClickListener))
+            return this
         }
 
         //只能是dialog
-        public void show() {
-            showView();
+        fun show() {
+            showView()
         }
 
         //确定/取消 按钮点击事件
-        private class OnDialogClick extends NoDoubleClickListener {
-            private IDefaultDialogClickListener iDefaultDialogClickListener;
-
-            private OnDialogClick(IDefaultDialogClickListener iDefaultDialogClickListener) {
-                this.iDefaultDialogClickListener = iDefaultDialogClickListener;
-            }
-
-            @Override
-            public void onNoDoubleClick(View v) {
-                if (iDefaultDialogClickListener != null) {
-                    iDefaultDialogClickListener.onClick(v);
-                }
-                if (isClickDismiss)
-                    dismiss();
+        private inner class OnDialogClick(private val iDefaultDialogClickListener: IDefaultDialogClickListener?) :
+            NoDoubleClickListener() {
+            override fun onNoDoubleClick(v: View) {
+                iDefaultDialogClickListener?.onClick(v)
+                if (isClickDismiss) dismiss()
             }
         }
     }
 
     //监听返回按键
-    private class OnKeyListener implements DialogInterface.OnKeyListener {
-        @Override
-        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+    private inner class OnKeyListener : DialogInterface.OnKeyListener {
+        override fun onKey(dialog: DialogInterface, keyCode: Int, event: KeyEvent): Boolean {
+            if (event.action == KeyEvent.ACTION_DOWN) {
                 if (keyCode == KeyEvent.KEYCODE_BACK && isBackDismiss) {  //表示按返回键时的操作
-                    dismiss();
-                    return true;
+                    dismiss()
+                    return true
                 }
-                return true;//已处理
+                return true //已处理
             }
-            return false;
+            return false
         }
     }
 
     //显示dialog
-    private void showView() {
+    private fun showView() {
         try {
-            setCanceledOnTouchOutside(false);
-            show();
-            setContentView(view);
-            textContent.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (textContent.getLineCount() == 1) {
-                        textContent.setGravity(Gravity.CENTER);
-                    }
+            setCanceledOnTouchOutside(false)
+            show()
+            setContentView(root)
+            textContent.post {
+                if (textContent.lineCount == 1) {
+                    textContent.gravity = Gravity.CENTER
                 }
-            });
-            if (getWindow() != null)
-                getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        } catch (Exception e) {
-            e.printStackTrace();
+            }
+            if (window != null) window!!.setBackgroundDrawableResource(android.R.color.transparent)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
+    init {
+        setOnKeyListener(OnKeyListener())
+        root = View.inflate(context, R.layout.dialog_default, null)
+        textTitle = root.findViewById(R.id.textTitle)
+        textContent = root.findViewById(R.id.textContent)
+        btnCancel = root.findViewById(R.id.btnCancel)
+        btnOk = root.findViewById(R.id.btnOk)
+        lyBtnTwo = root.findViewById(R.id.lyBtnTwo)
+        btnOkTwo = root.findViewById(R.id.btnOkTwo)
+        builder = Builder()
+    }
 }
