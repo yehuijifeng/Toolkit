@@ -15,6 +15,7 @@ abstract class BaseApp : Application() {
     abstract fun init()
     abstract fun getWindowWidth(): Int
     abstract fun getWindowHeight(): Int
+    abstract fun getNavigationBarHeight(): Int
     override fun onCreate() {
         super.onCreate()
         if (instance == null) {

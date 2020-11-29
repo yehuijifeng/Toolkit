@@ -6,7 +6,6 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.os.Vibrator
-import com.wwxd.toolkit.QR_code.R
 import java.io.Closeable
 
 /**

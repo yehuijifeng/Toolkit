@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.wwxd.toolkit">
     <!--读sd卡-->
     <uses-permission
@@ -30,6 +29,12 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+        <activity
+            android:name="com.wwdx.toolkit.utils.photo.PhotoActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="com.wwdx.toolkit.utils.photo.ImageLookActivity"
+            android:launchMode="singleTop" />
     </application>
 
 

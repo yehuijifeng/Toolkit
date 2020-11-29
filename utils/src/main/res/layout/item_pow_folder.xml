@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_item_pow_folder_click"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textFolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/space_10_dp"
+        android:layout_marginRight="@dimen/space_10_dp"
+        android:padding="@dimen/space_10_dp"
+        android:textColor="@color/selector_folder_list_text"
+        android:textSize="@dimen/text_size_15_sp" />
+</LinearLayout>

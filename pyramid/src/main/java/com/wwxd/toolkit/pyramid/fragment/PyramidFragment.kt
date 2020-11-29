@@ -7,7 +7,6 @@ import android.widget.TextView
 import com.wwxd.toolkit.base.BaseFragment
 import com.wwxd.toolkit.pyramid.R
 import kotlinx.android.synthetic.main.fragment_pyramid.*
-import java.lang.StringBuilder
 
 /**
  * user：LuHao

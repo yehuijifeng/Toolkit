@@ -12,8 +12,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.wwxd.toolkit.base.AppConstant.getApp
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * user：LuHao

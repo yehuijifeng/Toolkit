@@ -1,6 +1,5 @@
 package com.wwxd.toolkit.base
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -9,13 +8,14 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import org.greenrobot.eventbus.EventBus
-import java.util.ArrayList
+import java.util.*
 import kotlin.reflect.KClass
 
 /**
@@ -27,6 +27,16 @@ abstract class BaseActivity : AppCompatActivity() {
     //layout资源文件
     protected abstract fun setContentView(): Int
     protected abstract fun init()
+
+    //root视图
+    protected var root: ViewGroup? = null
+        get() {
+            if (field == null) {
+                field = findViewById(android.R.id.content)
+            }
+            return field
+        }
+        private set
 
     //是否全屏
     protected open fun isFullWindow(): Boolean {
@@ -102,9 +112,9 @@ abstract class BaseActivity : AppCompatActivity() {
             defaultDialog!!.clear()
             defaultDialog = null
         }
-        if(loadingView!=null){
+        if (loadingView != null) {
             loadingView!!.dismiss()
-            loadingView=null
+            loadingView = null
         }
         if (isRegisterEventBus()) {
             EventBus.getDefault().unregister(this)

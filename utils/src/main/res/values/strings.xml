@@ -3,4 +3,8 @@
     <string name="str_num_yi">亿</string>
     <string name="str_num_wan">w</string>
     <string name="str_num_qian">k</string>
+    <string name="str_preview">预览</string>
+    <string name="str_coment">完成</string>
+    <string name="str_max_select_images_num_one">最多选择</string>
+    <string name="str_str_max_select_images_num_two">张</string>
 </resources>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_48_dp">
+
+        <ImageView
+            android:id="@+id/imgClose"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="@dimen/space_14_dp"
+            android:paddingRight="@dimen/space_14_dp"
+            android:src="@drawable/ic_clean" />
+
+        <LinearLayout
+            android:id="@+id/llPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:lines="1"
+                android:maxLength="20"
+                android:textColor="@color/color_242424"
+                android:textSize="@dimen/text_size_15_sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/space_10_dp"
+                android:src="@drawable/ic_down" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/space_5_dp"
+        android:paddingRight="@dimen/space_5_dp"  />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_49_dp"
+        android:background="@color/color_f8f8f8"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textPreview"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/space_15_dp"
+            android:paddingRight="@dimen/space_15_dp"
+            android:text="@string/str_preview"
+            android:textColor="@color/selector_photo_preview_btn"
+            android:textSize="@dimen/text_size_15_sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="@dimen/space_1_dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/textSave"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/space_15_dp"
+            android:paddingRight="@dimen/space_15_dp"
+            android:textColor="@color/selector_photo_save_btn"
+            android:textSize="@dimen/text_size_15_sp" />
+    </LinearLayout>
+</LinearLayout>

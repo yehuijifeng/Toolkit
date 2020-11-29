@@ -4,7 +4,6 @@ import android.text.TextUtils
 import android.view.View
 import com.wwxd.toolkit.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_calculator.*
-import java.math.BigDecimal
 
 /**
  * user：LuHao

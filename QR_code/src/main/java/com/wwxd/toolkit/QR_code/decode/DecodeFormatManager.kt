@@ -7,7 +7,7 @@ import com.wwxd.toolkit.QR_code.android.Intents
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.HashMap
-
+//解码格式管理器
 object DecodeFormatManager {
     private val COMMA_PATTERN = Pattern.compile(",")
     var PRODUCT_FORMATS: Set<BarcodeFormat>

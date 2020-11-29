@@ -63,4 +63,11 @@ dependencies {
     implementation conf.dependencies.core_ktx
     implementation conf.dependencies.kotlin_stdlib
     implementation project(":base")
+    //Glide 图片加载
+    api 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    //加载长图
+    api 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
+    //高斯模糊
+    implementation 'jp.wasabeef:glide-transformations:4.2.0'
 }

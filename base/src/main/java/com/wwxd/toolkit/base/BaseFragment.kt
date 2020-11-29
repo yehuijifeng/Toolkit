@@ -1,6 +1,5 @@
 package com.wwxd.toolkit.base
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import org.greenrobot.eventbus.EventBus
-import java.util.ArrayList
+import java.util.*
 import kotlin.reflect.KClass
 
 /**
@@ -28,7 +27,7 @@ abstract class BaseFragment : Fragment() {
 
     private var baseActivity1: BaseActivity? = null
 
-    protected fun getBaseActivity(): BaseActivity {
+    fun getBaseActivity(): BaseActivity {
         if (baseActivity1 == null && isActivity) {
             baseActivity1 = activity as BaseActivity
         }
@@ -49,9 +48,9 @@ abstract class BaseFragment : Fragment() {
             defaultDialog!!.clear()
             defaultDialog = null
         }
-        if(loadingView!=null){
+        if (loadingView != null) {
             loadingView!!.dismiss()
-            loadingView=null
+            loadingView = null
         }
         if (isRegisterEventBus()) {
             EventBus.getDefault().unregister(this)
@@ -59,9 +58,10 @@ abstract class BaseFragment : Fragment() {
     }
 
     //是否注册eventbus，默认不注册
-    protected open fun isRegisterEventBus(): Boolean {
+    open fun isRegisterEventBus(): Boolean {
         return false
     }
+
     /**
      * 创建视图,传入根view
      */
@@ -87,7 +87,7 @@ abstract class BaseFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         isActivity = true
-        if(isRegisterEventBus())
+        if (isRegisterEventBus())
             EventBus.getDefault().register(getBaseActivity())
     }
 
@@ -111,21 +111,21 @@ abstract class BaseFragment : Fragment() {
         getInputMethodManager().showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
     }
 
-    protected fun startActivity(cla: KClass<*>) {
+    fun startActivity(cla: KClass<*>) {
         startActivity(cla, null)
     }
 
-    protected fun startActivity(cls: KClass<*>, bundle: Bundle?) {
+    fun startActivity(cls: KClass<*>, bundle: Bundle?) {
         val intent = Intent(context, cls.java)
         if (bundle != null) intent.putExtras(bundle)
         startActivity(intent)
     }
 
-    protected fun startActivityForResult(cls: KClass<*>, requestCode: Int) {
+    fun startActivityForResult(cls: KClass<*>, requestCode: Int) {
         startActivityForResult(cls, null, requestCode)
     }
 
-    protected fun startActivityForResult(cls: KClass<*>, bundle: Bundle?, requestCode: Int) {
+    fun startActivityForResult(cls: KClass<*>, bundle: Bundle?, requestCode: Int) {
         val intent = Intent(context, cls.java)
         if (bundle != null) intent.putExtras(bundle)
         startActivityForResult(intent, requestCode)

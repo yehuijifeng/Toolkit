@@ -42,6 +42,7 @@ class App : BaseApp() {
 
     var winWidth = 0
     var winHeight = 0
+    var navigationBarH = 0
     override fun getWindowWidth(): Int {
         //屏幕的宽,高
         if (winWidth == 0)
@@ -53,6 +54,12 @@ class App : BaseApp() {
         if (winHeight == 0)
             winHeight = WindowsUtil.getWindowHeight(this)
         return winHeight
+    }
+
+    override fun getNavigationBarHeight(): Int {
+        if (navigationBarH == 0)
+            navigationBarH = WindowsUtil.getNavigationBarHeight()
+        return navigationBarH
     }
 
 }

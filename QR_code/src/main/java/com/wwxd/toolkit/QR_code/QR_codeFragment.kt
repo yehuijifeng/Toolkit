@@ -4,12 +4,17 @@ import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.zxing.Result
 import com.wwdx.toolkit.utils.*
+import com.wwdx.toolkit.utils.glide.GlideUtil
+import com.wwdx.toolkit.utils.photo.Image
+import com.wwdx.toolkit.utils.photo.PhotoActivity
+import com.wwdx.toolkit.utils.photo.PhotoConstant
 import com.wwdx.toolkit.utils.rxandroid.schedulers.AndroidSchedulers
 import com.wwxd.toolkit.QR_code.decode.DecodeImgCallback
 import com.wwxd.toolkit.QR_code.decode.DecodeImgThread
@@ -87,7 +92,7 @@ class QR_codeFragment : BaseFragment() {
         }
     }
 
-    // 生成完毕，主线程
+    //生成完毕，主线程
     private inner class OnCreateCodeBitmapObserver : Observer<Bitmap> {
         override fun onSubscribe(d: Disposable) {}
         override fun onNext(bitmap: Bitmap?) {
@@ -143,10 +148,9 @@ class QR_codeFragment : BaseFragment() {
 
     //去相册选择
     private fun startPhotoDeCode() {
-        val intent = Intent()
-        intent.action = Intent.ACTION_PICK
-        intent.type = "image/*"
-        startActivityForResult(intent, imageCode)
+        val bundle = Bundle()
+        bundle.putInt(PhotoConstant.MAX_IMAGE_NUM, 1)
+        startActivityForResult(PhotoActivity::class, bundle, imageCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -155,19 +159,19 @@ class QR_codeFragment : BaseFragment() {
             && resultCode == AppCompatActivity.RESULT_OK
             && data != null
         ) {
-            var imgUri = data.data
-            if (imgUri == null) {
+            val images = data.getParcelableArrayListExtra<Image>(PhotoConstant.LOOK_IMAGES)
+            if (images == null || images.size == 0) {
                 textDecodeContent.visibility = View.GONE
                 ToastUtil.showFailureToast(getString(R.string.str_image_decode_error))
             } else {
+                var imgUri = GlideUtil.getUri(images[0].uriId)
                 if (AppUtil.isAndroidQ())
                     imgUri = MediaStore.setRequireOriginal(imgUri)
                 DecodeImgThread(imgUri, object : DecodeImgCallback {
                     override fun onImageDecodeSuccess(result: Result) {
                         //扫描成功，处理反馈信息
                         if (!TextUtils.isEmpty(result.text)) {
-                            textDecodeContent.visibility = View.VISIBLE
-                            textDecodeContent.text = result.text
+                            showCodeContent(result.text)
                         } else {
                             textDecodeContent.visibility = View.GONE
                             ToastUtil.showFailureToast(getString(R.string.str_image_decode_error))
@@ -185,29 +189,48 @@ class QR_codeFragment : BaseFragment() {
             && data != null
         ) {
             val content = data.getStringExtra(Constant.CODED_CONTENT)
-            textDecodeContent.text = content
-            textDecodeContent.visibility = View.VISIBLE
-            textDecodeContent.setOnClickListener {
-                val content1 = textDecodeContent.text.toString()
-                if (!TextUtils.isEmpty(content1)) {
-                    if (content1.toLowerCase(Locale.getDefault()).contains("http")) {
-                        //从其他浏览器打开
-                        val intent = Intent()
-                        intent.action = Intent.ACTION_VIEW
-                        val content_url = Uri.parse(content1)
-                        intent.data = content_url
-                        startActivity(
-                            Intent.createChooser(
-                                intent,
-                                getString(R.string.str_chooser_tips)
-                            )
+            if (!TextUtils.isEmpty(content))
+                showCodeContent(content)
+            else {
+                textDecodeContent.visibility = View.GONE
+                ToastUtil.showFailureToast(getString(R.string.str_sao_error))
+            }
+        }
+    }
+
+    private fun showCodeContent(content: String) {
+        textDecodeContent.visibility = View.VISIBLE
+        textDecodeContent.text = content
+        textDecodeContent.setOnClickListener {
+            val content1 = textDecodeContent.text.toString()
+            if (!TextUtils.isEmpty(content1)) {
+                if (content1.toLowerCase(Locale.getDefault()).contains("http")) {
+                    //从其他浏览器打开
+                    val intent = Intent()
+                    intent.action = Intent.ACTION_VIEW
+                    val content_url = Uri.parse(content1)
+                    intent.data = content_url
+                    startActivity(
+                        Intent.createChooser(
+                            intent,
+                            getString(R.string.str_chooser_tips)
                         )
-                    } else {
-                        StringUtil.copy(content1)
-                        ToastUtil.showLongToast(getString(R.string.str_copy_success))
-                    }
+                    )
+                } else {
+                    StringUtil.copy(content1)
+                    ToastUtil.showLongToast(getString(R.string.str_copy_success))
                 }
             }
+        }
+        textDecodeContent.setOnLongClickListener { view ->
+            val content1 = textDecodeContent.text.toString()
+            if (!TextUtils.isEmpty(content1)) {
+                StringUtil.copy(content1)
+                ToastUtil.showLongToast(getString(R.string.str_copy_success))
+                true
+            } else
+                false
+
         }
     }
 

@@ -3,21 +3,12 @@ package com.wwxd.toolkit.QR_code.encode
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.text.TextUtils
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
-import com.wwdx.toolkit.utils.rxandroid.schedulers.AndroidSchedulers
 import com.wwxd.toolkit.QR_code.R
 import com.wwxd.toolkit.base.AppConstant
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableEmitter
-import io.reactivex.rxjava3.core.ObservableOnSubscribe
-import io.reactivex.rxjava3.core.Observer
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import java.io.File
 import java.util.*
 
 

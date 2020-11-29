@@ -23,10 +23,9 @@ import com.google.zxing.PlanarYUVLuminanceSource
 import com.google.zxing.ReaderException
 import com.google.zxing.Result
 import com.google.zxing.common.HybridBinarizer
-import com.wwdx.toolkit.utils.ToastUtil
+import com.wwxd.toolkit.QR_code.Constant
 import com.wwxd.toolkit.QR_code.DecodeEvent
 import com.wwxd.toolkit.QR_code.camera.OpenCameraInterface.open
-import com.wwxd.toolkit.QR_code.Constant
 import com.wwxd.toolkit.QR_code.decode.DecodeThread
 import org.greenrobot.eventbus.EventBus
 import java.io.IOException

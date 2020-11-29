@@ -6,11 +6,9 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
 import com.google.zxing.*
 import com.google.zxing.common.HybridBinarizer
 import com.wwdx.toolkit.utils.AppFile
-import com.wwdx.toolkit.utils.AppUtil.isAndroidQ
 import com.wwdx.toolkit.utils.DateUtil.getServerTime
 import com.wwdx.toolkit.utils.FileUtil.insertFile
 import com.wwdx.toolkit.utils.LogUtil.e
@@ -33,6 +31,7 @@ class DecodeImgThread(
         if (imgUri == null || callback == null) return
         //对图片进行裁剪，防止oom
         try {
+
             val imageExif = getImageExifInterface(imgUri)
             var imageWidth = imageExif!![0]
             var imageHeight = imageExif[1]

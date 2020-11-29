@@ -13,4 +13,9 @@
         <!--是否模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+    <!--popupwindow 默认动画-->
+    <style name="pow_default_anim">
+        <item name="android:windowEnterAnimation">@anim/pop_default_in</item>
+        <item name="android:windowExitAnimation">@anim/pop_default_out</item>
+    </style>
 </resources>
