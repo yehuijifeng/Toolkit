@@ -1,7 +1,5 @@
 package com.wwxd.toolkit.QR_code
 
-import com.google.zxing.Result
-
 
 /**
  * user：LuHao
@@ -10,5 +8,5 @@ import com.google.zxing.Result
  */
 class DecodeEvent {
     var code: Int = -1
-    var result: Result? = null
+    var result: String = ""
 }

@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import org.greenrobot.eventbus.EventBus
 import java.util.ArrayList
 import kotlin.reflect.KClass
 
@@ -89,7 +90,30 @@ abstract class BaseActivity : AppCompatActivity() {
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
         setContentView(setContentView())
+        if (isRegisterEventBus()) {
+            EventBus.getDefault().register(this)
+        }
         init()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (defaultDialog != null) {
+            defaultDialog!!.clear()
+            defaultDialog = null
+        }
+        if(loadingView!=null){
+            loadingView!!.dismiss()
+            loadingView=null
+        }
+        if (isRegisterEventBus()) {
+            EventBus.getDefault().unregister(this)
+        }
+    }
+
+    //是否注册eventbus，默认不注册
+    protected open fun isRegisterEventBus(): Boolean {
+        return false
     }
 
     //软键盘监听对象

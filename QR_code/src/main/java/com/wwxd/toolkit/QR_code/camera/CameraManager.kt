@@ -23,6 +23,7 @@ import com.google.zxing.PlanarYUVLuminanceSource
 import com.google.zxing.ReaderException
 import com.google.zxing.Result
 import com.google.zxing.common.HybridBinarizer
+import com.wwdx.toolkit.utils.ToastUtil
 import com.wwxd.toolkit.QR_code.DecodeEvent
 import com.wwxd.toolkit.QR_code.camera.OpenCameraInterface.open
 import com.wwxd.toolkit.QR_code.Constant
@@ -301,19 +302,25 @@ class CameraManager {
             try {
                 rawResult = decodeThread!!.multiFormatReader.decodeWithState(bitmap)
             } catch (re: ReaderException) {
+                //没有找到，重新接吗
                 re.printStackTrace()
             } finally {
                 decodeThread!!.multiFormatReader.reset()
             }
-            val decodeEvent = DecodeEvent()
-            if (rawResult != null) {
-                decodeEvent.code = Constant.DECODE_SUCCEEDED
-                decodeEvent.result = rawResult
+            if (rawResult == null) {
+                if (previewCallback.decodeThread != null)
+                    requestPreviewFrame(previewCallback.decodeThread!!)
+                else {
+                    val decodeEvent = DecodeEvent()
+                    decodeEvent.code = Constant.DECODE_FAILED
+                    EventBus.getDefault().post(decodeEvent)
+                }
             } else {
-                decodeEvent.code = Constant.DECODE_FAILED
-                decodeEvent.result = rawResult
+                val decodeEvent = DecodeEvent()
+                decodeEvent.code = Constant.DECODE_SUCCEEDED
+                decodeEvent.result = rawResult.text
+                EventBus.getDefault().post(decodeEvent)
             }
-            EventBus.getDefault().post(decodeEvent)
         }
     }
 }

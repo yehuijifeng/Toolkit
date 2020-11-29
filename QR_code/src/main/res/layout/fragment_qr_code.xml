@@ -83,9 +83,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/space_15_dp"
-            android:layout_marginTop="@dimen/space_10_dp"
+            android:layout_marginTop="@dimen/space_15_dp"
+            android:layout_marginBottom="@dimen/space_5_dp"
             android:layout_marginRight="@dimen/space_15_dp"
-            android:textColor="@color/black"
+            android:textColor="@color/selector_qr_code_content_text"
             android:textSize="@dimen/text_size_20_sp"
             android:visibility="gone" />
 

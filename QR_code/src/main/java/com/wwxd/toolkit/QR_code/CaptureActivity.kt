@@ -1,8 +1,8 @@
 package com.wwxd.toolkit.QR_code
 
 import android.content.pm.PackageManager
-import android.os.Looper
 import android.view.SurfaceHolder
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.zxing.ResultPoint
@@ -13,6 +13,7 @@ import com.wwxd.toolkit.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_capture.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+
 
 /**
  * user：LuHao
@@ -27,6 +28,12 @@ class CaptureActivity : BaseActivity() {
     private var onCallBack: OnCallBack? = null//透明画布回调
     private var decodeThread: DecodeThread? = null//解码线程
     private var state: State = State.DEF//当前解码状态
+    override fun isRegisterEventBus(): Boolean {
+        return true
+    }
+    override fun isFullWindow(): Boolean {
+        return true
+    }
 
     private enum class State {
         DEF,//默认的
@@ -34,7 +41,6 @@ class CaptureActivity : BaseActivity() {
         SUCCESS,//成功
         DONE//完成
     }
-//    private var handler: CaptureActivityHandler? = null
 
     override fun setContentView(): Int {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -49,7 +55,13 @@ class CaptureActivity : BaseActivity() {
                 imgFlashLight.isSelected = cameraManager!!.switchFlashLight()
         }
         //有闪光灯就显示手电筒按钮  否则不显示
-        imgFlashLight.isSelected = isSupportCameraLedFlash(packageManager)
+        imgFlashLight.isSelected =
+            if (isSupportCameraLedFlash(packageManager)) {
+                false
+            } else {
+                imgFlashLight.visibility = View.GONE
+                false
+            }
         hasSurface = false//没有取景框
         beepManager = BeepManager(this)//声音和震动
     }
@@ -103,10 +115,8 @@ class CaptureActivity : BaseActivity() {
         try {
             state = State.DONE
             cameraManager?.stopPreview()
-            if (Looper.myLooper() != null)
-                Looper.myLooper()!!.quit()
             //等半秒
-            decodeThread?.join(500L)
+            decodeThread = null
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -115,8 +125,10 @@ class CaptureActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun sendDecode(decodeEvent: DecodeEvent) {
         // 尽可能快的解码，以便可以在解码失败时，开始另一次解码
-        state = State.PREVIEW
-        cameraManager?.requestPreviewFrame(decodeThread!!)
+        intent.putExtra(Constant.CODED_CONTENT, decodeEvent.result)
+        setResult(RESULT_OK, intent)
+        finish()
+
     }
 
     /**
@@ -164,7 +176,8 @@ class CaptureActivity : BaseActivity() {
         if (pm != null) {
             val features = pm.systemAvailableFeatures
             for (f in features) {
-                if (f != null && PackageManager.FEATURE_CAMERA_FLASH == f.name) return true
+                if (f != null && PackageManager.FEATURE_CAMERA_FLASH == f.name)
+                    return true
             }
         }
         return false

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import org.greenrobot.eventbus.EventBus
 import java.util.ArrayList
 import kotlin.reflect.KClass
 
@@ -42,6 +43,25 @@ abstract class BaseFragment : Fragment() {
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (defaultDialog != null) {
+            defaultDialog!!.clear()
+            defaultDialog = null
+        }
+        if(loadingView!=null){
+            loadingView!!.dismiss()
+            loadingView=null
+        }
+        if (isRegisterEventBus()) {
+            EventBus.getDefault().unregister(this)
+        }
+    }
+
+    //是否注册eventbus，默认不注册
+    protected open fun isRegisterEventBus(): Boolean {
+        return false
+    }
     /**
      * 创建视图,传入根view
      */
@@ -67,6 +87,8 @@ abstract class BaseFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         isActivity = true
+        if(isRegisterEventBus())
+            EventBus.getDefault().register(getBaseActivity())
     }
 
     //软键盘监听对象

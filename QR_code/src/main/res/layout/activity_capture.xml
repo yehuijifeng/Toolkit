@@ -4,17 +4,20 @@
     <!-- 整体透明画布 -->
     <SurfaceView
         android:id="@+id/surfaceView"
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <LinearLayout
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/space_48_dp"
+            android:paddingTop="@dimen/space_22_dp"
+            android:layout_height="@dimen/space_70_dp"
             android:background="@color/transparent_black_60"
             android:gravity="center"
             android:text="@string/str_sao"

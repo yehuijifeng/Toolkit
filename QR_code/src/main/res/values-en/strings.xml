@@ -23,4 +23,6 @@
     <string name="str_cancel">取消</string>
     <string name="str_save_failed">保存失败</string>
     <string name="str_save_code_image_success">保存成功，请到系统相册中查看</string>
+    <string name="str_chooser_tips">请选择浏览器</string>
+    <string name="str_copy_success">内容已复制</string>
 </resources>

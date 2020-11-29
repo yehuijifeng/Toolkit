@@ -166,7 +166,7 @@ class ViewfinderView(context: Context, attrs: AttributeSet?) : View(context, att
 //        canvas.drawRect(frame, paint);
 
         /*扫描框的四个角*/
-        paint.color = Color.BLUE
+        paint.color = ContextCompat.getColor(context,R.color.main_color_def)
         paint.style = Paint.Style.FILL
         paint.strokeWidth = 1f
 
@@ -270,7 +270,9 @@ class ViewfinderView(context: Context, attrs: AttributeSet?) : View(context, att
             /*缓动动画*/
             SCAN_VELOCITY = (frame.bottom - scanLineTop) / 12
             SCAN_VELOCITY =
-                (if (SCAN_VELOCITY > 10) Math.ceil(SCAN_VELOCITY.toDouble()) else 10) as Int
+                if (SCAN_VELOCITY > 10)
+                    Math.ceil(SCAN_VELOCITY.toDouble()).toInt()
+                else 10
             scanLineTop += SCAN_VELOCITY
         }
         val scanRect = Rect(

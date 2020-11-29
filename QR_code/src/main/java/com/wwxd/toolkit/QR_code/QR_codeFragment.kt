@@ -1,11 +1,9 @@
 package com.wwxd.toolkit.QR_code
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
@@ -16,7 +14,6 @@ import com.wwdx.toolkit.utils.rxandroid.schedulers.AndroidSchedulers
 import com.wwxd.toolkit.QR_code.decode.DecodeImgCallback
 import com.wwxd.toolkit.QR_code.decode.DecodeImgThread
 import com.wwxd.toolkit.QR_code.encode.CodeCreator
-import com.wwxd.toolkit.base.AppConstant
 import com.wwxd.toolkit.base.BaseFragment
 import com.wwxd.toolkit.base.IDefaultDialogClickListener
 import io.reactivex.rxjava3.core.Observable
@@ -27,6 +24,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_qr_code.*
 import java.io.File
+import java.util.*
 
 
 /**
@@ -182,6 +180,34 @@ class QR_codeFragment : BaseFragment() {
                     }
                 }).run()
             }
+        } else if (requestCode == cameraCode
+            && resultCode == AppCompatActivity.RESULT_OK
+            && data != null
+        ) {
+            val content = data.getStringExtra(Constant.CODED_CONTENT)
+            textDecodeContent.text = content
+            textDecodeContent.visibility = View.VISIBLE
+            textDecodeContent.setOnClickListener {
+                val content1 = textDecodeContent.text.toString()
+                if (!TextUtils.isEmpty(content1)) {
+                    if (content1.toLowerCase(Locale.getDefault()).contains("http")) {
+                        //从其他浏览器打开
+                        val intent = Intent()
+                        intent.action = Intent.ACTION_VIEW
+                        val content_url = Uri.parse(content1)
+                        intent.data = content_url
+                        startActivity(
+                            Intent.createChooser(
+                                intent,
+                                getString(R.string.str_chooser_tips)
+                            )
+                        )
+                    } else {
+                        StringUtil.copy(content1)
+                        ToastUtil.showLongToast(getString(R.string.str_copy_success))
+                    }
+                }
+            }
         }
     }
 
@@ -210,5 +236,6 @@ class QR_codeFragment : BaseFragment() {
             }
         }
     }
+
 
 }
