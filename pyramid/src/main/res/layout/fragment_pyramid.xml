@@ -52,10 +52,7 @@
                     android:id="@+id/llPyramidBuy"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-                </LinearLayout>
+                    android:orientation="vertical"/>
 
             </ScrollView>
 
@@ -75,24 +72,47 @@
         </LinearLayout>
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/etPrice"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/space_10_dp"
         android:layout_marginTop="@dimen/space_5_dp"
         android:layout_marginRight="@dimen/space_10_dp"
         android:layout_marginBottom="@dimen/space_10_dp"
-        android:background="@drawable/bg_pyramid_start_edit"
-        android:digits="0123456789."
-        android:hint="@string/str_the_day_price"
-        android:imeOptions="actionGo"
-        android:inputType="number"
-        android:singleLine="true"
-        android:paddingLeft="@dimen/space_10_dp"
-        android:paddingTop="@dimen/space_5_dp"
-        android:paddingRight="@dimen/space_10_dp"
-        android:paddingBottom="@dimen/space_5_dp"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_17_sp" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etPrice"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/space_6_dp"
+            android:layout_marginBottom="@dimen/space_6_dp"
+            android:layout_marginRight="@dimen/space_5_dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_pyramid_start_edit"
+            android:digits="0123456789."
+            android:hint="@string/str_the_day_price"
+            android:imeOptions="actionGo"
+            android:inputType="number"
+            android:paddingLeft="@dimen/space_10_dp"
+            android:paddingTop="@dimen/space_5_dp"
+            android:paddingRight="@dimen/space_10_dp"
+            android:paddingBottom="@dimen/space_5_dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_17_sp" />
+
+        <Button
+            android:id="@+id/btnSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_5_dp"
+            android:background="@drawable/bg_btn_def"
+            android:paddingLeft="@dimen/space_5_dp"
+            android:paddingRight="@dimen/space_5_dp"
+            android:text="@string/str_select"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_16_sp" />
+    </LinearLayout>
 </LinearLayout>

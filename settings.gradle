@@ -1,3 +1,4 @@
+include ':ruler'
 include ':QR_code'
 include ':base'
 include ':pyramid'

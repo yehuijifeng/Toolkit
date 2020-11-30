@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_buy">Buy</string>
+    <string name="str_sell">Sell</string>
+    <string name="str_the_day_price">Yesterday\'s closing price</string>
+    <string name="str_select">查询</string>
+    <string name="str_price_error">请输入正确的收盘价！</string>
+</resources>

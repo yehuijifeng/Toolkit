@@ -1,17 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textPyramidBuy"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_pyramid_buy_item"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingLeft="@dimen/space_10_dp"
         android:paddingTop="@dimen/space_5_dp"
-        android:paddingBottom="@dimen/space_5_dp"
-        android:text="-1%     -->    2.275"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_16_sp" />
-</RelativeLayout>
+        android:paddingBottom="@dimen/space_5_dp">
+
+        <TextView
+            android:id="@+id/textPyramidBuy1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/space_15_dp"
+            android:text="-1%"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16_sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="-->"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16_sp" />
+
+        <TextView
+            android:id="@+id/textPyramidBuy2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/space_15_dp"
+            android:text="2.275"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16_sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_hour_dp"
+        android:background="@color/color_888888" />
+</LinearLayout>
