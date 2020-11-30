@@ -8,4 +8,8 @@
     <string name="str_feedback">意见反馈</string>
     <string name="str_again_click_exit">再按一次退出应用</string>
     <string name="str_qr_code">扫描/生成二维码</string>
+    <string name="str_ruler">尺子</string>
+    <string name="str_go_settings">去设置</string>
+    <string name="str_exit">退出</string>
+    <string name="str_sd_card_permission_error">请允许手机存储权限，以便正常使用！</string>
 </resources>

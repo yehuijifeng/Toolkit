@@ -43,13 +43,13 @@ class QR_codeFragment : BaseFragment() {
     private val fileCode = cameraCode + 1
     private val imageCode = fileCode + 1
 
-    override fun setContentView(): Int {
+    override fun getContentView(): Int {
         return R.layout.fragment_qr_code
     }
 
     override fun init(view: View) {
         btnPicture.setOnClickListener {//拍照
-            if (PermissionsUtil.lacksPermission(Manifest.permission.CAMERA)) {
+            if (!PermissionsUtil.lacksPermission(Manifest.permission.CAMERA)) {
                 startQRCodeActivty()
             } else {
                 PermissionsUtil.requestPermissions(

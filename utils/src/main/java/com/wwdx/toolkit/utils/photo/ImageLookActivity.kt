@@ -21,7 +21,7 @@ class ImageLookActivity : BaseActivity() {
         return true
     }
 
-    override fun setContentView(): Int {
+    override fun getContentView(): Int {
         return R.layout.activity_image_look
     }
 

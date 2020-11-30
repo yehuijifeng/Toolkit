@@ -10,7 +10,7 @@ import com.wwxd.toolkit.base.BaseFragment
  * describe：首页卡片
  */
 class HomeFragment : BaseFragment(){
-    override fun setContentView(): Int {
+    override fun getContentView(): Int {
          return R.layout.fragment_home
     }
 

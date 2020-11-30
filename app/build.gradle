@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 def conf = rootProject.ext
 android {
+
     //编译sdk版本
     compileSdkVersion conf.android.compileSdkVersion
     //buildTools版本
@@ -16,6 +17,9 @@ android {
     compileOptions {
         sourceCompatibility conf.android.sourceCompatibility
         targetCompatibility conf.android.targetCompatibility
+    }
+    buildFeatures {
+        viewBinding conf.viewBinding
     }
     //默认配置
     defaultConfig {
@@ -31,7 +35,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //ndk编译配置
         ndk {
-            moduleName 'stock'
+            moduleName 'toolkit'
             //设置支持的SO库架构
             abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'//, 'x86', 'x86_64'
         }
@@ -138,4 +142,5 @@ dependencies {
     implementation project(":calculator")
     implementation project(":pyramid")
     implementation project(":QR_code")
+    implementation project(":ruler")
 }

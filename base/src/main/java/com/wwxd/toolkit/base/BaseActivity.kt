@@ -25,9 +25,9 @@ import kotlin.reflect.KClass
  */
 abstract class BaseActivity : AppCompatActivity() {
     //layout资源文件
-    protected abstract fun setContentView(): Int
+    protected abstract fun getContentView(): Int
     protected abstract fun init()
-
+//    private lateinit var binding: ActivityMainBinding
     //root视图
     protected var root: ViewGroup? = null
         get() {
@@ -99,7 +99,9 @@ abstract class BaseActivity : AppCompatActivity() {
                 window.decorView.systemUiVisibility =
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
-        setContentView(setContentView())
+//        binding = ActivityMainBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+        setContentView(getContentView())
         if (isRegisterEventBus()) {
             EventBus.getDefault().register(this)
         }

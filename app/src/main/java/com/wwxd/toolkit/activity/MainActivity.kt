@@ -6,8 +6,10 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
+import com.wwdx.toolkit.utils.AppUtil
 import com.wwdx.toolkit.utils.DateUtil
 import com.wwdx.toolkit.utils.ToastUtil
+import com.wwxd.ruler.RuleFragment
 import com.wwxd.toolkit.QR_code.QR_codeFragment
 import com.wwxd.toolkit.R
 import com.wwxd.toolkit.base.BaseActivity
@@ -28,12 +30,13 @@ class MainActivity : BaseActivity() {
     private var homeFragment: HomeFragment? = null
     private var calculatorFragment: CalculatorFragment? = null
     private var qR_codeFragment: QR_codeFragment? = null
+    private var ruleFragment: RuleFragment? = null
 
     override fun isFullWindow(): Boolean {
         return true
     }
 
-    override fun setContentView(): Int {
+    override fun getContentView(): Int {
         return R.layout.activity_main
     }
 
@@ -55,6 +58,10 @@ class MainActivity : BaseActivity() {
         }
         llQrCode.setOnClickListener {
             showFragment(QR_codeFragment::class)
+        }
+        llRuler.setOnClickListener {
+            showFragment(RuleFragment::class)
+
         }
     }
 
@@ -129,6 +136,19 @@ class MainActivity : BaseActivity() {
                 fragmentTransaction.setMaxLifecycle(qR_codeFragment!!, Lifecycle.State.RESUMED)
                 fragmentTransaction.show(qR_codeFragment!!)
             }
+        } else if (name.equals(RuleFragment::class.simpleName)) {
+            if (ruleFragment == null || ruleFragment!!.isHidden) {
+                if (ruleFragment == null) {
+                    ruleFragment = RuleFragment()
+                    fragmentTransaction.add(R.id.flHome, ruleFragment!!)
+                    fragmentTransaction.setMaxLifecycle(
+                        ruleFragment!!,
+                        Lifecycle.State.CREATED
+                    )
+                }
+                fragmentTransaction.setMaxLifecycle(ruleFragment!!, Lifecycle.State.RESUMED)
+                fragmentTransaction.show(ruleFragment!!)
+            }
         }
         hideFragment(clazz, fragmentTransaction)
         fragmentTransaction.commitAllowingStateLoss()
@@ -162,6 +182,12 @@ class MainActivity : BaseActivity() {
         ) {
             fragmentTransaction.hide(qR_codeFragment!!)
         }
+        if (!RuleFragment::class.simpleName.equals(fragmentName)
+            && ruleFragment != null
+            && !ruleFragment!!.isHidden
+        ) {
+            fragmentTransaction.hide(ruleFragment!!)
+        }
     }
 
     protected var exitTime: Long = 0 //计算用户点击返回键的时间
@@ -175,12 +201,11 @@ class MainActivity : BaseActivity() {
             } else {
                 ToastUtil.cancelToast()
                 //此处写退向后台的处理
-                moveTaskToBack(true)
+                AppUtil.exitApp()
                 return true
             }
             return false
         }
         return super.onKeyDown(keyCode, event)
     }
-
 }

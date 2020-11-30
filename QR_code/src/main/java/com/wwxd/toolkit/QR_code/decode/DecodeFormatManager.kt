@@ -3,12 +3,59 @@ package com.wwxd.toolkit.QR_code.decode
 import android.content.Intent
 import android.net.Uri
 import com.google.zxing.BarcodeFormat
-import com.wwxd.toolkit.QR_code.android.Intents
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.HashMap
 //解码格式管理器
 object DecodeFormatManager {
+    /**
+     * By default, sending this will decode all barcodes that we understand. However it
+     * may be useful to limit scanning to certain formats. Use
+     * [android.content.Intent.putExtra] with one of the values below.
+     *
+     * Setting this is effectively shorthand for setting explicit formats with [.FORMATS].
+     * It is overridden by that setting.
+     */
+    private val MODE = "SCAN_MODE"
+
+    /**
+     * Decode only UPC and EAN barcodes. This is the right choice for shopping apps which get
+     * prices, reviews, etc. for products.
+     */
+    private val PRODUCT_MODE = "PRODUCT_MODE"
+
+    /**
+     * Decode only 1D barcodes.
+     */
+    private val ONE_D_MODE = "ONE_D_MODE"
+
+    /**
+     * Decode only QR codes.
+     */
+    private val QR_CODE_MODE = "QR_CODE_MODE"
+
+    /**
+     * Decode only Data Matrix codes.
+     */
+    private val DATA_MATRIX_MODE = "DATA_MATRIX_MODE"
+
+    /**
+     * Decode only Aztec.
+     */
+    private val AZTEC_MODE = "AZTEC_MODE"
+
+    /**
+     * Decode only PDF417.
+     */
+    private val PDF417_MODE = "PDF417_MODE"
+
+    /**
+     * Comma-separated list of formats to scan for. The values must match the names of
+     * [com.google.zxing.BarcodeFormat]s, e.g. [com.google.zxing.BarcodeFormat.EAN_13].
+     * Example: "EAN_13,EAN_8,QR_CODE". This overrides [.MODE].
+     */
+    private val FORMATS = "SCAN_FORMATS"
+
     private val COMMA_PATTERN = Pattern.compile(",")
     var PRODUCT_FORMATS: Set<BarcodeFormat>
     var INDUSTRIAL_FORMATS: EnumSet<BarcodeFormat>
@@ -20,15 +67,15 @@ object DecodeFormatManager {
     private var FORMATS_FOR_MODE: HashMap<String, Set<BarcodeFormat>>
     fun parseDecodeFormats(intent: Intent): Set<BarcodeFormat>? {
         var scanFormats: Iterable<String>? = null
-        val scanFormatsString: CharSequence? = intent.getStringExtra(Intents.Scan.FORMATS)
+        val scanFormatsString: CharSequence? = intent.getStringExtra(FORMATS)
         if (scanFormatsString != null) {
             scanFormats = Arrays.asList(*COMMA_PATTERN.split(scanFormatsString))
         }
-        return parseDecodeFormats(scanFormats, intent.getStringExtra(Intents.Scan.MODE))
+        return parseDecodeFormats(scanFormats, intent.getStringExtra(MODE))
     }
 
     fun parseDecodeFormats(inputUri: Uri): Set<BarcodeFormat>? {
-        var formats = inputUri.getQueryParameters(Intents.Scan.FORMATS)
+        var formats = inputUri.getQueryParameters(FORMATS)
         if (formats != null && formats.size == 1 && formats[0] != null) {
             formats = Arrays.asList(
                 *COMMA_PATTERN.split(
@@ -36,7 +83,7 @@ object DecodeFormatManager {
                 )
             )
         }
-        return parseDecodeFormats(formats, inputUri.getQueryParameter(Intents.Scan.MODE))
+        return parseDecodeFormats(formats, inputUri.getQueryParameter(MODE))
     }
 
     private fun parseDecodeFormats(
@@ -83,13 +130,13 @@ object DecodeFormatManager {
 
     init {
         FORMATS_FOR_MODE = HashMap()
-        FORMATS_FOR_MODE[Intents.Scan.ONE_D_MODE] = ONE_D_FORMATS
-        FORMATS_FOR_MODE[Intents.Scan.PRODUCT_MODE] =
+        FORMATS_FOR_MODE[ONE_D_MODE] = ONE_D_FORMATS
+        FORMATS_FOR_MODE[PRODUCT_MODE] =
             PRODUCT_FORMATS
-        FORMATS_FOR_MODE[Intents.Scan.QR_CODE_MODE] = QR_CODE_FORMATS
-        FORMATS_FOR_MODE[Intents.Scan.DATA_MATRIX_MODE] = DATA_MATRIX_FORMATS
-        FORMATS_FOR_MODE[Intents.Scan.AZTEC_MODE] =
+        FORMATS_FOR_MODE[QR_CODE_MODE] = QR_CODE_FORMATS
+        FORMATS_FOR_MODE[DATA_MATRIX_MODE] = DATA_MATRIX_FORMATS
+        FORMATS_FOR_MODE[AZTEC_MODE] =
             AZTEC_FORMATS
-        FORMATS_FOR_MODE[Intents.Scan.PDF417_MODE] = PDF417_FORMATS
+        FORMATS_FOR_MODE[PDF417_MODE] = PDF417_FORMATS
     }
 }

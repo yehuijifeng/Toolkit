@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 def conf = rootProject.ext
 android {
     //编译sdk版本
@@ -16,6 +16,9 @@ android {
     compileOptions {
         sourceCompatibility conf.android.sourceCompatibility
         targetCompatibility conf.android.targetCompatibility
+    }
+    buildFeatures {
+        viewBinding conf.viewBinding
     }
     //默认配置
     defaultConfig {

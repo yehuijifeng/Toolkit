@@ -16,14 +16,12 @@ import com.wwxd.toolkit.base.AppConstant
  */
 object WindowsUtil {
 
-    /**
-     * 获得标题栏的高度
-     */
-    fun getToolBarHeight(): Int {
-        val resources: Resources = AppConstant.getApp().getResources()
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
+    //获得状态栏的高度
+    fun getStatusBarHeight(): Int {
+        val resourceId: Int = AppConstant.getApp().getResources()
+            .getIdentifier("status_bar_height", "dimen", "android")
         if (resourceId > 0) {
-            return resources.getDimensionPixelSize(resourceId)
+            return AppConstant.getApp().getResources().getDimensionPixelSize(resourceId)
         }
         return 0
     }
@@ -69,7 +67,7 @@ object WindowsUtil {
     private var windowWidth = 0
 
     /**
-     * Get Display
+     * 屏幕的宽度，包含左右侧边栏
      *
      * @param context Context for get WindowManager
      * @return Display
@@ -87,7 +85,7 @@ object WindowsUtil {
     private var windowHeight = 0
 
     /**
-     * 包含底部导航栏的高度的屏幕
+     * 屏幕的高度，包含上下导航栏
      *
      * @param context Context for get WindowManager
      * @return Display
@@ -100,33 +98,6 @@ object WindowsUtil {
         defaultDisplay.getRealSize(outPoint)
         windowHeight = outPoint.y
         return windowHeight
-    }
-
-    //获得屏幕的宽高
-    fun getWindowWidth(activity: Activity): Int {
-        if (windowWidth > 0) return windowWidth
-        val metric = DisplayMetrics()
-        activity.windowManager.defaultDisplay.getMetrics(metric)
-        windowWidth = metric.widthPixels // 屏幕宽度（像素）
-        return windowWidth
-    }
-
-    fun getWindowHeight(activity: Activity): Int {
-        if (windowHeight > 0) return windowHeight
-        val metric = DisplayMetrics()
-        activity.windowManager.defaultDisplay.getMetrics(metric)
-        windowHeight = metric.heightPixels // 屏幕宽度（像素）
-        return windowHeight
-    }
-
-    //获得状态栏的高度
-    fun getStatusBarHeight(): Int {
-        val resourceId: Int = AppConstant.getApp().getResources()
-            .getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            return AppConstant.getApp().getResources().getDimensionPixelSize(resourceId)
-        }
-        return 0
     }
 
     private var windowRatio = 0.0

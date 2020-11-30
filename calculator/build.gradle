@@ -1,9 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 def conf = rootProject.ext
 android {
+
     //编译sdk版本
     compileSdkVersion conf.android.compileSdkVersion
     //buildTools版本
@@ -11,6 +12,9 @@ android {
     //任务栏编辑编码格式
     tasks.withType(JavaCompile) {
         options.encoding = conf.android.encoding
+    }
+    buildFeatures {
+        viewBinding conf.viewBinding
     }
     //兼容java8
     compileOptions {

@@ -2,6 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical">
 
+    <com.wwxd.ruler.RuleView
+        android:id="@+id/rvRule"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

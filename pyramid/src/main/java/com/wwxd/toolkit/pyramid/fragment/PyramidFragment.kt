@@ -18,7 +18,7 @@ import java.lang.Exception
 class PyramidFragment : BaseFragment() {
     private val defPhaseNum = 20
     private val startValue = 0.5//阶段分割，0.5个百分点
-    override fun setContentView(): Int {
+    override fun getContentView(): Int {
         return R.layout.fragment_pyramid
     }
 

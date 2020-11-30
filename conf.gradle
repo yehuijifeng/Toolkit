@@ -1,4 +1,5 @@
 ext {
+    viewBinding = false
     android = [
             compileSdkVersion  : 29,
             buildToolsVersion  : "29.0.3",
@@ -7,7 +8,7 @@ ext {
             sourceCompatibility: JavaVersion.VERSION_1_8,
             targetCompatibility: JavaVersion.VERSION_1_8,
             encoding           : "UTF-8",
-            flavorDimensions   : "stock",
+            flavorDimensions   : "toolkit",
             multiDexEnabled    : true,
             versionCode        : 100,
             versionName        : "1.0.0",

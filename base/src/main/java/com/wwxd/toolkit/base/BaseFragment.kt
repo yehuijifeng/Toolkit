@@ -20,7 +20,7 @@ import kotlin.reflect.KClass
  */
 abstract class BaseFragment : Fragment() {
     //当前fragment的view的资源id
-    protected abstract fun setContentView(): Int
+    protected abstract fun getContentView(): Int
 
     //初始化，每个fragment实例化成功后都会进入的方法
     protected abstract fun init(view: View)
@@ -33,7 +33,8 @@ abstract class BaseFragment : Fragment() {
         }
         return baseActivity1!!
     }
-
+//    private var _binding: FragmentMainBinding? = null
+//    private val binding get() = _binding!!
     //得到activity实例
     private var isActivity = false
 
@@ -70,10 +71,16 @@ abstract class BaseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(setContentView(), container, false)
+//        _binding = FragmentMainBinding.inflate(inflater, container, false)
+//        return _binding.root
+        val view = inflater.inflate(getContentView(), container, false)
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+//        _binding = null
+    }
     /**
      * 视图创建,当前视图被调用的时候，activity才会被传入进来
      */

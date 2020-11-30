@@ -79,11 +79,11 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          */
         fun isNoCancle(bl: Boolean): Builder {
             if (bl) {
-                lyBtnTwo!!.visibility = View.INVISIBLE
-                btnOkTwo!!.visibility = View.VISIBLE
+                lyBtnTwo.visibility = View.INVISIBLE
+                btnOkTwo.visibility = View.VISIBLE
             } else {
-                lyBtnTwo!!.visibility = View.VISIBLE
-                btnOkTwo!!.visibility = View.INVISIBLE
+                lyBtnTwo.visibility = View.VISIBLE
+                btnOkTwo.visibility = View.INVISIBLE
             }
             return this
         }
@@ -94,7 +94,7 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          * @param bl true,显示；false，不显示
          */
         fun isShowTiltle(bl: Boolean): Builder {
-            textTitle!!.visibility = if (bl) View.VISIBLE else View.GONE
+            textTitle.visibility = if (bl) View.VISIBLE else View.GONE
             return this
         }
 
@@ -104,9 +104,9 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          * @param title 标题内容
          */
         fun setTitle(title: String?): Builder {
-            var title = title
-            if (TextUtils.isEmpty(title)) title = ""
-            textTitle!!.text = title
+            var title1 = title
+            if (TextUtils.isEmpty(title1)) title1 = ""
+            textTitle.text = title1
             return this
         }
 
@@ -116,9 +116,9 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          * @param content 内容
          */
         fun setContent(content: String?): Builder {
-            var content = content
-            if (TextUtils.isEmpty(content)) content = ""
-            textContent!!.text = content
+            var content1 = content
+            if (TextUtils.isEmpty(content1)) content1 = ""
+            textContent.text = content1
             return this
         }
 
@@ -128,9 +128,13 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          * @param htmlContent 带有html标签的内容
          */
         fun setHtmlContent(htmlContent: String?): Builder {
-            var htmlContent = htmlContent
-            if (TextUtils.isEmpty(htmlContent)) htmlContent = ""
-            textContent!!.text = Html.fromHtml(htmlContent)
+            var htmlContent1 = htmlContent
+            if (TextUtils.isEmpty(htmlContent1)) htmlContent1 = ""
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                textContent.text = Html.fromHtml(htmlContent1,1)
+            }else{
+                textContent.text = Html.fromHtml(htmlContent1)
+            }
             return this
         }
 
@@ -140,10 +144,10 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          * @param ok 文字
          */
         fun setOkText(ok: String?): Builder {
-            var ok = ok
-            if (TextUtils.isEmpty(ok)) ok = ""
-            btnOkTwo!!.text = ok
-            btnOk!!.text = ok
+            var ok1 = ok
+            if (TextUtils.isEmpty(ok1)) ok1 = ""
+            btnOkTwo.text = ok1
+            btnOk.text = ok1
             return this
         }
 
@@ -153,9 +157,9 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          * @param cancle 文字
          */
         fun setCancelText(cancle: String?): Builder {
-            var cancle = cancle
-            if (TextUtils.isEmpty(cancle)) cancle = ""
-            btnCancel!!.text = cancle
+            var cancle1 = cancle
+            if (TextUtils.isEmpty(cancle1)) cancle1 = ""
+            btnCancel.text = cancle1
             return this
         }
 
@@ -166,8 +170,8 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          */
         fun setOkTextColor(color: Int): Builder {
             if (color == 0) return this
-            btnOkTwo!!.setTextColor(ContextCompat.getColor(context, color))
-            btnOk!!.setTextColor(ContextCompat.getColor(context, color))
+            btnOkTwo.setTextColor(ContextCompat.getColor(context, color))
+            btnOk.setTextColor(ContextCompat.getColor(context, color))
             return this
         }
 
@@ -178,7 +182,7 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          */
         fun setCancelTextColor(color: Int): Builder {
             if (color == 0) return this
-            btnCancel!!.setTextColor(ContextCompat.getColor(context, color))
+            btnCancel.setTextColor(ContextCompat.getColor(context, color))
             return this
         }
 
@@ -189,8 +193,8 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          */
         fun setOkBackground(res: Int): Builder {
             if (res == 0) return this
-            btnOkTwo!!.setBackgroundResource(res)
-            btnOk!!.setBackgroundResource(res)
+            btnOkTwo.setBackgroundResource(res)
+            btnOk.setBackgroundResource(res)
             return this
         }
 
@@ -201,7 +205,7 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          */
         fun setCancelBackground(res: Int): Builder {
             if (res == 0) return this
-            btnCancel!!.setBackgroundResource(res)
+            btnCancel.setBackgroundResource(res)
             return this
         }
 
@@ -211,8 +215,8 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          * @param onClickListener 点击事件
          */
         fun setOkClick(onClickListener: IDefaultDialogClickListener?): Builder {
-            btnOkTwo!!.setOnClickListener(OnDialogClick(onClickListener))
-            btnOk!!.setOnClickListener(OnDialogClick(onClickListener))
+            btnOkTwo.setOnClickListener(OnDialogClick(onClickListener))
+            btnOk.setOnClickListener(OnDialogClick(onClickListener))
             return this
         }
 
@@ -222,7 +226,7 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
          * @param onClickListener 点击事件
          */
         fun setCancelClick(onClickListener: IDefaultDialogClickListener?): Builder {
-            btnCancel!!.setOnClickListener(OnDialogClick(onClickListener))
+            btnCancel.setOnClickListener(OnDialogClick(onClickListener))
             return this
         }
 
@@ -230,6 +234,11 @@ class DefaultDialog(context: Context) : AlertDialog(context) {
         fun show() {
             showView()
         }
+
+        fun setCancelClick() {
+            TODO("Not yet implemented")
+        }
+
 
         //确定/取消 按钮点击事件
         private inner class OnDialogClick(private val iDefaultDialogClickListener: IDefaultDialogClickListener?) :

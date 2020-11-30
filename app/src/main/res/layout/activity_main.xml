@@ -13,11 +13,11 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBar"
-            app:navigationIcon="@drawable/ic_home_title_left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:theme="@style/HomeActionBar"
-            android:background="?attr/colorPrimary" />
+            android:background="?attr/colorPrimary"
+            app:navigationIcon="@drawable/ic_home_title_left"
+            app:theme="@style/HomeActionBar" />
         <!--主页面-->
         <FrameLayout
             android:id="@+id/flHome"
@@ -94,6 +94,7 @@
             </LinearLayout>
 
             <View style="@style/home_menu_hour_item_style" />
+
             <LinearLayout
                 android:id="@+id/llQrCode"
                 style="@style/home_menu_layout_item_style">
@@ -105,6 +106,21 @@
                 <TextView
                     style="@style/home_menu_text_item_style"
                     android:text="@string/str_qr_code" />
+            </LinearLayout>
+
+            <View style="@style/home_menu_hour_item_style" />
+
+            <LinearLayout
+                android:id="@+id/llRuler"
+                style="@style/home_menu_layout_item_style">
+
+                <ImageView
+                    style="@style/home_menu_image_item_style"
+                    android:src="@drawable/ic_ruler" />
+
+                <TextView
+                    style="@style/home_menu_text_item_style"
+                    android:text="@string/str_ruler" />
             </LinearLayout>
 
             <View style="@style/home_menu_hour_item_style" />

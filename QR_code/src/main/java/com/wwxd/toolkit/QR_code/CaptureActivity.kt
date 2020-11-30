@@ -10,6 +10,7 @@ import com.google.zxing.ResultPointCallback
 import com.wwxd.toolkit.QR_code.camera.CameraManager
 import com.wwxd.toolkit.QR_code.decode.DecodeThread
 import com.wwxd.toolkit.base.BaseActivity
+import com.wwxd.toolkit.base.IDefaultDialogClickListener
 import kotlinx.android.synthetic.main.activity_capture.*
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -31,6 +32,7 @@ class CaptureActivity : BaseActivity() {
     override fun isRegisterEventBus(): Boolean {
         return true
     }
+
     override fun isFullWindow(): Boolean {
         return true
     }
@@ -42,7 +44,7 @@ class CaptureActivity : BaseActivity() {
         DONE//完成
     }
 
-    override fun setContentView(): Int {
+    override fun getContentView(): Int {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         return R.layout.activity_capture
     }
@@ -82,12 +84,12 @@ class CaptureActivity : BaseActivity() {
     /**
      * 初始化Camera
      */
-    private fun initCamera(surfaceHolder: SurfaceHolder?) {
+    private fun initCamera(surfaceHolder1: SurfaceHolder?) {
         try {
-            if (surfaceHolder == null || cameraManager == null || cameraManager!!.isOpen)
+            if (surfaceHolder1 == null || cameraManager == null || cameraManager!!.isOpen)
                 return
             // 打开Camera硬件设备
-            cameraManager?.openDriver(surfaceHolder)
+            cameraManager?.openDriver(surfaceHolder1)
             //创建一个解码线程来打开预览
             if (decodeThread == null) {
                 decodeThread = DecodeThread(ViewfinderResultPointCallback())
@@ -104,6 +106,11 @@ class CaptureActivity : BaseActivity() {
                 .isShowTiltle(false)
                 .setContent(getString(R.string.str_sao_error))
                 .setOkText(getString(R.string.str_retry))
+                .setOkClick(object : IDefaultDialogClickListener {
+                    override fun onClick(v: View) {
+                        initCamera(surfaceHolder)
+                    }
+                })
                 .show()
         }
     }

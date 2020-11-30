@@ -17,6 +17,8 @@ package com.wwxd.toolkit.QR_code.camera
 
 import android.graphics.Point
 import android.hardware.Camera
+import com.wwdx.toolkit.utils.DisplayUtil
+import com.wwdx.toolkit.utils.WindowsUtil
 import com.wwxd.toolkit.base.AppConstant.getApp
 import java.lang.Boolean
 import java.util.regex.Pattern
@@ -30,7 +32,7 @@ internal class CameraConfigurationManager {
 
     fun initFromCameraParameters(camera: Camera) {
         val parameters = camera.parameters
-        screenResolution = Point(getApp().getWindowWidth(), getApp().getWindowHeight())
+        screenResolution = Point(DisplayUtil.getWindowWidth(), DisplayUtil.getWindowHeight())
         val screenResolutionForCamera = Point()
         screenResolutionForCamera.x = screenResolution!!.x
         screenResolutionForCamera.y = screenResolution!!.y

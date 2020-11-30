@@ -25,7 +25,7 @@ import com.google.zxing.Result
 import com.google.zxing.common.HybridBinarizer
 import com.wwxd.toolkit.QR_code.Constant
 import com.wwxd.toolkit.QR_code.DecodeEvent
-import com.wwxd.toolkit.QR_code.camera.OpenCameraInterface.open
+import com.wwxd.toolkit.QR_code.camera.OpenCameraInterface
 import com.wwxd.toolkit.QR_code.decode.DecodeThread
 import org.greenrobot.eventbus.EventBus
 import java.io.IOException
@@ -57,11 +57,12 @@ class CameraManager {
     fun openDriver(holder: SurfaceHolder?) {
         var theCamera = camera
         if (theCamera == null) {
-            theCamera = if (requestedCameraId >= 0) {
-                open(requestedCameraId)
-            } else {
-                open()
-            }
+            theCamera =
+                if (requestedCameraId >= 0) {
+                    OpenCameraInterface.open(requestedCameraId)
+                } else {
+                    OpenCameraInterface.open()
+                }
             if (theCamera != null) {
                 camera = theCamera
             }
@@ -123,6 +124,7 @@ class CameraManager {
 
     /*切换闪光灯*/
     fun switchFlashLight(): Boolean {
+        if (camera == null) return false
         val parameters = camera!!.parameters
         val isOpen: Boolean
         val flashMode = parameters.flashMode
@@ -163,6 +165,8 @@ class CameraManager {
         }
         if (camera != null && previewing) {
             camera!!.stopPreview()
+            camera!!.release()
+            camera = null
             previewCallback.decodeThread = null
             previewing = false
         }

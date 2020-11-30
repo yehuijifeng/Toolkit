@@ -30,7 +30,7 @@ class PhotoActivity : BaseActivity() {
     private var folderListPow: FolderListPow? = null  //系统相册选择
     private var folderName = ""//选择的相册名字
     private val recyclerAdapter = RecyclerAdapter()
-    override fun setContentView(): Int {
+    override fun getContentView(): Int {
         return R.layout.activity_photo
     }
 

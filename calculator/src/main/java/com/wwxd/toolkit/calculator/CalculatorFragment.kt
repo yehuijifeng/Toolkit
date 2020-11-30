@@ -18,7 +18,7 @@ class CalculatorFragment : BaseFragment() {
     private var equal_flag = 0 //0:
     private val scienceCalculator = BaseCalculator()  //一个科学计算器
 
-    override fun setContentView(): Int {
+    override fun getContentView(): Int {
         return R.layout.fragment_calculator
     }
 

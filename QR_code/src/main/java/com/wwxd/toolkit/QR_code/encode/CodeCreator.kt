@@ -7,6 +7,7 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel
+import com.wwdx.toolkit.utils.DisplayUtil
 import com.wwxd.toolkit.QR_code.R
 import com.wwxd.toolkit.base.AppConstant
 import java.util.*
@@ -20,8 +21,8 @@ object CodeCreator {
     /*生成二维码*/
     fun createQRCode(content: String): Bitmap? {
         /*偏移量*/
-        val w = AppConstant.getApp().getWindowWidth()
-        val h = AppConstant.getApp().getWindowWidth()
+        val w = DisplayUtil.getWindowWidth()
+        val h = DisplayUtil.getWindowWidth()
         var offsetX = w / 2
         var offsetY = h / 2
         /*生成logo*/
