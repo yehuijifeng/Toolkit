@@ -2,12 +2,11 @@ package com.wwxd.toolkit.activity
 
 import android.os.Handler
 import android.view.View
-import com.wwdx.toolkit.utils.AppUtil
-import com.wwdx.toolkit.utils.PermissionsUtil
-import com.wwdx.toolkit.utils.ToastUtil
+import com.wwxd.utils.AppUtil
+import com.wwxd.utils.PermissionsUtil
 import com.wwxd.toolkit.R
-import com.wwxd.toolkit.base.BaseActivity
-import com.wwxd.toolkit.base.IDefaultDialogClickListener
+import com.wwxd.base.BaseActivity
+import com.wwxd.base.IDefaultDialogClickListener
 
 /**
  * user：LuHao

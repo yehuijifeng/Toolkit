@@ -2,7 +2,7 @@ package com.wwxd.toolkit.file
 
 import android.os.Environment
 import android.text.TextUtils
-import com.wwdx.toolkit.utils.FileUtil
+import com.wwxd.utils.FileUtil
 
 /**
  * user：LuHao

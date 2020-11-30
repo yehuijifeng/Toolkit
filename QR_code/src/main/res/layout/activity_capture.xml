@@ -29,7 +29,7 @@
             android:layout_weight="1">
 
             <!-- 扫描取景框 -->
-            <com.wwxd.toolkit.QR_code.view.ViewfinderView
+            <com.wwxd.QR_code.view.ViewfinderView
                 android:id="@+id/viewfinderView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

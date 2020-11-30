@@ -30,10 +30,10 @@
         </provider>
 
         <activity
-            android:name="com.wwdx.toolkit.utils.photo.PhotoActivity"
+            android:name=".utils.photo.PhotoActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name="com.wwdx.toolkit.utils.photo.ImageLookActivity"
+            android:name=".utils.photo.ImageLookActivity"
             android:launchMode="singleTop" />
     </application>
 

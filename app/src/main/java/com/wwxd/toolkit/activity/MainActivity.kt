@@ -4,18 +4,19 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
-import com.wwdx.toolkit.utils.AppUtil
-import com.wwdx.toolkit.utils.DateUtil
-import com.wwdx.toolkit.utils.ToastUtil
+import com.wwxd.utils.AppUtil
+import com.wwxd.utils.DateUtil
+import com.wwxd.utils.ToastUtil
+import com.wwxd.protractor.ProtractorFragment
 import com.wwxd.ruler.RuleFragment
-import com.wwxd.toolkit.QR_code.QR_codeFragment
-import com.wwxd.toolkit.R
-import com.wwxd.toolkit.base.BaseActivity
-import com.wwxd.toolkit.calculator.CalculatorFragment
+import com.wwxd.QR_code.QR_codeFragment
+import com.wwxd.base.BaseActivity
+import com.wwxd.base.BaseFragment
+import com.wwxd.calculator.CalculatorFragment
 import com.wwxd.toolkit.fragment.HomeFragment
-import com.wwxd.toolkit.fragment.PyramidFragment
+import com.wwxd.pyramid.PyramidFragment
+import com.wwxd.toolkit.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.reflect.KClass
 
@@ -26,11 +27,7 @@ import kotlin.reflect.KClass
  * describe：主页
  */
 class MainActivity : BaseActivity() {
-    private var pyramidFragment: PyramidFragment? = null
-    private var homeFragment: HomeFragment? = null
-    private var calculatorFragment: CalculatorFragment? = null
-    private var qR_codeFragment: QR_codeFragment? = null
-    private var ruleFragment: RuleFragment? = null
+    private val fragmentMap = HashMap<KClass<*>, BaseFragment?>()
 
     override fun isFullWindow(): Boolean {
         return true
@@ -41,6 +38,12 @@ class MainActivity : BaseActivity() {
     }
 
     override fun init() {
+        fragmentMap.put(HomeFragment::class, null)
+        fragmentMap.put(PyramidFragment::class, null)
+        fragmentMap.put(CalculatorFragment::class, null)
+        fragmentMap.put(QR_codeFragment::class, null)
+        fragmentMap.put(RuleFragment::class, null)
+        fragmentMap.put(ProtractorFragment::class, null)
         toolBar.setTitle(R.string.app_name)
         toolBar.setTitleTextAppearance(this, R.style.home_title_text_style)
         //设置导航图标要在setSupportActionBar方法之后
@@ -63,6 +66,9 @@ class MainActivity : BaseActivity() {
             showFragment(RuleFragment::class)
 
         }
+        llProtractor.setOnClickListener {
+            showFragment(ProtractorFragment::class)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -83,111 +89,30 @@ class MainActivity : BaseActivity() {
     //展示fragment
     private fun showFragment(clazz: KClass<*>) {
         val fragmentTransaction = getSupportFragmentManager().beginTransaction()
-        val name = clazz.simpleName
-        if (name.equals(PyramidFragment::class.simpleName)) {
-            if (pyramidFragment == null || pyramidFragment!!.isHidden) {
-                if (pyramidFragment == null) {
-                    pyramidFragment = PyramidFragment()
-                    fragmentTransaction.add(R.id.flHome, pyramidFragment!!)
-                    fragmentTransaction.setMaxLifecycle(
-                        pyramidFragment!!,
-                        Lifecycle.State.CREATED
-                    )
+        if (!fragmentMap.containsKey(clazz)) return
+        fragmentMap.forEach { (key, value) ->
+            if (clazz.simpleName.equals(key.simpleName)) {
+                if (value == null || value.isHidden) {
+                    if (value == null) {
+                        val value1 = key.java.newInstance()
+                        fragmentMap[key] = value1 as BaseFragment
+                        fragmentTransaction.add(R.id.flHome, value1)
+                        fragmentTransaction.setMaxLifecycle(value1, Lifecycle.State.CREATED)
+                        fragmentTransaction.setMaxLifecycle(value1, Lifecycle.State.RESUMED)
+                        fragmentTransaction.show(value1)
+                    } else {
+                        fragmentTransaction.setMaxLifecycle(value, Lifecycle.State.RESUMED)
+                        fragmentTransaction.show(value)
+                    }
                 }
-                fragmentTransaction.setMaxLifecycle(pyramidFragment!!, Lifecycle.State.RESUMED)
-                fragmentTransaction.show(pyramidFragment!!)
-            }
-        } else if (name.equals(HomeFragment::class.simpleName)) {
-            if (homeFragment == null || homeFragment!!.isHidden) {
-                if (homeFragment == null) {
-                    homeFragment = HomeFragment()
-                    fragmentTransaction.add(R.id.flHome, homeFragment!!)
-                    fragmentTransaction.setMaxLifecycle(
-                        homeFragment!!,
-                        Lifecycle.State.CREATED
-                    )
+            } else {
+                if (value != null && !value.isHidden) {
+                    fragmentTransaction.hide(value)
                 }
-                fragmentTransaction.setMaxLifecycle(homeFragment!!, Lifecycle.State.RESUMED)
-                fragmentTransaction.show(homeFragment!!)
-            }
-        } else if (name.equals(CalculatorFragment::class.simpleName)) {
-            if (calculatorFragment == null || calculatorFragment!!.isHidden) {
-                if (calculatorFragment == null) {
-                    calculatorFragment = CalculatorFragment()
-                    fragmentTransaction.add(R.id.flHome, calculatorFragment!!)
-                    fragmentTransaction.setMaxLifecycle(
-                        calculatorFragment!!,
-                        Lifecycle.State.CREATED
-                    )
-                }
-                fragmentTransaction.setMaxLifecycle(calculatorFragment!!, Lifecycle.State.RESUMED)
-                fragmentTransaction.show(calculatorFragment!!)
-            }
-        } else if (name.equals(QR_codeFragment::class.simpleName)) {
-            if (qR_codeFragment == null || qR_codeFragment!!.isHidden) {
-                if (qR_codeFragment == null) {
-                    qR_codeFragment = QR_codeFragment()
-                    fragmentTransaction.add(R.id.flHome, qR_codeFragment!!)
-                    fragmentTransaction.setMaxLifecycle(
-                        qR_codeFragment!!,
-                        Lifecycle.State.CREATED
-                    )
-                }
-                fragmentTransaction.setMaxLifecycle(qR_codeFragment!!, Lifecycle.State.RESUMED)
-                fragmentTransaction.show(qR_codeFragment!!)
-            }
-        } else if (name.equals(RuleFragment::class.simpleName)) {
-            if (ruleFragment == null || ruleFragment!!.isHidden) {
-                if (ruleFragment == null) {
-                    ruleFragment = RuleFragment()
-                    fragmentTransaction.add(R.id.flHome, ruleFragment!!)
-                    fragmentTransaction.setMaxLifecycle(
-                        ruleFragment!!,
-                        Lifecycle.State.CREATED
-                    )
-                }
-                fragmentTransaction.setMaxLifecycle(ruleFragment!!, Lifecycle.State.RESUMED)
-                fragmentTransaction.show(ruleFragment!!)
             }
         }
-        hideFragment(clazz, fragmentTransaction)
         fragmentTransaction.commitAllowingStateLoss()
         dlHome.closeDrawers()
-    }
-
-    //隐藏出目标外的fragment
-    private fun hideFragment(clazz: KClass<*>, fragmentTransaction: FragmentTransaction) {
-        val fragmentName = clazz.simpleName
-        if (!PyramidFragment::class.simpleName.equals(fragmentName)
-            && pyramidFragment != null
-            && !pyramidFragment!!.isHidden
-        ) {
-            fragmentTransaction.hide(pyramidFragment!!)
-        }
-        if (!HomeFragment::class.simpleName.equals(fragmentName)
-            && homeFragment != null
-            && !homeFragment!!.isHidden
-        ) {
-            fragmentTransaction.hide(homeFragment!!)
-        }
-        if (!CalculatorFragment::class.simpleName.equals(fragmentName)
-            && calculatorFragment != null
-            && !calculatorFragment!!.isHidden
-        ) {
-            fragmentTransaction.hide(calculatorFragment!!)
-        }
-        if (!QR_codeFragment::class.simpleName.equals(fragmentName)
-            && qR_codeFragment != null
-            && !qR_codeFragment!!.isHidden
-        ) {
-            fragmentTransaction.hide(qR_codeFragment!!)
-        }
-        if (!RuleFragment::class.simpleName.equals(fragmentName)
-            && ruleFragment != null
-            && !ruleFragment!!.isHidden
-        ) {
-            fragmentTransaction.hide(ruleFragment!!)
-        }
     }
 
     protected var exitTime: Long = 0 //计算用户点击返回键的时间

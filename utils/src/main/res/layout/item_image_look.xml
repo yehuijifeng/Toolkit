@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.wwdx.toolkit.utils.photo.ImageLookView
+    <com.wwxd.utils.photo.ImageLookView
         android:id="@+id/imgDef"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

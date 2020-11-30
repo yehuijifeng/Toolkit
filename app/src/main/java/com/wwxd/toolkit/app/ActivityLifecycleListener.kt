@@ -5,7 +5,7 @@ import android.app.Application.ActivityLifecycleCallbacks
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Bundle
-import com.wwdx.toolkit.utils.ActivityCollector
+import com.wwxd.utils.ActivityCollector
 
 /**
  * Created by LuHao on 2017/4/17.

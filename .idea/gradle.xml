@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/base" />
             <option value="$PROJECT_DIR$/calculator" />
+            <option value="$PROJECT_DIR$/protractor" />
             <option value="$PROJECT_DIR$/pyramid" />
             <option value="$PROJECT_DIR$/ruler" />
             <option value="$PROJECT_DIR$/utils" />

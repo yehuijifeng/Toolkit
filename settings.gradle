@@ -1,3 +1,4 @@
+include ':protractor'
 include ':ruler'
 include ':QR_code'
 include ':base'

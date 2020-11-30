@@ -60,12 +60,6 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     testImplementation conf.dependencies.junit
-    implementation conf.dependencies.appcompat
-    implementation conf.dependencies.design
-    implementation conf.dependencies.runner
-    implementation conf.dependencies.espresso_core
-    implementation conf.dependencies.core_ktx
-    implementation conf.dependencies.kotlin_stdlib
     implementation project(":base")
     implementation project(":utils")
 }

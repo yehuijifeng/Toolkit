@@ -57,14 +57,15 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    api fileTree(dir: "libs", include: ["*.jar"])
     testImplementation conf.dependencies.junit
-    implementation conf.dependencies.appcompat
-    implementation conf.dependencies.design
-    implementation conf.dependencies.runner
-    implementation conf.dependencies.espresso_core
-    implementation conf.dependencies.core_ktx
-    implementation conf.dependencies.kotlin_stdlib
+    api conf.dependencies.appcompat
+    api conf.dependencies.design
+    api conf.dependencies.runner
+    api conf.dependencies.espresso_core
+    api conf.dependencies.core_ktx
+    api conf.dependencies.kotlin_stdlib
+    api conf.dependencies.kotlin_reflect
     //EventBus 事件分发
     api 'org.greenrobot:eventbus:3.2.0'
     //rxjava

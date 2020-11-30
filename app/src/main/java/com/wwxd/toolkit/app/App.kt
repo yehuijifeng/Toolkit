@@ -1,9 +1,9 @@
 package com.wwxd.toolkit.app
 
-import com.wwdx.toolkit.utils.FileUtil
-import com.wwdx.toolkit.utils.SharedPreferencesUtil
-import com.wwdx.toolkit.utils.WindowsUtil
-import com.wwxd.toolkit.base.BaseApp
+import com.wwxd.utils.FileUtil
+import com.wwxd.utils.SharedPreferencesUtil
+import com.wwxd.utils.WindowsUtil
+import com.wwxd.base.BaseApp
 import com.wwxd.toolkit.file.AppFile
 
 /**

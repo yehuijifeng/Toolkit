@@ -6,15 +6,11 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import android.view.WindowManager
-import com.wwdx.toolkit.utils.DisplayUtil
-import com.wwdx.toolkit.utils.WindowsUtil
-import com.wwxd.toolkit.base.AppConstant
+import com.wwxd.utils.DisplayUtil
 import kotlin.concurrent.thread
 
 /**

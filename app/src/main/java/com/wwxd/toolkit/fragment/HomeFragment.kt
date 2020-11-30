@@ -2,7 +2,7 @@ package com.wwxd.toolkit.fragment
 
 import android.view.View
 import com.wwxd.toolkit.R
-import com.wwxd.toolkit.base.BaseFragment
+import com.wwxd.base.BaseFragment
 
 /**
  * user：LuHao
