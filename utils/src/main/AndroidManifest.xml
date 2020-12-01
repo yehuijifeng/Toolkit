@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wwxd.toolkit">
+    package="com.wwxd.utils">
     <!--读sd卡-->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -18,24 +18,15 @@
         android:name="android.permission.ACCESS_MEDIA_LOCATION"
         android:required="true" />
     <application>
-        <!--android6.0以上更新apk权限-->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.wwxd.toolkit.fileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
-        </provider>
-
         <activity
-            android:name=".utils.photo.PhotoActivity"
+            android:name=".photo.ImageLookActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".utils.photo.ImageLookActivity"
+            android:name=".photo.PhotoActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".CropActivity"
             android:launchMode="singleTop" />
     </application>
-
 
 </manifest>

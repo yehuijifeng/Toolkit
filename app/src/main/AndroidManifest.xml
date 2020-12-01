@@ -14,13 +14,28 @@
     <uses-permission
         android:name="android.permission.REQUEST_INSTALL_PACKAGES"
         android:required="true" />
-    <!--相机-->
+    <!--联网-->
     <uses-permission
-        android:name="android.permission.CAMERA"
+        android:name="android.permission.INTERNET"
         android:required="true" />
-
+    <!--联网状态-->
+    <uses-permission
+        android:name="android.permission.ACCESS_NETWORK_STATE"
+        android:required="true" />
+    <!--改变网络状态-->
+    <uses-permission
+        android:name="android.permission.CHANGE_NETWORK_STATE"
+        android:required="true" />
+    <!--wifi状态-->
+    <uses-permission
+        android:name="android.permission.ACCESS_WIFI_STATE"
+        android:required="true" />
+    <!--改变WiFi状态-->
+    <uses-permission
+        android:name="android.permission.CHANGE_WIFI_STATE"
+        android:required="true" />
     <application
-        android:name="com.wwxd.toolkit.app.App"
+        android:name=".app.App"
         android:allowBackup="true"
         android:fullBackupContent="false"
         android:hardwareAccelerated="true"
@@ -46,7 +61,7 @@
         </provider>
 
         <activity
-            android:name="com.wwxd.toolkit.activity.LoadingActivity"
+            android:name=".activity.LoadingActivity"
             android:launchMode="singleTop"
             android:theme="@style/LoadingTheme">
             <intent-filter>
@@ -57,7 +72,7 @@
         </activity>
 
         <activity
-            android:name="com.wwxd.toolkit.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:launchMode="singleTask" />
     </application>
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_code_tips2">扫描二维码</string>
+    <string name="str_generate">生成二维码</string>
+    <string name="str_code_edit_tips">输入网址生成二维码</string>
+    <string name="str_code_tips1">生成二维码</string>
+    <string name="button_ok">确定</string>
+    <string name="viewfinderview_status_text1">将二维码/条码放入取景框内</string>
+    <string name="viewfinderview_status_text2">即可自动扫描</string>
+    <string name="str_open_camera_permission">请开启相机权限再拍照</string>
+    <string name="str_close_flash">关闭闪光灯</string>
+    <string name="str_open_flash">打开闪光灯</string>
+    <string name="str_image_decode_error">图片解析失败，请换一张试试！</string>
+    <string name="str_sd_card_permission_error">请允许读写存储卡再扫描二维码</string>
+    <string name="str_sao">扫一扫</string>
+    <string name="str_sao_error">扫描失败！</string>
+    <string name="str_retry">重试</string>
+    <string name="str_code_create_error">生成二维码失败，请重试</string>
+    <string name="str_save_code_image">保存二维码到手机</string>
+    <string name="str_save">保存</string>
+    <string name="str_cancel">取消</string>
+    <string name="str_save_failed">保存失败</string>
+    <string name="str_save_code_image_success">保存成功，请到系统相册中查看</string>
+    <string name="str_chooser_tips">请选择浏览器</string>
+    <string name="str_copy_success">内容已复制</string>
+</resources>

@@ -2,6 +2,8 @@ package com.wwxd.utils
 
 import android.os.Environment
 import android.text.TextUtils
+import com.wwxd.base.AppConstant
+import java.io.File
 
 /**
  * user：LuHao
@@ -48,6 +50,15 @@ enum class AppFile {
             return Environment.DIRECTORY_PICTURES
         }
     },
+    DOCUMENTS_FILE {
+        override fun getFilePath(): String {
+            return "app_file"
+        }
+
+        override fun getEnvironment(): String {
+            return Environment.DIRECTORY_DOCUMENTS
+        }
+    },
     DOWNLOADS_APP {
         override fun getFilePath(): String {
             return "app_downloads"
@@ -65,7 +76,7 @@ enum class AppFile {
     //获得创建路径
     open fun ObtainAppFilePath(): String {
         if (TextUtils.isEmpty(cacheFilePath)) {
-            val path = FileUtil.getAppFilePath(getEnvironment())
+            val path = getAppFilePath(getEnvironment())
             if (!TextUtils.isEmpty(path)) {
                 val path1 = path + "/" + getFilePath() + "/"
                 if (FileUtil.createFileDirectory(path1, false)) {
@@ -76,5 +87,22 @@ enum class AppFile {
                 cacheFilePath = ""
         }
         return cacheFilePath
+    }
+
+    //适配android10的app各个路径
+    private fun getAppFilePath(environment: String?): String {
+        var file: File?
+        if (AppUtil.isAndroidQ()) {
+            file = AppConstant.getApp().getExternalFilesDir(environment)
+        } else {
+            file = Environment.getExternalStorageDirectory()
+            if (file == null) return ""
+            file = File(file.absolutePath + "/Toolkit")
+        }
+        return if (file != null && (file.exists() || FileUtil.createFileDirectory(
+                file.absolutePath,
+                false
+            ))
+        ) file.absolutePath else ""
     }
 }

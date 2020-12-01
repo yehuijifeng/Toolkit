@@ -1,8 +1,8 @@
 package com.wwxd.toolkit.fragment
 
 import android.view.View
-import com.wwxd.toolkit.R
 import com.wwxd.base.BaseFragment
+import com.wwxd.toolkit.R
 
 /**
  * user：LuHao

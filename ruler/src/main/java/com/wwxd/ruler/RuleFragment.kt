@@ -2,7 +2,6 @@ package com.wwxd.ruler
 
 import android.view.View
 import com.wwxd.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_culer.*
 
 /**
  * user：LuHao

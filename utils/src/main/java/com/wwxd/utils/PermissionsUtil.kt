@@ -59,7 +59,9 @@ object PermissionsUtil {
         )
     }
 
-    // 判断是否缺少权限。true，缺少；false，已有权限
+    // 判断是否缺少权限。
+    // true，缺少
+    // false，有权限
     fun lacksPermission(permission: String): Boolean {
         if (ContextCompat.checkSelfPermission(
                 getApp(),

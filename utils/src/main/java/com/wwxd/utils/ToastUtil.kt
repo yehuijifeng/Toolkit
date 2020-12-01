@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.wwxd.toolkit.R
 import com.wwxd.base.AppConstant
 
 /**
@@ -31,12 +30,12 @@ object ToastUtil {
             if (toastDefault != null) {
                 toastDefault!!.cancel()
             }
-                toastDefault = Toast(AppConstant.getApp())
-                toastDefault!!.duration = Toast.LENGTH_SHORT
-                toastDefault!!.setGravity(Gravity.CENTER, 0, 0)
-                toastDefault!!.view = toastDefaultLayout
-                detaultText!!.text = str
-                toastDefault!!.show()
+            toastDefault = Toast(AppConstant.getApp())
+            toastDefault!!.duration = Toast.LENGTH_SHORT
+            toastDefault!!.setGravity(Gravity.CENTER, 0, 0)
+            toastDefault!!.view = toastDefaultLayout
+            detaultText!!.text = str
+            toastDefault!!.show()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -49,16 +48,17 @@ object ToastUtil {
             if (toastDefault != null) {
                 toastDefault!!.cancel()
             }
-                toastDefault = Toast(AppConstant.getApp())
-                toastDefault!!.duration = Toast.LENGTH_LONG
-                toastDefault!!.setGravity(Gravity.CENTER, 0, 0)
-                toastDefault!!.view = toastDefaultLayout
-                detaultText!!.text = str
-                toastDefault!!.show()
+            toastDefault = Toast(AppConstant.getApp())
+            toastDefault!!.duration = Toast.LENGTH_LONG
+            toastDefault!!.setGravity(Gravity.CENTER, 0, 0)
+            toastDefault!!.view = toastDefaultLayout
+            detaultText!!.text = str
+            toastDefault!!.show()
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
     @Synchronized
     fun showLongToast(strRes: Int) {
         try {
@@ -75,18 +75,25 @@ object ToastUtil {
             e.printStackTrace()
         }
     }
+
     //成功土司
     @Synchronized
-    fun showSuccessToast(str: String?) {
+    fun showSuccessToast(strRes: Int) {
+        showSuccessToast(StringUtil.getString(strRes))
+    }
+
+    //成功土司
+    @Synchronized
+    fun showSuccessToast(str: String) {
         try {
             if (toastStatus == null) {
-                    toastStatus = Toast(AppConstant.getApp())
-                    toastStatus!!.duration = Toast.LENGTH_LONG
-                    toastStatus!!.setGravity(Gravity.CENTER, 0, 0)
-                    toastStatus!!.view = toastStatusLayout
-                    statusText!!.text = str
-                    statusImage!!.setImageResource(R.drawable.ic_toast_success)
-                    toastStatus!!.show()
+                toastStatus = Toast(AppConstant.getApp())
+                toastStatus!!.duration = Toast.LENGTH_LONG
+                toastStatus!!.setGravity(Gravity.CENTER, 0, 0)
+                toastStatus!!.view = toastStatusLayout
+                statusText!!.text = str
+                statusImage!!.setImageResource(R.drawable.ic_toast_success)
+                toastStatus!!.show()
             } else {
                 toastStatus!!.cancel()
                 toastStatus = Toast(AppConstant.getApp())
@@ -102,18 +109,24 @@ object ToastUtil {
         }
     }
 
+    //成功土司
+    @Synchronized
+    fun showFailureToast(strRes: Int) {
+        showFailureToast(StringUtil.getString(strRes))
+    }
+
     //失败土司
     @Synchronized
     fun showFailureToast(str: String?) {
         try {
             if (toastStatus == null) {
-                        toastStatus = Toast(AppConstant.getApp())
-                        toastStatus!!.duration = Toast.LENGTH_LONG
-                        toastStatus!!.setGravity(Gravity.CENTER, 0, 0)
-                        toastStatus!!.view = toastStatusLayout
-                        statusText!!.text = str
-                        statusImage!!.setImageResource(R.drawable.ic_toast_failure)
-                        toastStatus!!.show()
+                toastStatus = Toast(AppConstant.getApp())
+                toastStatus!!.duration = Toast.LENGTH_LONG
+                toastStatus!!.setGravity(Gravity.CENTER, 0, 0)
+                toastStatus!!.view = toastStatusLayout
+                statusText!!.text = str
+                statusImage!!.setImageResource(R.drawable.ic_toast_failure)
+                toastStatus!!.show()
             } else {
                 toastStatus!!.cancel()
                 toastStatus = Toast(AppConstant.getApp())

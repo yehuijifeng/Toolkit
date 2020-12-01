@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:text="相机"
+        android:text="@string/str_camera"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_18_sp" />
 </RelativeLayout>

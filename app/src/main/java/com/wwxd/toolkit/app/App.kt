@@ -1,10 +1,8 @@
 package com.wwxd.toolkit.app
 
-import com.wwxd.utils.FileUtil
+import com.wwxd.base.BaseApp
 import com.wwxd.utils.SharedPreferencesUtil
 import com.wwxd.utils.WindowsUtil
-import com.wwxd.base.BaseApp
-import com.wwxd.toolkit.file.AppFile
 
 /**
  * user：LuHao
@@ -30,12 +28,6 @@ class App : BaseApp() {
         }
         //初始化sharedpreferences
         SharedPreferencesUtil.initSharedPreferences(instance!!)
-        //初始化文件
-        if (FileUtil.checkSdCard()) {
-            for (appFile in AppFile.values()) {
-                appFile.getFilePath()
-            }
-        }
         //全局捕获异常
         CrashHandler.init()
     }

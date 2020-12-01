@@ -13,9 +13,8 @@ import android.os.Process
 import android.provider.Settings
 import android.text.TextUtils
 import androidx.core.app.NotificationManagerCompat
-import com.wwxd.toolkit.BuildConfig
-import com.wwxd.toolkit.R
 import com.wwxd.base.AppConstant
+import com.wwxd.utils.BuildConfig
 import kotlin.reflect.KClass
 
 /**

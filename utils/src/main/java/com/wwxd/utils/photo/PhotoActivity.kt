@@ -11,11 +11,12 @@ import android.widget.ImageView
 import androidx.loader.app.LoaderManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.wwxd.utils.ToastUtil
-import com.wwxd.utils.glide.GlideUtil
-import com.wwxd.toolkit.R
+import com.wwxd.base.AppConstant
 import com.wwxd.base.BaseActivity
 import com.wwxd.base.NoDoubleClickListener
+import com.wwxd.utils.R
+import com.wwxd.utils.ToastUtil
+import com.wwxd.utils.glide.GlideUtil
 import kotlinx.android.synthetic.main.activity_photo.*
 
 /**
@@ -35,8 +36,8 @@ class PhotoActivity : BaseActivity() {
     }
 
     override fun init() {
-        maxImageNum = getInt(PhotoConstant.MAX_IMAGE_NUM, 0)
-        val list = getParcelableList(PhotoConstant.LOOK_IMAGES)
+        maxImageNum = getInt(AppConstant.MAX_IMAGE_NUM, 0)
+        val list = getParcelableList(AppConstant.LOOK_IMAGES)
         if (list != null)
             selectImages.addAll(list as ArrayList<Image>)
         imgClose.setOnClickListener { finish() }
@@ -48,7 +49,7 @@ class PhotoActivity : BaseActivity() {
             if (selectImages.size > 0) {
                 val bundle = Bundle()
                 bundle.putParcelableArrayList(
-                    PhotoConstant.LOOK_IMAGES, selectImages
+                    AppConstant.LOOK_IMAGES, selectImages
                 )
                 startActivity(ImageLookActivity::class, bundle)
                 overridePendingTransition(R.anim.image_in_anim, 0)
@@ -58,7 +59,7 @@ class PhotoActivity : BaseActivity() {
             //选择完成
             if (selectImages.size > 0) {
                 intent.putParcelableArrayListExtra(
-                    PhotoConstant.LOOK_IMAGES,
+                    AppConstant.LOOK_IMAGES,
                     selectImages
                 )
                 setResult(RESULT_OK, intent)
@@ -147,7 +148,7 @@ class PhotoActivity : BaseActivity() {
                 image.uriId = imageUriId
                 val list = ArrayList<Image>()
                 list.add(image)
-                bundle.putParcelableArrayList(PhotoConstant.LOOK_IMAGES, list)
+                bundle.putParcelableArrayList(AppConstant.LOOK_IMAGES, list)
                 startActivity(ImageLookActivity::class, bundle)
                 overridePendingTransition(R.anim.image_in_anim, 0)
             }

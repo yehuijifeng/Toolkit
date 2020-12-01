@@ -1,6 +1,5 @@
 package com.wwxd.protractor
 
-import android.hardware.Camera
 import android.view.SurfaceHolder
 import android.view.View
 import com.wwxd.base.BaseFragment

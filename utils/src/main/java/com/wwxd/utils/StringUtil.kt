@@ -5,7 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Typeface
 import android.text.TextUtils
-import com.wwxd.toolkit.R
 import com.wwxd.base.AppConstant
 import java.text.DecimalFormat
 import java.util.regex.Pattern

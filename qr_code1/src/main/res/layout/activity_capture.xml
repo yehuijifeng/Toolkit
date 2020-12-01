@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 整体透明画布 -->
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:paddingTop="@dimen/space_22_dp"
+            android:layout_height="@dimen/space_70_dp"
+            android:background="@color/transparent_black_60"
+            android:gravity="center"
+            android:text="@string/str_sao"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_20_sp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <!-- 扫描取景框 -->
+            <com.wwxd.qr_code1.view.ViewfinderView
+                android:id="@+id/viewfinderView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/imgFlashLight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|right"
+                android:padding="@dimen/space_15_dp"
+                android:src="@drawable/selector_flashlight" />
+        </FrameLayout>
+    </LinearLayout>
+</merge>

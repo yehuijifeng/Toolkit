@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_45_dp"
+        android:background="@color/main_color_def"
+        android:gravity="center"
+        android:text="@string/str_ocr_result"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_16_sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <EditText
+            android:id="@+id/etContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/str_ocr_content"
+            android:padding="@dimen/space_5_dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16_sp" />
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/space_20_dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCopy"
+            style="@style/btn_ocr_item_style"
+            android:text="@string/str_copy" />
+
+        <Button
+            android:id="@+id/btnTranslation"
+            style="@style/btn_ocr_item_style"
+            android:text="@string/str_translation" />
+    </LinearLayout>
+</LinearLayout>

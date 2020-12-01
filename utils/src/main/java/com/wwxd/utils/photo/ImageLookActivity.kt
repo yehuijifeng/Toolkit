@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
-import com.wwxd.utils.glide.GlideUtil
-import com.wwxd.toolkit.R
+import com.wwxd.base.AppConstant
 import com.wwxd.base.BaseActivity
+import com.wwxd.utils.R
+import com.wwxd.utils.glide.GlideUtil
 import kotlinx.android.synthetic.main.activity_image_look.*
 
 /**
@@ -28,14 +29,14 @@ class ImageLookActivity : BaseActivity() {
     private var images = ArrayList<Image>()
 
     override fun init() {
-        val list = getParcelableList(PhotoConstant.LOOK_IMAGES)
+        val list = getParcelableList(AppConstant.LOOK_IMAGES)
         if (list == null) {
             finish()
             overridePendingTransition(0, R.anim.image_out_anim)
             return
         }
         images = list as ArrayList<Image>
-        val index = getInt(PhotoConstant.LOOK_IMAGES_INDEX, 0)
+        val index = getInt(AppConstant.LOOK_IMAGES_INDEX, 0)
         vpImg!!.adapter = ImageLookAdapter()
         if (images.size <= 1) textCount!!.text = "" else {
             textCount.setText(

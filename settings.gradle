@@ -1,6 +1,7 @@
+include ':qr_code1'
+include ':tesseract_ocr'
 include ':protractor'
 include ':ruler'
-include ':QR_code'
 include ':base'
 include ':pyramid'
 include ':utils'

@@ -3,10 +3,12 @@ package com.wwxd.utils
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.provider.MediaStore
 import android.text.TextUtils
 import androidx.core.content.ContextCompat
@@ -15,6 +17,7 @@ import com.wwxd.base.AppConstant
 import java.io.*
 import java.nio.charset.Charset
 import java.util.*
+
 
 /**
  * user：LuHao
@@ -36,22 +39,6 @@ object FileUtil {
     }
 
 
-    //适配android10的app各个路径
-    fun getAppFilePath(environment: String?): String {
-        var file: File?
-        if (AppUtil.isAndroidQ()) {
-            file = AppConstant.getApp().getExternalFilesDir(environment)
-        } else {
-            file = Environment.getExternalStorageDirectory()
-            if (file == null) return ""
-            file = File(file.absolutePath + "/stock")
-        }
-        return if (file != null && (file.exists() || createFileDirectory(
-                file.absolutePath,
-                false
-            ))
-        ) file.absolutePath else ""
-    }
 
     /**
      * 复制文件
@@ -332,7 +319,7 @@ object FileUtil {
      * @param filePath   文件目录路径
      * @param isReCreate 如果目录存在，是否删除新建
      */
-    fun createFileDirectory(filePath: String?, isReCreate: Boolean): Boolean {
+    fun createFileDirectory(filePath: String, isReCreate: Boolean): Boolean {
         if (TextUtils.isEmpty(filePath)) return false
         try {
             val file = File(filePath)
@@ -351,7 +338,7 @@ object FileUtil {
         return false
     }
 
-    fun insertFile(inputStream: InputStream?, filePath: String?): File? {
+    fun insertFile(inputStream: InputStream?, filePath: String): File? {
         if (inputStream == null) return null
         try {
             //androidQ的沙盒模式
@@ -422,7 +409,7 @@ object FileUtil {
      * @param uri
      * @param filePath
      */
-    fun insertFile(uri: Uri?, filePath: String?): File? {
+    fun insertFile(uri: Uri?, filePath: String): File? {
         return if (uri == null) null else try {
             val inputStream = AppConstant.getApp().contentResolver.openInputStream(uri)
             insertFile(inputStream, filePath)
@@ -555,6 +542,153 @@ object FileUtil {
         }
         cursor?.close()
         return fileName
+    }
+
+    //将file转bitmap
+    fun uriToBitmap(uri: Uri?): Bitmap? {
+        if (uri == null) return null
+        var input = AppConstant.getApp().contentResolver.openInputStream(uri)
+        //对自己手机拍摄的图片才生效
+        val imageExif = getImageExifInterface(input)
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        input = AppConstant.getApp().contentResolver.openInputStream(uri)
+        BitmapFactory.decodeStream(input, null,options)
+        if (imageExif[0] == 0 || imageExif[1] == 0) {
+            imageExif[0] = options.outWidth
+            imageExif[1] = options.outHeight
+            imageExif[2] = 0
+        }
+        options.inSampleSize = getImageSampleSize(imageExif[0], imageExif[1])
+        options.inJustDecodeBounds = false
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888 //optional
+        options.inInputShareable = true //当系统内存不够时候图片自动被回收
+        input = AppConstant.getApp().contentResolver.openInputStream(uri)
+        var bitmap: Bitmap? = null
+        if (input != null) {
+            bitmap = BitmapFactory.decodeStream(input, null, options)
+            if (Math.abs(imageExif[2]) > 0 && bitmap != null) //旋转图片
+                bitmap = rotaingImageView(imageExif[2].toFloat(), bitmap)
+            input.close()
+        }
+        return bitmap
+    }
+
+    //将file转bitmap
+    fun fileToBitmap(filePath: String): Bitmap? {
+        if (!isFile(filePath)) return null
+        val input = FileInputStream(filePath)
+        //对自己手机拍摄的图片才生效
+        val imageExif = getImageExifInterface(input)
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(filePath, options)
+        if (imageExif[0] == 0 || imageExif[1] == 0) {
+            imageExif[0] = options.outWidth
+            imageExif[1] = options.outHeight
+            imageExif[2] = 0
+        }
+        options.inSampleSize = getImageSampleSize(imageExif[0], imageExif[1])
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888 //optional
+        options.inInputShareable = true //当系统内存不够时候图片自动被回收
+        options.inJustDecodeBounds = false
+        var bitmap = BitmapFactory.decodeFile(filePath, options)
+        if (Math.abs(imageExif[2]) > 0 && bitmap != null) //旋转图片
+            bitmap = rotaingImageView(imageExif[2].toFloat(), bitmap)
+        return bitmap
+    }
+
+    /**
+     * 旋转图片
+     *
+     * @param angle  旋转角度
+     * @param bitmap 图片对象
+     * @return 旋转后的图片
+     */
+    private fun rotaingImageView(angle: Float, bitmap: Bitmap): Bitmap {
+        // 旋转图片 动作
+        val matrix = Matrix()
+        val bitmapWidth = bitmap.width
+        val bitmapHeight = bitmap.height
+        //中心旋转
+        matrix.setRotate(angle)
+        // 创建新的图片
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmapWidth, bitmapHeight, matrix, true)
+    }
+
+    //计算图片的宽、高、旋转角度
+    //该方法可以获得手机拍照和图片的旋转角度，但无法获得其他来源图片的宽高和旋转角度
+    private fun getImageExifInterface(input: InputStream?): IntArray {
+        val imageExif = IntArray(3)
+        try {
+            if (input != null) {
+                var exifInterface: ExifInterface? = null
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    exifInterface = ExifInterface(input)
+                } else {
+                    val file = insertFile(
+                        input,
+                        AppFile.IMAGE_CACHE.ObtainAppFilePath() + "cache_" + DateUtil.getServerTime() + ".jpg"
+                    )
+                    if (file != null) {
+                        exifInterface = ExifInterface(file.absolutePath)
+                        deleteFile(file)
+                    }
+                }
+                if (exifInterface != null) {
+                    imageExif[0] = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, 0)
+                    imageExif[1] = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, 0)
+                    if (imageExif[0] > 0 && imageExif[1] > 0) {
+                        var rotate = exifInterface.getAttributeInt(
+                            ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_NORMAL
+                        )
+                        rotate = when (rotate) {
+                            ExifInterface.ORIENTATION_ROTATE_90 -> 90
+                            ExifInterface.ORIENTATION_ROTATE_180 -> 180
+                            ExifInterface.ORIENTATION_ROTATE_270 -> 270
+                            ExifInterface.ORIENTATION_NORMAL -> 0
+                            else -> 0
+                        }
+                        imageExif[2] = rotate
+                    }
+                }
+                input.close()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        if (imageExif[0] > 0 && imageExif[1] > 0) {
+            val imageWidth = imageExif[0]
+            val imageHeight = imageExif[1]
+            val rotate = imageExif[2].toFloat()
+            if (rotate == 90f || rotate == 270f) {
+                imageExif[0] = imageHeight
+                imageExif[1] = imageWidth
+            }
+        }
+        return imageExif
+    }
+
+    //获得图片缩放比例
+    private fun getImageSampleSize(imageWidth: Int, imageHeight: Int): Int {
+        var imageWidth1 = imageWidth
+        var imageHeight1 = imageHeight
+        val maxImageHeight = 1920
+        val maxImageWidth = 1080
+        var inSampleSize = 1
+        if (imageHeight1 > maxImageHeight) {
+            val bili = imageHeight1.toFloat() / maxImageHeight
+            imageHeight1 = maxImageHeight
+            imageWidth1 = (imageWidth1 / bili).toInt()
+            inSampleSize = Math.ceil(bili.toDouble()).toInt()
+        } else if (imageWidth1 > maxImageWidth) {
+            val bili = imageWidth1.toFloat() / maxImageWidth
+            imageWidth1 = maxImageWidth
+            imageHeight1 = (imageHeight1 / bili).toInt()
+            inSampleSize = Math.ceil(bili.toDouble()).toInt()
+        }
+        return inSampleSize
     }
 
     //将drawable保存到本地

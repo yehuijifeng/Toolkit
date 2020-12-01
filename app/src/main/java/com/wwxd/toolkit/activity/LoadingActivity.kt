@@ -2,11 +2,11 @@ package com.wwxd.toolkit.activity
 
 import android.os.Handler
 import android.view.View
-import com.wwxd.utils.AppUtil
-import com.wwxd.utils.PermissionsUtil
-import com.wwxd.toolkit.R
 import com.wwxd.base.BaseActivity
 import com.wwxd.base.IDefaultDialogClickListener
+import com.wwxd.toolkit.R
+import com.wwxd.utils.AppUtil
+import com.wwxd.utils.PermissionsUtil
 
 /**
  * user：LuHao
@@ -14,6 +14,10 @@ import com.wwxd.base.IDefaultDialogClickListener
  * describe：loaindg页
  */
 class LoadingActivity : BaseActivity() {
+    override fun isFullWindow(): Boolean {
+        return true
+    }
+
     private val sdCode = 111
     override fun getContentView(): Int {
         return R.layout.activity_loading

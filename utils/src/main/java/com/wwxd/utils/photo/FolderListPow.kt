@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.wwxd.toolkit.R
 import com.wwxd.base.BasePopupWindow
 import com.wwxd.base.NoDoubleClickListener
+import com.wwxd.utils.R
 
 /**
  * user：LuHao

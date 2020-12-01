@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_ocr_content">扫描内容</string>
+    <string name="str_copy">复制</string>
+    <string name="str_translation">翻译</string>
+    <string name="str_ocr_result">识别结果</string>
+    <string name="str_photo_select_error">图片选择失败，请重试！</string>
+    <string name="str_camera_permission_error">拍照需要相机权限，请开启相机权限！</string>
+    <string name="str_camera_image_error">拍照失败，请重试！</string>
+    <string name="str_crop_error">剪切失败，请重试！</string>
+    <string name="str_ocr_init_ing">正在初始化，请稍后……</string>
+    <string name="str_ocr_ing">正在识别图片文字，请稍后</string>
+    <string name="str_decode_error">无法识别</string>
+    <string name="str_copy_success">内容已复制</string>
+</resources>

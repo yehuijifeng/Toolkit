@@ -3,7 +3,7 @@ package com.wwxd.calculator
 import android.text.TextUtils
 import android.view.View
 import com.wwxd.base.BaseFragment
-import com.wwxd.toolkit.calculator.R
+import com.wwxd.calculator.R
 import kotlinx.android.synthetic.main.fragment_calculator.*
 
 /**

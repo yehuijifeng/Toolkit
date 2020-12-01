@@ -5,18 +5,19 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.Lifecycle
-import com.wwxd.utils.AppUtil
-import com.wwxd.utils.DateUtil
-import com.wwxd.utils.ToastUtil
-import com.wwxd.protractor.ProtractorFragment
-import com.wwxd.ruler.RuleFragment
-import com.wwxd.QR_code.QR_codeFragment
 import com.wwxd.base.BaseActivity
 import com.wwxd.base.BaseFragment
 import com.wwxd.calculator.CalculatorFragment
-import com.wwxd.toolkit.fragment.HomeFragment
+import com.wwxd.protractor.ProtractorFragment
 import com.wwxd.pyramid.PyramidFragment
+import com.wwxd.qr_code1.QR_codeFragment
+import com.wwxd.ruler.RuleFragment
+import com.wwxd.tesseract_ocr.OcrFragment
 import com.wwxd.toolkit.R
+import com.wwxd.toolkit.fragment.HomeFragment
+import com.wwxd.utils.AppUtil
+import com.wwxd.utils.DateUtil
+import com.wwxd.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.reflect.KClass
 
@@ -44,6 +45,7 @@ class MainActivity : BaseActivity() {
         fragmentMap.put(QR_codeFragment::class, null)
         fragmentMap.put(RuleFragment::class, null)
         fragmentMap.put(ProtractorFragment::class, null)
+        fragmentMap.put(OcrFragment::class, null)
         toolBar.setTitle(R.string.app_name)
         toolBar.setTitleTextAppearance(this, R.style.home_title_text_style)
         //设置导航图标要在setSupportActionBar方法之后
@@ -68,6 +70,9 @@ class MainActivity : BaseActivity() {
         }
         llProtractor.setOnClickListener {
             showFragment(ProtractorFragment::class)
+        }
+        llOcr.setOnClickListener {
+            showFragment(OcrFragment::class)
         }
     }
 

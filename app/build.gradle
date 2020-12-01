@@ -57,7 +57,7 @@ android {
     //签名
     signingConfigs {
         config {
-            storeFile file("../stock.jks")
+            storeFile file("../toolkit.jks")
             storePassword "lh19941223"
             keyAlias "luhao"
             keyPassword "lh19941223"
@@ -132,7 +132,8 @@ dependencies {
     implementation project(":utils")
     implementation project(":calculator")
     implementation project(":pyramid")
-    implementation project(":QR_code")
     implementation project(":ruler")
     implementation project(":protractor")
+    implementation project(":tesseract_ocr")
+    implementation project(":qr_code1")
 }

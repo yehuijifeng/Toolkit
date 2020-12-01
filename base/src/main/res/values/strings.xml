@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="str_please_wait">请稍候</string>
+    <string name="str_camera">相机</string>
+    <string name="str_photo">相册</string>
+    <string name="str_go_settings">去设置</string>
+    <string name="str_cancel">取消</string>
 </resources>

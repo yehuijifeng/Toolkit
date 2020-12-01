@@ -4,11 +4,10 @@ import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.View
 import android.widget.TextView
-import com.wwxd.utils.ToastUtil
 import com.wwxd.base.BaseFragment
-import com.wwxd.toolkit.pyramid.R
+import com.wwxd.pyramid.R
+import com.wwxd.utils.ToastUtil
 import kotlinx.android.synthetic.main.fragment_pyramid.*
-import java.lang.Exception
 
 /**
  * user：LuHao

@@ -7,4 +7,12 @@
     <string name="str_coment">完成</string>
     <string name="str_max_select_images_num_one">最多选择</string>
     <string name="str_str_max_select_images_num_two">张</string>
+    <string name="str_help_email_title">遇到了问题，需要寻求帮助</string>
+    <string name="str_help_email_content">为了更好的协助您解决问题，请写下遇到的问题：</string>
+    <string name="str_tel_error">没有SIM卡，无法拨打电话</string>
+    <string name="str_open_photo_error">打开相册失败，请重试！</string>
+    <string name="str_open_camera_error">打开相机失败！</string>
+    <string name="str_image_crop_error">打开剪切框失败！</string>
+    <string name="str_rotating">旋转</string>
+    <string name="str_crop">剪裁</string>
 </resources>

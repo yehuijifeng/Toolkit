@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_please_wait">Please wait</string>
+    <string name="str_camera">Camera</string>
+    <string name="str_photo">Photo</string>
+    <string name="str_go_settings">去设置</string>
+    <string name="str_cancel">取消</string>
+    <string name="str_crop">剪裁</string>
+</resources>

@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/main_color_def</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimary">@color/main_color_def</item>
+        <item name="android:fitsSystemWindows">true</item>
     </style>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="BaseTheme">
@@ -15,6 +16,7 @@
     </style>
 
     <style name="LoadingTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowFullscreen">true</item>

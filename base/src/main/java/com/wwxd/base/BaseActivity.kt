@@ -14,7 +14,7 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import com.wwxd.toolkit.base.R
+import com.wwxd.base.R
 import org.greenrobot.eventbus.EventBus
 import java.util.*
 import kotlin.reflect.KClass

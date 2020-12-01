@@ -9,7 +9,7 @@ import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.TextView
-import com.wwxd.toolkit.base.R
+import com.wwxd.base.R
 
 /**
  * Created by yehuijifeng
