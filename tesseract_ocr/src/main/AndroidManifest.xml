@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!--写sd卡-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--联网-->
+    <uses-permission android:name="android.permission.INTERNET" />
     <application>
         <activity android:name=".ResultActivity"
             android:launchMode="singleTop"

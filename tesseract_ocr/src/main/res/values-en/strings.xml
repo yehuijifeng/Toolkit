@@ -12,4 +12,7 @@
     <string name="str_ocr_ing">正在识别图片文字，请稍后</string>
     <string name="str_decode_error">无法识别</string>
     <string name="str_copy_success">内容已复制</string>
+    <string name="str_chinese">中文</string>
+    <string name="str_english">英文</string>
+    <string name="str_update">修改</string>
 </resources>

@@ -77,25 +77,25 @@ object AppUtil {
     }
 
     private var packageInfo: PackageInfo? = null
-
-    //获得mataData标签
-    private fun packageInfo(): PackageInfo? {
-        if (packageInfo == null || TextUtils.isEmpty(packageInfo!!.packageName)) {
-            val packageManager = AppConstant.getApp().packageManager
-            if (packageManager != null) {
-                try {
-                    packageInfo = packageManager.getPackageInfo(
-                        AppConstant.getApp().packageName,
-                        0
-                    )
-                } catch (e: Exception) {
-                    e.printStackTrace()
+        get() {
+            if (field == null) {
+                val packageManager = AppConstant.getApp().packageManager
+                if (packageManager != null) {
+                    try {
+                        packageInfo = packageManager.getPackageInfo(
+                            AppConstant.getApp().packageName,
+                            0
+                        )
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
+            if (field == null)
+                field = PackageInfo()
+            return field!!
         }
-        if (packageInfo == null) packageInfo = PackageInfo()
-        return packageInfo
-    }
+
 
     //获取渠道 获取application中指定的meta-data
     fun hannelName(): String? {

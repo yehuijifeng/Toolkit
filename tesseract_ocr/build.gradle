@@ -36,7 +36,7 @@ android {
         ndk {
             moduleName 'toolkit'
             //设置支持的SO库架构
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'//, 'x86', 'x86_64'
+            abiFilters 'armeabi', 'armeabi-v7a','x86', 'arm64-v8a'//, 'x86', 'x86_64'
         }
         //app名
         resValue "string", "app_name", conf.dependencies.app_name
@@ -61,5 +61,6 @@ dependencies {
     testImplementation conf.dependencies.junit
     implementation project(":base")
     implementation project(":utils")
-    implementation 'com.rmtheis:tess-two:9.1.0'
+//    implementation 'com.rmtheis:tess-two:9.1.0'
+    implementation(name: 'ocr-sdk', ext: 'jar')
 }

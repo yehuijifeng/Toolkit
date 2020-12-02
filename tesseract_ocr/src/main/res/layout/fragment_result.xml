@@ -45,6 +45,6 @@
         <Button
             android:id="@+id/btnTranslation"
             style="@style/btn_ocr_item_style"
-            android:text="@string/str_translation" />
+            android:text="@string/str_update" />
     </LinearLayout>
 </LinearLayout>

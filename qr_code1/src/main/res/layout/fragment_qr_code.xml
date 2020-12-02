@@ -48,10 +48,10 @@
                 android:layout_marginTop="@dimen/space_5_dp"
                 android:layout_marginBottom="@dimen/space_5_dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_input_url_edit"
+                android:background="@drawable/bg_def_edit"
                 android:hint="@string/str_code_edit_tips"
-                android:paddingLeft="@dimen/space_5_dp"
-                android:paddingRight="@dimen/space_5_dp"
+                android:paddingLeft="@dimen/space_10_dp"
+                android:paddingRight="@dimen/space_10_dp"
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_16_sp" />

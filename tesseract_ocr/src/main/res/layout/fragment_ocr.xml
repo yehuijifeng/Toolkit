@@ -2,25 +2,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/space_15_dp"
+    android:paddingTop="@dimen/space_5_dp"
+    android:paddingRight="@dimen/space_15_dp"
+    android:paddingBottom="@dimen/space_30_dp">
+
+    <Button
+        android:id="@+id/btnGeneral"
+        style="@style/btn_ocr_function_style"
+        android:text="普通识别（今日剩余%s次）" />
+
+    <Button
+        android:id="@+id/btnAccurate"
+        style="@style/btn_ocr_function_style"
+        android:text="精准识别（今日剩余%s次）" />
+
+    <Button
+        android:id="@+id/btnBankCard"
+        style="@style/btn_ocr_function_style"
+        android:text="银行卡识别（今日剩余%s次）" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical"
-        android:padding="@dimen/space_25_dp" >
+        android:layout_marginLeft="@dimen/space_10_dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Switch
+            android:id="@+id/sFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="人头" />
 
         <Button
-            android:id="@+id/btnCamera"
+            android:id="@+id/btnIDCard"
             style="@style/btn_ocr_function_style"
-            android:layout_marginRight="@dimen/space_25_dp"
-            android:text="@string/str_camera" />
-
-        <Button
-            android:id="@+id/btnPhoto"
-            style="@style/btn_ocr_function_style"
-            android:text="@string/str_photo" />
+            android:text="身份证识别（今日剩余%s次）"
+            android:textSize="@dimen/text_size_14_sp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnDrivingLicense"
+        style="@style/btn_ocr_function_style"
+        android:text="驾驶证识别（今日剩余%s次）" />
+
+    <Button
+        android:id="@+id/btnBusinessLicense"
+        style="@style/btn_ocr_function_style"
+        android:text="营业执照识别（今日剩余%s次）" />
+    <Button
+        android:id="@+id/btnLicensePlate"
+        style="@style/btn_ocr_function_style"
+        android:text="车牌识别（今日剩余%s次）" />
 
 </LinearLayout>

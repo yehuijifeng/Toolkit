@@ -6,8 +6,8 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <com.edmodo.cropper.CropImageView
-        android:id="@+id/civCrop"
+    <com.wwxd.utils.ImageClipView
+        android:id="@+id/icvCrop"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />

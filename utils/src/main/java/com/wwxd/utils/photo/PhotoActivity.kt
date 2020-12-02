@@ -253,8 +253,8 @@ class PhotoActivity : BaseActivity() {
             if (folders == null || folders!!.size == 0) return
             folderListPow = FolderListPow(this, folders, object : OnSelectFolderListener {
                 override fun onSelect(folder: Folder) {
-                    recyclerAdapter.data.clear()
                     recyclerAdapter.data = folder.images
+                    recyclerAdapter.notifyDataSetChanged()
                     folderName = folder.name
                     updateSelectFolder()
                 }

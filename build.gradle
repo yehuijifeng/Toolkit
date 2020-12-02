@@ -18,6 +18,11 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
+        flatDir {
+            dirs 'src/main/jniLibs',
+            project(':tesseract_ocr').file('src/main/jniLibs')
+        }
         maven { url 'https://jitpack.io' }
     }
 }

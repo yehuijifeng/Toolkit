@@ -25,5 +25,11 @@ class ResultActivity : BaseActivity() {
             StringUtil.copy(resultContent)
             ToastUtil.showLongToast(getString(R.string.str_copy_success))
         }
+        btnTranslation.setOnClickListener {
+            etContent.setFocusable(true)
+            etContent.setFocusableInTouchMode(true)
+            etContent.requestFocus()
+            showSoftInputFromWindow(etContent)
+        }
     }
 }

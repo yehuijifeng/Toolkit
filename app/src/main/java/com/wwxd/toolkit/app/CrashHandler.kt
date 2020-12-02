@@ -2,10 +2,7 @@ package com.wwxd.toolkit.app
 
 import android.os.Environment
 import com.wwxd.toolkit.activity.LoadingActivity
-import com.wwxd.utils.AppFile
-import com.wwxd.utils.AppUtil
-import com.wwxd.utils.DateUtil
-import com.wwxd.utils.LogUtil
+import com.wwxd.utils.*
 import java.io.*
 
 /**
@@ -76,11 +73,9 @@ object CrashHandler : Thread.UncaughtExceptionHandler {
                 .append("_version_")
                 .append(AppUtil.versionCode())
                 .append(".txt")
-            if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
-                //这里换成自定义路径
-                val path: String = AppFile.LOG_ERROR.ObtainAppFilePath()
-                val dir = File(path)
-                if (!dir.exists()) if (!dir.mkdirs()) return false
+            //这里换成自定义路径
+            val path: String = AppFile.LOG_ERROR.ObtainAppFilePath()
+            if (FileUtil.isDirectory(path)) {
                 val fos = FileOutputStream(path + fileName)
                 fos.write(sb.toString().toByteArray())
                 fos.close()

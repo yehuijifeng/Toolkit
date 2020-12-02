@@ -2,14 +2,15 @@ package com.wwxd.tesseract_ocr
 
 import android.Manifest
 import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.googlecode.tesseract.android.TessBaseAPI
+import com.baidu.ocr.sdk.OCR
+import com.baidu.ocr.sdk.OnResultListener
+import com.baidu.ocr.sdk.exception.OCRError
+import com.baidu.ocr.sdk.model.*
 import com.wwxd.base.AppConstant
 import com.wwxd.base.AppSession
 import com.wwxd.base.BaseFragment
@@ -17,17 +18,8 @@ import com.wwxd.base.IDefaultDialogClickListener
 import com.wwxd.utils.*
 import com.wwxd.utils.glide.GlideUtil
 import com.wwxd.utils.photo.Image
-import com.wwxd.utils.rxandroid.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableEmitter
-import io.reactivex.rxjava3.core.ObservableOnSubscribe
-import io.reactivex.rxjava3.core.Observer
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_ocr.*
 import java.io.File
-import java.io.InputStream
-import kotlin.concurrent.thread
 
 
 /**
@@ -38,81 +30,72 @@ import kotlin.concurrent.thread
 class OcrFragment : BaseFragment() {
     private val cameraCode = 111
     private var cameraPath = ""
-    private var cropPath = ""
-
-    // 默认识别语言
-    private val DEFAULT_LANGUAGE_ENG = "eng"
-
-    // 默认识别语言
-    private val DEFAULT_LANGUAGE_CHI = "chi_sim"
-
-    //语言包后缀
-    private val LANGUAGE_SUFFIX = ".traineddata"
-
-    // 数据包的路径,tessdata名字不能变
-    private val TESSBASE_PATH = AppFile.DOCUMENTS_FILE.ObtainAppFilePath() + "tessdata/"
-    private val loadTessData_Sim = DEFAULT_LANGUAGE_ENG + LANGUAGE_SUFFIX
-    private val loadTessData_Tra = DEFAULT_LANGUAGE_CHI + LANGUAGE_SUFFIX
 
     //是否将语言包放入
-    private var isLoadTessData = 0
+    private var isLoadOcrToken = ""
+
+    private var thisOcrType: OcrType? = null//当前用户的选择
 
     override fun getContentView(): Int {
         return R.layout.fragment_ocr
     }
 
     override fun init(view: View) {
-        btnPhoto.setOnClickListener {
-            if (isLoadTessData == 2)
-                PhoneUtil.toPhotos(this, 1)
-            else ToastUtil.showLongToast(getString(R.string.str_ocr_init_ing))
+        initOcr()
+        btnLicensePlate.setOnClickListener {
+            thisOcrType = OcrType.LicensePlate
+            startOcrDialog()
         }
-        btnCamera.setOnClickListener {
-            if (isLoadTessData == 2)
-                if (!PermissionsUtil.lacksPermission(Manifest.permission.CAMERA))
-                    startCramera()
-                else
-                    PermissionsUtil.requestPermissions(this, Manifest.permission.CAMERA, cameraCode)
-            else ToastUtil.showLongToast(getString(R.string.str_ocr_init_ing))
+        btnBusinessLicense.setOnClickListener {
+            thisOcrType = OcrType.BusinessLicense
+            startOcrDialog()
         }
-        thread {
-            if (FileUtil.isDirectory(TESSBASE_PATH)
-                && FileUtil.isFile(TESSBASE_PATH + loadTessData_Sim)
-                && FileUtil.isFile(TESSBASE_PATH + loadTessData_Tra)
-            ) {
-                isLoadTessData = 2
-            } else {
-                if (!FileUtil.isDirectory(TESSBASE_PATH)) {
-                    if (FileUtil.createFileDirectory(TESSBASE_PATH, false)) {
-                        loadTessDataFile()
-                    }
-                } else {
-                    loadTessDataFile()
-                }
-            }
+        btnGeneral.setOnClickListener {
+            thisOcrType = OcrType.General
+            startOcrDialog()
+        }
+        btnAccurate.setOnClickListener {
+            thisOcrType = OcrType.Accurate
+            startOcrDialog()
+        }
+        btnBankCard.setOnClickListener {
+            thisOcrType = OcrType.BankCard
+            startOcrDialog()
+        }
+        sFont.setOnCheckedChangeListener { buttonView, isChecked ->
+            OcrType.IDCard.setFront(isChecked)
+            sFont.text = if (isChecked) "人头" else "国徽"
+        }
+        btnIDCard.setOnClickListener {
+            thisOcrType = OcrType.IDCard
+            startOcrDialog()
+        }
+        btnDrivingLicense.setOnClickListener {
+            thisOcrType = OcrType.DrivingLicense
+            startOcrDialog()
         }
     }
 
-    //加载语言包
-    private fun loadTessDataFile() {
-        if (!FileUtil.isFile(TESSBASE_PATH + loadTessData_Sim)) {
-            val input: InputStream = AppConstant.getApp().assets.open(loadTessData_Sim)
-            val file = FileUtil.insertFile(input, TESSBASE_PATH + loadTessData_Sim)
-            if (FileUtil.isFile(file))
-                isLoadTessData += 1
-        } else isLoadTessData += 1
-        if (!FileUtil.isFile(TESSBASE_PATH + loadTessData_Tra)) {
-            val input: InputStream = AppConstant.getApp().assets.open(loadTessData_Tra)
-            val file = FileUtil.insertFile(input, TESSBASE_PATH + loadTessData_Tra)
-            if (FileUtil.isFile(file))
-                isLoadTessData += 1
-        } else isLoadTessData += 1
+
+    //去相册
+    private fun startPhoto() {
+        if (!TextUtils.isEmpty(isLoadOcrToken))
+            PhoneUtil.toPhotos(this, 1)
+        else
+            ToastUtil.showLongToast(getString(R.string.str_ocr_init_ing))
     }
 
+    //临时拍照路径
     private fun startCramera() {
-        cameraPath =
-            AppFile.IMAGE_CACHE.ObtainAppFilePath() + "ocr_" + DateUtil.getServerTime() + ".jpg"
-        PhoneUtil.toCamera(this, cameraPath)
+        if (!TextUtils.isEmpty(isLoadOcrToken))
+            if (!PermissionsUtil.lacksPermission(Manifest.permission.CAMERA)) {
+                cameraPath =
+                    AppFile.IMAGE_CACHE.ObtainAppFilePath() + "ocr_" + DateUtil.getServerTime() + ".jpg"
+                PhoneUtil.toCamera(this, cameraPath)
+            } else
+                PermissionsUtil.requestPermissions(this, Manifest.permission.CAMERA, cameraCode)
+        else
+            ToastUtil.showLongToast(getString(R.string.str_ocr_init_ing))
     }
 
     override fun onRequestPermissionsResult(
@@ -142,109 +125,108 @@ class OcrFragment : BaseFragment() {
         }
     }
 
+    //临时剪切路径
+    private fun getCropImagePath(): String {
+        return AppFile.IMAGE_CACHE.ObtainAppFilePath() + "crop_" + DateUtil.getServerTime() + ".jpg"
+    }
+
+    //初始化
+    private fun initOcr() {
+        OCR.getInstance(AppConstant.getApp()).initAccessToken(object :
+            OnResultListener<AccessToken> {
+            override fun onResult(result: AccessToken) {
+                // 调用成功，返回AccessToken对象
+                val token = result.accessToken
+                isLoadOcrToken = token
+            }
+
+            override fun onError(error: OCRError) {
+                ToastUtil.showLongToast(error.localizedMessage)
+                // 调用失败，返回OCRError子类SDKError对象
+                isLoadOcrToken = ""
+            }
+        }, AppConstant.getApp())
+    }
+
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             PhoneUtil.CODE_FOR_PHOTO -> {
                 if (resultCode == AppCompatActivity.RESULT_OK && data != null) {
                     val images = data.getParcelableArrayListExtra<Image>(AppConstant.LOOK_IMAGES)
-                    if (images == null || images.size == 0) {
-                        ToastUtil.showFailureToast(getString(R.string.str_photo_select_error))
-                    } else {
+                    if (images != null && images.size > 0) {
                         var imgUri = GlideUtil.getUri(images[0].uriId)
                         if (AppUtil.isAndroidQ())
                             imgUri = MediaStore.setRequireOriginal(imgUri)
-                        cropPath =
-                            AppFile.IMAGE_CACHE.ObtainAppFilePath() + "crop_" + DateUtil.getServerTime() + ".jpg"
-                        PhoneUtil.toCrop(this, imgUri, cropPath)
+                        PhoneUtil.toCrop(this, imgUri, getCropImagePath())
                     }
                 }
             }
             PhoneUtil.CODE_FOR_CAMERA -> {
-                if (TextUtils.isEmpty(cameraPath) || !FileUtil.isFile(cameraPath)) {
-                    ToastUtil.showLongToast(getString(R.string.str_camera_image_error))
-                } else {
-                    cropPath =
-                        AppFile.IMAGE_CACHE.ObtainAppFilePath() + "crop_" + DateUtil.getServerTime() + ".jpg"
-                    PhoneUtil.toCrop(this, FileUtil.toUri(cameraPath), cropPath)
+                if (!TextUtils.isEmpty(cameraPath) && FileUtil.isFile(cameraPath)) {
+                    PhoneUtil.toCrop(this, FileUtil.toUri(cameraPath), getCropImagePath())
                 }
             }
             PhoneUtil.CODE_FOR_CROP -> {
-                if (!AppSession.containsSession(AppConstant.CROP_IMAGE_SAVE_PATH)
-                    || !AppSession.containsSession(AppConstant.CROP_IMAGE)
+                if (AppSession.containsSession(AppConstant.CROP_IMAGE_SAVE_PATH)
+                    && AppSession.containsSession(AppConstant.CROP_IMAGE)
                 ) {
-                    ToastUtil.showLongToast(getString(R.string.str_crop_error))
-                } else {
+                    val filePath = AppSession.getSession<String>(AppConstant.CROP_IMAGE_SAVE_PATH)
+                    if (thisOcrType == null
+                        || TextUtils.isEmpty(filePath)
+                    ) return
+                    val imageFile = File(filePath!!)
+                    if (!FileUtil.isFile(imageFile)) return
                     showLoadingView(getString(R.string.str_ocr_ing))
-                    Observable
-                        .create(
-                            OnOcrDecodeObservableOnSubscribe(
-                                AppSession.getSession<Bitmap>(
-                                    AppConstant.CROP_IMAGE
-                                )
-                            )
-                        )
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(OnOcrDecodeObserver())
+                    thisOcrType!!.startOcr(context!!, imageFile, OnOcrListener())
                 }
             }
         }
     }
 
-    //生成二维码
-    private inner class OnOcrDecodeObservableOnSubscribe(val bitmap: Bitmap?) :
-        ObservableOnSubscribe<String> {
-        private var tessBaseAPI: TessBaseAPI? = null
-            get() {
-                if (field == null) {
-                    field = TessBaseAPI()
-                    field!!.setDebug(true)
-                    field!!.pageSegMode = TessBaseAPI.PageSegMode.PSM_SINGLE_BLOCK //设置识别模式
-                }
-                return field
-            }
-
-        override fun subscribe(emitter: ObservableEmitter<String>) {
-            var inspection: String
-            if (bitmap == null) {
-                inspection = getString(R.string.str_decode_error)
-                emitter.onNext(inspection)
-            } else {
-                tessBaseAPI!!.init(
-                    AppFile.DOCUMENTS_FILE.ObtainAppFilePath(),
-                    DEFAULT_LANGUAGE_CHI
-                ) //eng为识别语言
-//        tessBaseAPI.setVariable(
-//            TessBaseAPI.VAR_CHAR_WHITELIST,
-//            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-//        ) // 识别白名单
-//        tessBaseAPI.setVariable(
-//            TessBaseAPI.VAR_CHAR_BLACKLIST,
-//            "!@#$%^&*()_+=-[]}{;:'\"\\|~`,./<>?"
-//        ) // 识别黑名单
-                tessBaseAPI!!.setImage(bitmap) //设置需要识别图片的bitmap
-                inspection = tessBaseAPI!!.getUTF8Text()
-                tessBaseAPI!!.end()
-                if (TextUtils.isEmpty(inspection))
-                    inspection = getString(R.string.str_decode_error)
-                emitter.onNext(inspection)
-            }
-        }
-    }
-
-    //生成完毕，主线程
-    private inner class OnOcrDecodeObserver : Observer<String> {
-        override fun onSubscribe(d: Disposable) {}
-
-        override fun onError(e: Throwable) {}
-        override fun onComplete() {}
-        override fun onNext(t: String) {
-            closeLoadingView()
+    //识别结果回调
+    private inner class OnOcrListener : IOcrListener {
+        override fun onSuccess(content: String) {
             val bundle = Bundle()
-            bundle.putString(AppConstant.OCR_RESULT, t)
+            bundle.putString(AppConstant.OCR_RESULT, content)
             startActivity(ResultActivity::class, bundle)
+            closeLoadingView()
         }
+
+        override fun onError(error: OCRError) {
+            closeLoadingView()
+            ToastUtil.showFailureToast(error.message)
+        }
+    }
+
+    //发起识别
+    private fun startOcrDialog() {
+        getDefaultDialog().getBuilder()
+            .isBackDismiss(true)
+            .setTitle("温馨提示")
+            .setContent(
+                "因图片文字提取功能需支付技术维护等费用，所以每个用户有使用次数限制，请谅解！" +
+                        "\n 1，一般识别，每日500次；今日剩余%s次" +
+                        "\n2，精准识别：每日5次；今日剩余%s次" +
+                        "\n3，身份证识别：每日5次；今日剩余%s次" +
+                        "\n4，银行卡识别：每日5次；今日剩余%s次" +
+                        "\n5，营业执照识别：每日2次；今日剩余%s次" +
+                        "\n6，护照识别：付费：￥2；30次；剩余%s次"
+            )
+            .setCancelText(getString(R.string.str_photo))
+            .setOkText(getString(R.string.str_camera))
+            .setCancelClick(object : IDefaultDialogClickListener {
+                override fun onClick(v: View) {
+                    startPhoto()
+                }
+            })
+            .setOkClick(object : IDefaultDialogClickListener {
+                override fun onClick(v: View) {
+                    startCramera()
+                }
+            })
+            .show()
     }
 
 

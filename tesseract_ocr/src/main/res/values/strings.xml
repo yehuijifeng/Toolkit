@@ -8,8 +8,11 @@
     <string name="str_camera_permission_error">拍照需要相机权限，请开启相机权限！</string>
     <string name="str_camera_image_error">拍照失败，请重试！</string>
     <string name="str_crop_error">剪切失败，请重试！</string>
-    <string name="str_ocr_init_ing">正在初始化，请稍后……</string>
-    <string name="str_ocr_ing">正在识别图片文字，请稍后</string>
+    <string name="str_ocr_init_ing">文字识别初始化失败，请重试!</string>
+    <string name="str_ocr_ing">正在识别，请稍后</string>
     <string name="str_decode_error">无法识别</string>
     <string name="str_copy_success">内容已复制</string>
+    <string name="str_chinese">中文</string>
+    <string name="str_english">英文</string>
+    <string name="str_update">修改</string>
 </resources>
