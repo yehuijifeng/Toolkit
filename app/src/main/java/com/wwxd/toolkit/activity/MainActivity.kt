@@ -1,12 +1,11 @@
 package com.wwxd.toolkit.activity
 
-import android.view.Gravity
-import android.view.KeyEvent
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import androidx.lifecycle.Lifecycle
+import com.wwxd.base.AppConstant
 import com.wwxd.base.BaseActivity
 import com.wwxd.base.BaseFragment
+import com.wwxd.base.IDefaultDialogClickListener
 import com.wwxd.calculator.CalculatorFragment
 import com.wwxd.protractor.ProtractorFragment
 import com.wwxd.pyramid.PyramidFragment
@@ -15,8 +14,10 @@ import com.wwxd.ruler.RuleFragment
 import com.wwxd.tesseract_ocr.OcrFragment
 import com.wwxd.toolkit.R
 import com.wwxd.toolkit.fragment.HomeFragment
+import com.wwxd.toolkit.fragment.RewardFragment
 import com.wwxd.utils.AppUtil
 import com.wwxd.utils.DateUtil
+import com.wwxd.utils.PhoneUtil
 import com.wwxd.utils.ToastUtil
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.reflect.KClass
@@ -46,6 +47,7 @@ class MainActivity : BaseActivity() {
         fragmentMap.put(RuleFragment::class, null)
         fragmentMap.put(ProtractorFragment::class, null)
         fragmentMap.put(OcrFragment::class, null)
+        fragmentMap.put(RewardFragment::class, null)
         toolBar.setTitle(R.string.app_name)
         toolBar.setTitleTextAppearance(this, R.style.home_title_text_style)
         //设置导航图标要在setSupportActionBar方法之后
@@ -85,8 +87,30 @@ class MainActivity : BaseActivity() {
         when (item.getItemId()) {
             R.id.menuAbout -> ToastUtil.showLongToast(R.string.str_about)
             R.id.menuSetting -> ToastUtil.showLongToast(R.string.str_setting)
-            R.id.menuExceptional -> ToastUtil.showLongToast(R.string.str_exceptional)
-            R.id.menuFeedback -> ToastUtil.showLongToast(R.string.str_feedback)
+            R.id.menuReward -> {
+                //Reward
+                showFragment(RewardFragment::class)
+            }
+            R.id.menuFeedback -> {
+                getDefaultDialog().getBuilder()
+                    .setTitle(getString(R.string.str_help_title))
+                    .setContent(getString(R.string.str_help_content))
+                    .setOkText(getString(R.string.str_help_tel))
+                    .setCancelText(getString(R.string.str_help_email))
+                    .isBackDismiss(true)
+                    .setCancelClick(object : IDefaultDialogClickListener {
+                        override fun onClick(v: View) {
+                            PhoneUtil.sendHelpEmail(this@MainActivity)
+                        }
+                    })
+                    .setOkClick(object : IDefaultDialogClickListener {
+                        override fun onClick(v: View) {
+                            PhoneUtil.toTel(this@MainActivity, AppConstant.serviceTel)
+                        }
+                    })
+                    .show()
+
+            }
         }
         return true
     }

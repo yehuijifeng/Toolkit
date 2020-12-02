@@ -18,7 +18,7 @@
         android:title="@string/str_setting"
         app:showAsAction="never" />
     <item
-        android:id="@+id/menuExceptional"
+        android:id="@+id/menuReward"
         android:icon="@drawable/ic_home_title_shang"
         android:orderInCategory="80"
         android:title="@string/str_exceptional"

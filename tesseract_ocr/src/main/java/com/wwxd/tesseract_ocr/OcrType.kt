@@ -5,6 +5,9 @@ import com.baidu.ocr.sdk.OCR
 import com.baidu.ocr.sdk.OnResultListener
 import com.baidu.ocr.sdk.exception.OCRError
 import com.baidu.ocr.sdk.model.*
+import com.wwxd.base.AppConstant
+import com.wwxd.utils.DateUtil
+import com.wwxd.utils.SharedPreferencesUtil
 import java.io.File
 
 /**
@@ -13,20 +16,31 @@ import java.io.File
  * describe：识别类型
  */
 enum class OcrType {
-    LicensePlate {//车牌，每日200次免费调用量
+    LicensePlate {
+        //车牌，每日200次免费调用量
         override fun startOcr(context: Context, imageFile: File, iOcrListener: IOcrListener) {
-        val params = OcrRequestParams()
-        params.putParam("detect_direction", true)
-        params.imageFile = imageFile//需要识别的文件
-        // 调用通用文字识别服务
-        OCR.getInstance(context)
-            .recognizeLicensePlate(
-                params,
-                OnOcrResultListener<OcrResponseResult>(iOcrListener)
-            )
+            val params = OcrRequestParams()
+            params.putParam("detect_direction", true)
+            params.imageFile = imageFile//需要识别的文件
+            // 调用通用文字识别服务
+            OCR.getInstance(context)
+                .recognizeLicensePlate(
+                    params,
+                    OnOcrResultListener<OcrResponseResult>(iOcrListener)
+                )
         }
+
+        override fun getOneDayMaxNum(): Int {
+            return 10
+        }
+
+        override fun getAddNumKey(): String {
+            return AppConstant.OCR_LicensePlate
+        }
+
     },
-    BusinessLicense {//营业执照，每日200次免费调用量
+    BusinessLicense {
+        //营业执照，每日200次免费调用量
         override fun startOcr(context: Context, imageFile: File, iOcrListener: IOcrListener) {
             // 通用文字识别参数设置
             val params = OcrRequestParams()
@@ -38,6 +52,15 @@ enum class OcrType {
                     params,
                     OnOcrResultListener<OcrResponseResult>(iOcrListener)
                 )
+        }
+
+        override fun getOneDayMaxNum(): Int {
+            return 10
+        }
+
+
+        override fun getAddNumKey(): String {
+            return AppConstant.OCR_BusinessLicense
         }
     },
     DrivingLicense {
@@ -54,6 +77,15 @@ enum class OcrType {
                     OnOcrResultListener<OcrResponseResult>(iOcrListener)
                 )
         }
+
+        override fun getOneDayMaxNum(): Int {
+            return 10
+        }
+
+
+        override fun getAddNumKey(): String {
+            return AppConstant.OCR_DrivingLicense
+        }
     },
     General { //一般识别，每日 50000 次免费调用量
         override fun startOcr(
@@ -69,6 +101,15 @@ enum class OcrType {
             OCR.getInstance(context)
                 .recognizeGeneralBasic(params, OnOcrResultListener<GeneralResult>(iOcrListener))
         }
+
+        override fun getOneDayMaxNum(): Int {
+            return 500
+        }
+
+
+        override fun getAddNumKey(): String {
+            return AppConstant.OCR_General
+        }
     },
     Accurate {    //精准识别，每日 500 次免费调用量
         override fun startOcr(context: Context, imageFile: File, iOcrListener: IOcrListener) {
@@ -78,6 +119,15 @@ enum class OcrType {
             // 调用通用文字识别服务
             OCR.getInstance(context)
                 .recognizeAccurateBasic(params, OnOcrResultListener<GeneralResult>(iOcrListener))
+        }
+
+        override fun getOneDayMaxNum(): Int {
+            return 50
+        }
+
+
+        override fun getAddNumKey(): String {
+            return AppConstant.OCR_Accurate
         }
     },
     IDCard {  //身份证识别，每日 500 次免费调用量
@@ -99,6 +149,15 @@ enum class OcrType {
             OCR.getInstance(context)
                 .recognizeIDCard(params, OnOcrResultListener<IDCardResult>(iOcrListener))
         }
+
+        override fun getOneDayMaxNum(): Int {
+            return 10
+        }
+
+
+        override fun getAddNumKey(): String {
+            return AppConstant.OCR_IDCard
+        }
     },
     BankCard { //银行卡识别，每日 500 次免费调用量
         override fun startOcr(context: Context, imageFile: File, iOcrListener: IOcrListener) {
@@ -108,6 +167,14 @@ enum class OcrType {
             //调用通用文字识别服务
             OCR.getInstance(context)
                 .recognizeBankCard(params, OnOcrResultListener<BankCardResult>(iOcrListener))
+        }
+
+        override fun getOneDayMaxNum(): Int {
+            return 10
+        }
+
+        override fun getAddNumKey(): String {
+            return AppConstant.OCR_BankCard
         }
     };
     //    Webimage,//网络图片识别，每日 500 次免费调用量
@@ -121,6 +188,28 @@ enum class OcrType {
         imageFile: File,
         iOcrListener: IOcrListener
     )
+
+    abstract fun getOneDayMaxNum(): Int//一天可以使用几次
+    open fun getOneDayUseNum(): Int {//当天使用了多少次
+        var num = getOneDayMaxNum() - SharedPreferencesUtil.getInt(
+            getAddNumKey() + "_" + DateUtil.getServerTime(DateUtil.FORMAT),
+            0
+        )
+        if (num < 0)
+            num = 0
+        if (num > getOneDayMaxNum())
+            num = getOneDayMaxNum()
+        return num
+    }
+
+    abstract fun getAddNumKey(): String//添加使用次数的key
+
+    open fun addUseNum() {//增加一次使用次数
+        SharedPreferencesUtil.saveInt(
+            getAddNumKey() + "_" + DateUtil.getServerTime(DateUtil.FORMAT),
+            getOneDayUseNum() + 1
+        )
+    }
 
     open fun setFront(isFront: Boolean) {
     }

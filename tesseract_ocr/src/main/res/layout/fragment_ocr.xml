@@ -11,17 +11,17 @@
     <Button
         android:id="@+id/btnGeneral"
         style="@style/btn_ocr_function_style"
-        android:text="普通识别（今日剩余%s次）" />
+        android:text="@string/str_btn_general" />
 
     <Button
         android:id="@+id/btnAccurate"
         style="@style/btn_ocr_function_style"
-        android:text="精准识别（今日剩余%s次）" />
+        android:text="@string/str_btn_accurate" />
 
     <Button
         android:id="@+id/btnBankCard"
         style="@style/btn_ocr_function_style"
-        android:text="银行卡识别（今日剩余%s次）" />
+        android:text="@string/str_btn_bankcard" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,27 +35,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="人头" />
+            android:text="@string/str_idcard_yes" />
 
         <Button
             android:id="@+id/btnIDCard"
             style="@style/btn_ocr_function_style"
-            android:text="身份证识别（今日剩余%s次）"
+            android:text="@string/str_btn_idcard"
             android:textSize="@dimen/text_size_14_sp" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnDrivingLicense"
         style="@style/btn_ocr_function_style"
-        android:text="驾驶证识别（今日剩余%s次）" />
+        android:text="@string/str_btn_drivinglicense" />
 
     <Button
         android:id="@+id/btnBusinessLicense"
         style="@style/btn_ocr_function_style"
-        android:text="营业执照识别（今日剩余%s次）" />
+        android:text="@string/str_btn_businesslicense" />
     <Button
         android:id="@+id/btnLicensePlate"
         style="@style/btn_ocr_function_style"
-        android:text="车牌识别（今日剩余%s次）" />
+        android:text="@string/str_btn_licenseplate" />
 
 </LinearLayout>

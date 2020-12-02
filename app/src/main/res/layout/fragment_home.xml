@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="包含日常手机使用工具"
+        android:text="侧滑展开工具菜单"
         android:textColor="@color/black"
         android:textSize="@dimen/space_20_dp" />
 </LinearLayout>

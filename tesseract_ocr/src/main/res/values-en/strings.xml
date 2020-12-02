@@ -15,4 +15,15 @@
     <string name="str_chinese">中文</string>
     <string name="str_english">英文</string>
     <string name="str_update">修改</string>
+    <string name="str_btn_general">普通识别（今日剩余%s次）</string>
+    <string name="str_btn_accurate">精准识别（今日剩余%s次）</string>
+    <string name="str_btn_bankcard">银行卡识别（今日剩余%s次）</string>
+    <string name="str_btn_idcard">身份证识别（今日剩余%s次）</string>
+    <string name="str_btn_drivinglicense">驾驶证识别（今日剩余%s次）</string>
+    <string name="str_btn_businesslicense">营业执照识别（今日剩余%s次）</string>
+    <string name="str_btn_licenseplate">车牌识别（今日剩余%s次）</string>
+    <string name="str_idcard_yes">人头</string>
+    <string name="str_idcard_no">国徽</string>
+    <string name="str_start_ocr_title">温馨提示</string>
+    <string name="str_start_ocr_content">因图片文字提取功能需支付技术维护等费用，所以每个用户每日有使用次数限制，当日次数用完后只能在明天才可继续使用，请谅解！</string>
 </resources>

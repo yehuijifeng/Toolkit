@@ -20,6 +20,7 @@ import com.wwxd.utils.glide.GlideUtil
 import com.wwxd.utils.photo.Image
 import kotlinx.android.synthetic.main.fragment_ocr.*
 import java.io.File
+import java.util.*
 
 
 /**
@@ -76,6 +77,21 @@ class OcrFragment : BaseFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        btnLicensePlate.text = getBtnText(R.string.str_btn_licenseplate, OcrType.LicensePlate)
+        btnBusinessLicense.text =
+            getBtnText(R.string.str_btn_businesslicense, OcrType.BusinessLicense)
+        btnGeneral.text = getBtnText(R.string.str_btn_general, OcrType.General)
+        btnAccurate.text = getBtnText(R.string.str_btn_accurate, OcrType.Accurate)
+        btnBankCard.text = getBtnText(R.string.str_btn_bankcard, OcrType.BankCard)
+        btnIDCard.text = getBtnText(R.string.str_btn_idcard, OcrType.IDCard)
+        btnDrivingLicense.text = getBtnText(R.string.str_btn_drivinglicense, OcrType.DrivingLicense)
+    }
+
+    private fun getBtnText(res: Int, ocrType: OcrType): String {
+        return String.format(Locale.getDefault(), getString(res), ocrType.getOneDayUseNum())
+    }
 
     //去相册
     private fun startPhoto() {
@@ -191,6 +207,8 @@ class OcrFragment : BaseFragment() {
             val bundle = Bundle()
             bundle.putString(AppConstant.OCR_RESULT, content)
             startActivity(ResultActivity::class, bundle)
+            thisOcrType!!.addUseNum()
+            thisOcrType = null
             closeLoadingView()
         }
 
@@ -204,15 +222,9 @@ class OcrFragment : BaseFragment() {
     private fun startOcrDialog() {
         getDefaultDialog().getBuilder()
             .isBackDismiss(true)
-            .setTitle("温馨提示")
+            .setTitle(getString(R.string.str_start_ocr_title))
             .setContent(
-                "因图片文字提取功能需支付技术维护等费用，所以每个用户有使用次数限制，请谅解！" +
-                        "\n 1，一般识别，每日500次；今日剩余%s次" +
-                        "\n2，精准识别：每日5次；今日剩余%s次" +
-                        "\n3，身份证识别：每日5次；今日剩余%s次" +
-                        "\n4，银行卡识别：每日5次；今日剩余%s次" +
-                        "\n5，营业执照识别：每日2次；今日剩余%s次" +
-                        "\n6，护照识别：付费：￥2；30次；剩余%s次"
+                getString(R.string.str_start_ocr_content)
             )
             .setCancelText(getString(R.string.str_photo))
             .setOkText(getString(R.string.str_camera))
