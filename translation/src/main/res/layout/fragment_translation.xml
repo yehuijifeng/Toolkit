@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/space_15_dp"
+    android:paddingRight="@dimen/space_15_dp">
+
+    <Button
+        android:id="@+id/btnTransDef"
+        style="@style/translation_btn_style"
+        android:text="@string/str_trans_def" />
+
+    <Button
+        android:id="@+id/btnTransVoice"
+        style="@style/translation_btn_style"
+        android:text="@string/str_trans_voice" />
+
+    <Button
+        android:id="@+id/btnTransCamera"
+        style="@style/translation_btn_style"
+        android:text="@string/str_trans_camera" />
+
+</LinearLayout>

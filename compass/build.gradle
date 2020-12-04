@@ -1,0 +1,64 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+def conf = rootProject.ext
+android {
+    //编译sdk版本
+    compileSdkVersion conf.android.compileSdkVersion
+    //buildTools版本
+    buildToolsVersion conf.android.buildToolsVersion
+    //任务栏编辑编码格式
+    tasks.withType(JavaCompile) {
+        options.encoding = conf.android.encoding
+    }
+    buildFeatures {
+        viewBinding conf.viewBinding
+    }
+    //兼容java8
+    compileOptions {
+        sourceCompatibility conf.android.sourceCompatibility
+        targetCompatibility conf.android.targetCompatibility
+    }
+    //默认配置
+    defaultConfig {
+        //统一资源维度
+        flavorDimensions conf.android.flavorDimensions
+        //敏捷开发
+        multiDexEnabled conf.android.multiDexEnabled
+        //最小支持版本
+        minSdkVersion conf.android.minSdkVersion
+        //最大支持版本
+        targetSdkVersion conf.android.targetSdkVersion
+        //测试仪器
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //ndk编译配置
+        ndk {
+            moduleName 'toolkit'
+            //设置支持的SO库架构
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'//, 'x86', 'x86_64'
+        }
+        //app名
+        resValue "string", "app_name", conf.dependencies.app_name
+    }
+    //执行lint检查，有任何的错误或者警告提示，都会终止构建，我们可以将其关掉。
+    lintOptions {
+        abortOnError false
+    }
+    // 解决重复加载第三方那个jar包问题
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    testImplementation conf.dependencies.junit
+    implementation project(":base")
+    implementation project(":utils")
+}

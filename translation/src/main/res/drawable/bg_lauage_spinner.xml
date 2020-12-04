@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 第一组item 圆角边框。-->
+    <item>
+        <shape>
+            <solid android:color="@color/color_ececec" />
+            <corners android:radius="@dimen/space_3_dp" />
+            <!--//背景颜色-->
+        </shape>
+    </item>
+    <!-- 第二组item 插入图片(替换spinner默认箭头)-->
+   <!-- <item>
+        &lt;!&ndash;end把箭头放在spinner最右侧&ndash;&gt;
+        <bitmap
+            android:gravity="end"
+            android:src="@drawable/ic_lauage_spinner" />
+    </item>-->
+</layer-list>

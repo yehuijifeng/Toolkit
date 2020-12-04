@@ -19,4 +19,5 @@
     <string name="str_help_content">使用遇到问题？\n您可以选择拨打客服电话描述问题\n或者向客服邮箱编写您遇到的问题</string>
     <string name="str_help_tel">打电话</string>
     <string name="str_help_email">发邮件</string>
+    <string name="str_compass">指南针</string>
 </resources>

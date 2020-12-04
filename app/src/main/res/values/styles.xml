@@ -59,7 +59,7 @@
     <style name="home_menu_image_item_style">
         <item name="android:layout_width">@dimen/space_40_dp</item>
         <item name="android:layout_height">@dimen/space_20_dp</item>
-        <item name="android:scaleType">center</item>
+        <item name="android:scaleType">centerInside</item>
     </style>
 
     <style name="home_menu_text_item_style">

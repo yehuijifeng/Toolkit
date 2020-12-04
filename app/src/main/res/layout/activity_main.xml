@@ -154,6 +154,36 @@
             </LinearLayout>
 
             <View style="@style/home_menu_hour_item_style" />
+
+            <LinearLayout
+                android:id="@+id/llCompass"
+                style="@style/home_menu_layout_item_style">
+
+                <ImageView
+                    style="@style/home_menu_image_item_style"
+                    android:src="@drawable/ic_compass" />
+
+                <TextView
+                    style="@style/home_menu_text_item_style"
+                    android:text="@string/str_compass" />
+            </LinearLayout>
+
+            <View style="@style/home_menu_hour_item_style" />
+
+            <LinearLayout
+                android:id="@+id/llTranslation"
+                style="@style/home_menu_layout_item_style">
+
+                <ImageView
+                    style="@style/home_menu_image_item_style"
+                    android:src="@drawable/ic_translation" />
+
+                <TextView
+                    style="@style/home_menu_text_item_style"
+                    android:text="@string/str_translation" />
+            </LinearLayout>
+
+            <View style="@style/home_menu_hour_item_style" />
         </LinearLayout>
     </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

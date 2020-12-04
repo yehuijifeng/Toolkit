@@ -268,7 +268,6 @@ public class ImageClipView extends View {
         int top = clipBorderCondition.layoutTop;
         int right = clipBorderCondition.layoutRight;
         int bottom = clipBorderCondition.layoutBottom;
-
         if (inBorder && bmScale != 1) {
             int strokeW = clipBorderCondition.width;
             left = (int) ((left + strokeW) / bmScale);
@@ -276,7 +275,6 @@ public class ImageClipView extends View {
             right = (int) ((right - strokeW) / bmScale);
             bottom = (int) ((bottom - strokeW) / bmScale);
         }
-
         return Bitmap.createBitmap(inputCondition.rawBitmap, left, top, right - left, bottom - top);
     }
 

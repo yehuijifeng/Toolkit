@@ -52,7 +52,7 @@ object PermissionsUtil {
     }
 
     //检查定位权限
-    fun getAddress(): Array<String> {
+    fun getAddressPermissions(): Array<String> {
         return arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,  //精准定位
             Manifest.permission.ACCESS_COARSE_LOCATION

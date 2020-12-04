@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="str_addres_permission_error">请同意手机定位权限，以正常使用指南针功能</string>
+    <string name="str_cannot_get_location">无法获取定位信息，请点击重试</string>
+    <string name="str_location_north">北纬 %s</string>
+    <string name="str_location_south">南纬 %s</string>
+    <string name="str_location_east">东经 %s</string>
+    <string name="str_location_west">西经 %s</string>
+    <string name="str_correct_coord">当前经纬度：%s</string>
+    <string name="str_correct_altitude">当前海拔：%s</string>
+</resources>

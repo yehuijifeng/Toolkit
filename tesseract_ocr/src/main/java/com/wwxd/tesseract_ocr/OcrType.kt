@@ -205,9 +205,10 @@ enum class OcrType {
     abstract fun getAddNumKey(): String//添加使用次数的key
 
     open fun addUseNum() {//增加一次使用次数
+        val key = getAddNumKey() + "_" + DateUtil.getServerTime(DateUtil.FORMAT)
         SharedPreferencesUtil.saveInt(
-            getAddNumKey() + "_" + DateUtil.getServerTime(DateUtil.FORMAT),
-            getOneDayUseNum() + 1
+            key,
+            SharedPreferencesUtil.getInt(key, 0) + 1
         )
     }
 

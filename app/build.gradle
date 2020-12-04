@@ -136,4 +136,7 @@ dependencies {
     implementation project(":protractor")
     implementation project(":tesseract_ocr")
     implementation project(":qr_code1")
+    implementation project(":compass")
+    implementation project(":translation")
+
 }

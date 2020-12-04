@@ -7,6 +7,7 @@ import com.wwxd.base.BaseActivity
 import com.wwxd.base.BaseFragment
 import com.wwxd.base.IDefaultDialogClickListener
 import com.wwxd.calculator.CalculatorFragment
+import com.wwxd.compass.CompassFragment
 import com.wwxd.protractor.ProtractorFragment
 import com.wwxd.pyramid.PyramidFragment
 import com.wwxd.qr_code1.QR_codeFragment
@@ -15,6 +16,7 @@ import com.wwxd.tesseract_ocr.OcrFragment
 import com.wwxd.toolkit.R
 import com.wwxd.toolkit.fragment.HomeFragment
 import com.wwxd.toolkit.fragment.RewardFragment
+import com.wwxd.translation.TranslationFragment
 import com.wwxd.utils.AppUtil
 import com.wwxd.utils.DateUtil
 import com.wwxd.utils.PhoneUtil
@@ -48,6 +50,8 @@ class MainActivity : BaseActivity() {
         fragmentMap.put(ProtractorFragment::class, null)
         fragmentMap.put(OcrFragment::class, null)
         fragmentMap.put(RewardFragment::class, null)
+        fragmentMap.put(CompassFragment::class, null)
+        fragmentMap.put(TranslationFragment::class, null)
         toolBar.setTitle(R.string.app_name)
         toolBar.setTitleTextAppearance(this, R.style.home_title_text_style)
         //设置导航图标要在setSupportActionBar方法之后
@@ -76,6 +80,13 @@ class MainActivity : BaseActivity() {
         llOcr.setOnClickListener {
             showFragment(OcrFragment::class)
         }
+        llCompass.setOnClickListener {
+            showFragment(CompassFragment::class)
+        }
+        llTranslation.setOnClickListener {
+            showFragment(TranslationFragment::class)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

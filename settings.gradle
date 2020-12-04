@@ -1,3 +1,5 @@
+include ':translation'
+include ':compass'
 include ':qr_code1'
 include ':tesseract_ocr'
 include ':protractor'

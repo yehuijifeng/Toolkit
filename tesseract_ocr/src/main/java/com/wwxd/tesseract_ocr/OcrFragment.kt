@@ -44,36 +44,33 @@ class OcrFragment : BaseFragment() {
     override fun init(view: View) {
         initOcr()
         btnLicensePlate.setOnClickListener {
-            thisOcrType = OcrType.LicensePlate
-            startOcrDialog()
+            startOcrDialog(OcrType.LicensePlate)
         }
         btnBusinessLicense.setOnClickListener {
-            thisOcrType = OcrType.BusinessLicense
-            startOcrDialog()
+            startOcrDialog(OcrType.BusinessLicense)
         }
         btnGeneral.setOnClickListener {
-            thisOcrType = OcrType.General
-            startOcrDialog()
+            startOcrDialog(OcrType.General)
         }
         btnAccurate.setOnClickListener {
-            thisOcrType = OcrType.Accurate
-            startOcrDialog()
+            startOcrDialog(OcrType.Accurate)
         }
         btnBankCard.setOnClickListener {
-            thisOcrType = OcrType.BankCard
-            startOcrDialog()
+            startOcrDialog(OcrType.BankCard)
         }
         sFont.setOnCheckedChangeListener { buttonView, isChecked ->
             OcrType.IDCard.setFront(isChecked)
-            sFont.text = if (isChecked) "人头" else "国徽"
+            sFont.text =
+                if (isChecked)
+                    getString(R.string.str_idcard_yes)
+                else
+                    getString(R.string.str_idcard_no)
         }
         btnIDCard.setOnClickListener {
-            thisOcrType = OcrType.IDCard
-            startOcrDialog()
+            startOcrDialog(OcrType.IDCard)
         }
         btnDrivingLicense.setOnClickListener {
-            thisOcrType = OcrType.DrivingLicense
-            startOcrDialog()
+            startOcrDialog(OcrType.DrivingLicense)
         }
     }
 
@@ -219,26 +216,31 @@ class OcrFragment : BaseFragment() {
     }
 
     //发起识别
-    private fun startOcrDialog() {
-        getDefaultDialog().getBuilder()
-            .isBackDismiss(true)
-            .setTitle(getString(R.string.str_start_ocr_title))
-            .setContent(
-                getString(R.string.str_start_ocr_content)
-            )
-            .setCancelText(getString(R.string.str_photo))
-            .setOkText(getString(R.string.str_camera))
-            .setCancelClick(object : IDefaultDialogClickListener {
-                override fun onClick(v: View) {
-                    startPhoto()
-                }
-            })
-            .setOkClick(object : IDefaultDialogClickListener {
-                override fun onClick(v: View) {
-                    startCramera()
-                }
-            })
-            .show()
+    private fun startOcrDialog(ocrType: OcrType) {
+        if (ocrType.getOneDayUseNum() == 0) {
+            ToastUtil.showFailureToast(getString(R.string.str_one_day_over))
+        } else {
+            thisOcrType = ocrType
+            getDefaultDialog().getBuilder()
+                .isBackDismiss(true)
+                .setTitle(getString(R.string.str_start_ocr_title))
+                .setContent(
+                    getString(R.string.str_start_ocr_content)
+                )
+                .setCancelText(getString(R.string.str_photo))
+                .setOkText(getString(R.string.str_camera))
+                .setCancelClick(object : IDefaultDialogClickListener {
+                    override fun onClick(v: View) {
+                        startPhoto()
+                    }
+                })
+                .setOkClick(object : IDefaultDialogClickListener {
+                    override fun onClick(v: View) {
+                        startCramera()
+                    }
+                })
+                .show()
+        }
     }
 
 

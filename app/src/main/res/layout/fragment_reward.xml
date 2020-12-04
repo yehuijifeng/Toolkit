@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/ic_reward_bg"
+    android:background="@color/color_ececec"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -58,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:background="#1678FF"
+                android:background="@color/color_1678ff"
                 android:paddingLeft="@dimen/space_25_dp"
                 android:paddingTop="@dimen/space_20_dp"
                 android:paddingRight="@dimen/space_25_dp"

@@ -26,4 +26,5 @@
     <string name="str_idcard_no">国徽</string>
     <string name="str_start_ocr_title">温馨提示</string>
     <string name="str_start_ocr_content">因图片文字提取功能需支付技术维护等费用，所以每个用户每日有使用次数限制，当日次数用完后只能在明天才可继续使用，请谅解！</string>
+    <string name="str_one_day_over">今日次数已用完，明天可继续使用</string>
 </resources>
