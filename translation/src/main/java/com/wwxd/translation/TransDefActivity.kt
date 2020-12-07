@@ -36,23 +36,23 @@ class TransDefActivity : BaseActivity() {
     }
 
     override fun init() {
-        btnCopy.visibility = View.INVISIBLE
-        btnCopy.setOnClickListener(null)
         spinnerCountriesFrom.setAdapter(OnSpinnerAdapterFrom())
         spinnerCountriesFrom.setOnItemSelectedListener(OnItemSelectedListenerFrom())
         spinnerCountriesTo.setAdapter(OnSpinnerAdapterTo())
         spinnerCountriesTo.setOnItemSelectedListener(OnItemSelectedListenerTo())
         btnTranslation.setOnClickListener {
             if (!TextUtils.isEmpty(etContent.text)) {
-                textTranslation.text = ""
+                etTranslation.setText("")
                 val content = etContent.text.toString()
                 getSign(content)
                 Api.Translation.iHttpResponse = object : IHttpResponse {
                     override fun onSuccess(json: String) {
                         val jsonArray = GsonUtil.getJsonArray(json, "trans_result")
                         if (jsonArray != null && jsonArray.size() > 0) {
+                            addDefUseNum()
                             val contentStr1 = StringBuffer()
                             val contentStr2 = StringBuffer()
+                            contentStr1.append(getString(R.string.str_translation_from))
                             jsonArray.forEach { jsonElement ->
                                 val jsonObject = jsonElement.asJsonObject
                                 contentStr1.append(jsonObject.get("src").asString)
@@ -60,25 +60,18 @@ class TransDefActivity : BaseActivity() {
                                 contentStr2.append(jsonObject.get("dst").asString)
                                     .append("\n")
                             }
-                            textTranslation.text =
-                                contentStr1.append(getString(R.string.str_translation_from))
-                            contentStr1.append("\n")
+                            contentStr1
                                 .append(getString(R.string.str_translation_to))
+                                .append("\n")
                                 .append(contentStr2)
-                            btnCopy.visibility = View.VISIBLE
-                            btnCopy.setOnClickListener {
-                                StringUtil.copy(contentStr2.toString())
-                                ToastUtil.showLongToast(getString(R.string.str_copy_success))
-                            }
+                            etTranslation.setText(contentStr1)
                         } else {
-                            textTranslation.text = getString(R.string.str_translation_fail)
-                            btnCopy.visibility = View.INVISIBLE
-                            btnCopy.setOnClickListener(null)
+                            etTranslation.setText(getString(R.string.str_translation_fail))
                         }
                     }
 
                     override fun onFailure(error: String) {
-                        textTranslation.text = error
+                        etTranslation.setText(error)
                     }
                 }
                 OkHttp.requestPost(Api.Translation)
@@ -178,5 +171,12 @@ class TransDefActivity : BaseActivity() {
         }
 
         override fun onNothingSelected(parent: AdapterView<*>?) {}
+    }
+
+    private fun addDefUseNum() {
+        SharedPreferencesUtil.saveInt(
+            TransContanst.TransDefNum,
+            SharedPreferencesUtil.getInt(TransContanst.TransDefNum, 0) + 1
+        )
     }
 }

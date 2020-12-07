@@ -5,23 +5,44 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/etContent"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/space_15_dp"
-        android:layout_marginTop="@dimen/space_10_dp"
-        android:layout_marginRight="@dimen/space_15_dp"
-        android:background="@drawable/bg_def_edit"
-        android:gravity="top|left"
-        android:hint="输入单词/短语"
-        android:maxLines="8"
-        android:paddingLeft="@dimen/space_5_dp"
-        android:paddingTop="@dimen/space_7_dp"
-        android:paddingRight="@dimen/space_5_dp"
-        android:paddingBottom="@dimen/space_7_dp"
-        android:textColor="@color/black"
-        android:textSize="@dimen/text_size_17_sp" />
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/space_10_dp"
+        android:paddingTop="@dimen/space_15_dp"
+        android:paddingRight="@dimen/space_10_dp"
+        android:paddingBottom="@dimen/space_15_dp">
+
+        <EditText
+            android:id="@+id/etContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/space_10_dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_def_edit"
+            android:gravity="top|left"
+            android:hint="@string/str_trans_def_tips"
+            android:maxLines="8"
+            android:lineSpacingExtra="@dimen/space_3_dp"
+            android:paddingLeft="@dimen/space_5_dp"
+            android:paddingTop="@dimen/space_8_dp"
+            android:paddingRight="@dimen/space_5_dp"
+            android:paddingBottom="@dimen/space_8_dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_17_sp" />
+
+        <Button
+            android:id="@+id/btnTranslation"
+            android:layout_gravity="bottom"
+            android:layout_width="@dimen/space_60_dp"
+            android:layout_height="@dimen/space_40_dp"
+            android:background="@drawable/bg_btn_def"
+            android:text="@string/str_translation"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_14_sp" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,8 +56,8 @@
         <Spinner
             android:id="@+id/spinnerCountriesFrom"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/bg_lauage_spinner"
             android:gravity="top|left"
             android:padding="@dimen/space_2_dp"
@@ -56,8 +77,8 @@
         <Spinner
             android:id="@+id/spinnerCountriesTo"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/bg_lauage_spinner"
             android:gravity="top|left"
             android:padding="@dimen/space_2_dp"
@@ -66,43 +87,9 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/space_15_dp"
-        android:layout_marginTop="@dimen/space_10_dp"
-        android:layout_marginRight="@dimen/space_15_dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="@dimen/space_1_dp"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/btnCopy"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/space_35_dp"
-            android:layout_marginRight="@dimen/space_15_dp"
-            android:background="@drawable/bg_btn_def"
-            android:text="@string/str_copy_translation"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_14_sp"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/btnTranslation"
-            android:layout_width="@dimen/space_60_dp"
-            android:layout_height="@dimen/space_35_dp"
-            android:background="@drawable/bg_btn_def"
-            android:text="@string/str_translation"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_14_sp" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textTranslation"
+    <EditText
+        android:id="@+id/etTranslation"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="@dimen/space_15_dp"
@@ -110,6 +97,9 @@
         android:layout_marginRight="@dimen/space_15_dp"
         android:layout_marginBottom="@dimen/space_10_dp"
         android:layout_weight="1"
+        android:background="@null"
+        android:gravity="top|left"
+        android:padding="@dimen/space_5_dp"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_16_sp" />
 </LinearLayout>

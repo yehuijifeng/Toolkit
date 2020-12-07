@@ -37,7 +37,7 @@ class CropActivity : BaseActivity() {
         //构建输入条件
         val condition = InputCondition.Builder() //裁剪框的类型，此处未矩形
             .setClipBorderType(ImageClipView.ClipBorderType.Rectangle) //裁剪框的颜色
-            .setClipBorderColor(ContextCompat.getColor(this, R.color.white)) //裁剪框的边线宽度，单位为像素
+            .setClipBorderColor(ContextCompat.getColor(this, R.color.color_999999)) //裁剪框的边线宽度，单位为像素
             .setClipBorderWidth(15) //裁剪框边线的触摸宽度，实际触摸宽度为 边线宽度 + 此处设置的宽度，单位为像素
             .setClipBorderAppendWidth(10) //裁剪框的宽度（外边框），单位像素
             .setClipBorderLayoutMinWidth(50) //裁剪框的高度（外边框），单位像素

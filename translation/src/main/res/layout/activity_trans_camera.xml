@@ -4,52 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
+    <EditText
+        android:id="@+id/etContent"
+        android:background="@null"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <EditText
-            android:id="@+id/etContent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:gravity="top|left"
-            android:padding="@dimen/space_5_dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_18_sp" />
-
-        <LinearLayout
-            android:id="@+id/llVoice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/bg_voice"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/imgVoice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/space_52_dp"
-                android:layout_marginTop="@dimen/space_34_dp"
-                android:layout_marginRight="@dimen/space_52_dp"
-                android:src="@drawable/ease_record_animate_01" />
-
-            <TextView
-                android:id="@+id/textTips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/space_20_dp"
-                android:layout_marginBottom="@dimen/space_22_dp"
-                android:text="@string/voice_tips"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_13_sp" />
-        </LinearLayout>
-    </FrameLayout>
-
+        android:layout_weight="1"
+        android:gravity="top|left"
+        android:padding="@dimen/space_5_dp"
+        android:textColor="@color/black"
+        android:textSize="@dimen/space_15_dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -95,15 +59,18 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnTouch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/btnCamera"
+        style="@style/translation_btn_style"
         android:layout_marginLeft="@dimen/space_15_dp"
-        android:layout_marginTop="@dimen/space_15_dp"
+        android:layout_marginRight="@dimen/space_15_dp"
+        android:text="@string/str_camera" />
+
+    <Button
+        android:id="@+id/btnPhoto"
+        style="@style/translation_btn_style"
+        android:layout_marginLeft="@dimen/space_15_dp"
         android:layout_marginRight="@dimen/space_15_dp"
         android:layout_marginBottom="@dimen/space_20_dp"
-        android:background="@drawable/bg_btn_def"
-        android:text="按住说话"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_16_sp" />
+        android:text="@string/str_photo" />
+
 </LinearLayout>

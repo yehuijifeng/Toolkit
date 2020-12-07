@@ -64,4 +64,5 @@ dependencies {
     implementation project(":base")
     implementation project(":utils")
     implementation(name: 'translate-asr-sdk_v1.0.5', ext: 'aar')
+    implementation(name: 'trans-ocr-sdk_v1.0.1', ext: 'aar')
 }
