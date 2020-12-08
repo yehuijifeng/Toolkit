@@ -6,4 +6,20 @@
     <string name="str_go_settings">去设置</string>
     <string name="str_cancel">取消</string>
     <string name="str_crop">剪裁</string>
+    <string name="str_black">黑色</string>
+    <string name="str_white">白色</string>
+    <string name="str_red">红色</string>
+    <string name="str_yello">黄色</string>
+    <string name="str_gray">灰色</string>
+    <string name="str_blue">蓝色</string>
+    <string name="str_green">青色</string>
+    <string name="str_orange">橘色</string>
+    <string name="str_purple">紫色</string>
+    <string name="str_FFC0CB">粉红</string>
+    <string name="str_33A1C9">孔雀蓝</string>
+    <string name="str_DA70D6">淡紫色</string>
+    <string name="str_8B4513">马棕色</string>
+    <string name="str_228B22">森林绿</string>
+    <string name="str_FFD700">金黄色</string>
+    <string name="str_708069">石板灰</string>
 </resources>

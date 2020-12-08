@@ -1,3 +1,4 @@
+include ':subtitles'
 include ':translation'
 include ':compass'
 include ':qr_code1'

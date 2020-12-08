@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llMainMenu"
+        style="@style/home_menu_layout_item_style">
+
+        <ImageView
+            android:id="@+id/imgMainMenu"
+            style="@style/home_menu_image_item_style" />
+
+        <TextView
+            android:id="@+id/textMainMenu"
+            style="@style/home_menu_text_item_style" />
+    </LinearLayout>
+
+    <View style="@style/home_menu_hour_item_style" />
+</LinearLayout>

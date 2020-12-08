@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wwxd.subtitles">
+
+    <application>
+        <activity
+            android:name=".SubtitlesActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="nosensor"/>
+    </application>
+</manifest>

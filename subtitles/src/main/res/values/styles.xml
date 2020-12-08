@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="item_color_radio_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/text_size_16_sp</item>
+        <item name="android:layout_marginRight">@dimen/space_10_dp</item>
+    </style>
+
+</resources>

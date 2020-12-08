@@ -20,4 +20,7 @@
     <string name="str_help_tel">打电话</string>
     <string name="str_help_email">发邮件</string>
     <string name="str_compass">指南针</string>
+    <string name="str_home">首页</string>
+    <string name="str_subtitles">LED字幕</string>
+    <string name="str_reward_tips">如果你觉得这个App挺好用，就打赏鼓励一下作者吧！</string>
 </resources>

@@ -1,11 +1,10 @@
 package com.wwxd.toolkit.activity
 
 import android.view.*
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.lifecycle.Lifecycle
-import com.wwxd.base.AppConstant
-import com.wwxd.base.BaseActivity
-import com.wwxd.base.BaseFragment
-import com.wwxd.base.IDefaultDialogClickListener
+import com.wwxd.base.*
 import com.wwxd.calculator.CalculatorFragment
 import com.wwxd.compass.CompassFragment
 import com.wwxd.protractor.ProtractorFragment
@@ -14,6 +13,7 @@ import com.wwxd.qr_code1.QR_codeFragment
 import com.wwxd.ruler.RuleFragment
 import com.wwxd.tesseract_ocr.OcrFragment
 import com.wwxd.toolkit.R
+import com.wwxd.toolkit.enums.MainMenuType
 import com.wwxd.toolkit.fragment.HomeFragment
 import com.wwxd.toolkit.fragment.RewardFragment
 import com.wwxd.translation.TranslationFragment
@@ -42,16 +42,6 @@ class MainActivity : BaseActivity() {
     }
 
     override fun init() {
-        fragmentMap.put(HomeFragment::class, null)
-        fragmentMap.put(PyramidFragment::class, null)
-        fragmentMap.put(CalculatorFragment::class, null)
-        fragmentMap.put(QR_codeFragment::class, null)
-        fragmentMap.put(RuleFragment::class, null)
-        fragmentMap.put(ProtractorFragment::class, null)
-        fragmentMap.put(OcrFragment::class, null)
-        fragmentMap.put(RewardFragment::class, null)
-        fragmentMap.put(CompassFragment::class, null)
-        fragmentMap.put(TranslationFragment::class, null)
         toolBar.setTitle(R.string.app_name)
         toolBar.setTitleTextAppearance(this, R.style.home_title_text_style)
         //设置导航图标要在setSupportActionBar方法之后
@@ -60,33 +50,28 @@ class MainActivity : BaseActivity() {
         toolBar.setNavigationOnClickListener {
             dlHome.openDrawer(Gravity.LEFT)
         }
-        showFragment(HomeFragment::class)
-        llPyramid.setOnClickListener {
-            showFragment(PyramidFragment::class)
+        for (i in 0 until MainMenuType.values().size) {
+            val action = MainMenuType.values()[i]
+            fragmentMap.put(action.getMenuFragment(), null)
+            val itemView = View.inflate(this, R.layout.item_menu_layout, null)
+            val imgMainMenu = itemView.findViewById<ImageView>(R.id.imgMainMenu)
+            val textMainMenu = itemView.findViewById<TextView>(R.id.textMainMenu)
+            imgMainMenu.setImageResource(action.getMenuIconRes())
+            textMainMenu.setText(action.getMenuNameRes())
+            itemView.setOnClickListener(OnItemMenuClick(action))
+            llMenu.addView(itemView)
+            if (i == 0) {
+                showFragment(action.getMenuFragment())
+            }
         }
-        llCalculator.setOnClickListener {
-            showFragment(CalculatorFragment::class)
-        }
-        llQrCode.setOnClickListener {
-            showFragment(QR_codeFragment::class)
-        }
-        llRuler.setOnClickListener {
-            showFragment(RuleFragment::class)
+        fragmentMap.put(RewardFragment::class, null)
+    }
 
+    private inner class OnItemMenuClick(private val mainMenuType: MainMenuType) :
+        NoDoubleClickListener() {
+        override fun onNoDoubleClick(v: View) {
+            showFragment(mainMenuType.getMenuFragment())
         }
-        llProtractor.setOnClickListener {
-            showFragment(ProtractorFragment::class)
-        }
-        llOcr.setOnClickListener {
-            showFragment(OcrFragment::class)
-        }
-        llCompass.setOnClickListener {
-            showFragment(CompassFragment::class)
-        }
-        llTranslation.setOnClickListener {
-            showFragment(TranslationFragment::class)
-        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
