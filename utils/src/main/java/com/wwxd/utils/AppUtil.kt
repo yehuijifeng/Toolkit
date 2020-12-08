@@ -14,7 +14,6 @@ import android.provider.Settings
 import android.text.TextUtils
 import androidx.core.app.NotificationManagerCompat
 import com.wwxd.base.AppConstant
-import com.wwxd.utils.BuildConfig
 import kotlin.reflect.KClass
 
 /**
@@ -194,4 +193,23 @@ object AppUtil {
         }
     }
 
+    //检测手机上是否安装某应用
+    fun checkApkExist(packageName: String): Boolean {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                AppConstant.getApp().packageManager.getApplicationInfo(
+                    packageName,
+                    PackageManager.MATCH_UNINSTALLED_PACKAGES
+                )
+            } else {
+                AppConstant.getApp().packageManager.getApplicationInfo(
+                    packageName,
+                    PackageManager.GET_UNINSTALLED_PACKAGES
+                )
+            }
+            return true
+        } catch (e: Exception) {
+            return false
+        }
+    }
 }

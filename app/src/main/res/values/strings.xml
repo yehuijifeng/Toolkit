@@ -21,4 +21,10 @@
     <string name="str_home">首页</string>
     <string name="str_subtitles">LED字幕</string>
     <string name="str_reward_tips">如果你觉得这个App挺好用，就打赏鼓励一下作者吧！</string>
+    <string name="str_reward_title">打赏作者</string>
+    <string name="str_reward_content">如果你觉得这个App还不错，就打赏一下作者吧！\n毕竟创作不易，您的鼓励是产品越来越好的动力！</string>
+    <string name="str_reward_ok">支付宝打赏</string>
+    <string name="str_reward_cancel">微信扫码打赏</string>
+    <string name="str_wx_content">因为微信无法直接支付，请选择系统相册中的二维码进行扫码支付</string>
+    <string name="str_wx_ok">微信扫一扫</string>
 </resources>

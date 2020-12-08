@@ -38,8 +38,6 @@ object FileUtil {
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-
-
     /**
      * 复制文件
      *
@@ -421,10 +419,8 @@ object FileUtil {
     //保存bitmap到sd卡中
     fun saveImageFilePath(bitmap: Bitmap?, newFilePath: String): Boolean {
         return if (bitmap == null) false else try {
-            deleteFile(newFilePath)
-            val file = File(newFilePath)
-            //创建新的文件
-            if (!file.createNewFile()) return false
+            val file = createFile(newFilePath, false)
+            if (file == null) return false
             //将bitmap保存到文件中
             val fos = FileOutputStream(file)
             // 把Bitmap对象解析成流
@@ -553,7 +549,7 @@ object FileUtil {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         input = AppConstant.getApp().contentResolver.openInputStream(uri)
-        BitmapFactory.decodeStream(input, null,options)
+        BitmapFactory.decodeStream(input, null, options)
         if (imageExif[0] == 0 || imageExif[1] == 0) {
             imageExif[0] = options.outWidth
             imageExif[1] = options.outHeight
