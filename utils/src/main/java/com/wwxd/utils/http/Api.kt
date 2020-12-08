@@ -10,10 +10,16 @@ import java.util.*
  * describe：请求服务器的api
  */
 enum class Api {
-    Translation {//翻译
+    TransVoice {
+        //拍照翻译
         override fun getUrl(): String {
-           return "https://fanyi-api.baidu.com/api/trans/vip/translate"
-//            return "http://fanyi.youdao.com/translate"
+            return "https://fanyi-api.baidu.com/api/trans/sdk/picture"
+        }
+    },
+    Translation {
+        //通用翻译
+        override fun getUrl(): String {
+            return "https://fanyi-api.baidu.com/api/trans/vip/translate"
         }
     };
 

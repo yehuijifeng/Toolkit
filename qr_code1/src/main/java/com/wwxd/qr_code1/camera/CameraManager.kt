@@ -149,7 +149,7 @@ class CameraManager {
         if (theCamera != null && !previewing) {
             theCamera.startPreview()
             previewing = true
-            autoFocusManager = AutoFocusManager(camera!!)
+            autoFocusManager = AutoFocusManager(theCamera)
         }
     }
 

@@ -39,14 +39,13 @@ class CameraManager {
      * handler. Make sure to clear the handler so it will only receive one
      * message.
      */
-    private val previewCallback: PreviewCallback
+//    private val previewCallback: PreviewCallback
 
     /**
      * Autofocus callbacks arrive here, and are dispatched to the Handler which
      * requested them.
      */
-    private val autoFocusCallback: AutoFocusCallback
-
+    private var autoFocusManager: AutoFocusManager?=null
     /**
      * Opens the camera driver and initializes the hardware parameters.
      *
@@ -54,7 +53,6 @@ class CameraManager {
      * into.
      * @throws IOException Indicates the camera driver failed to open.
      */
-    @Throws(IOException::class)
     fun openDriver(holder: SurfaceHolder?) {
         if (camera == null) {
             camera = Camera.open()
@@ -77,6 +75,10 @@ class CameraManager {
      */
     fun closeDriver() {
         if (camera != null) {
+            if (autoFocusManager != null) {
+                autoFocusManager!!.stop()
+                autoFocusManager = null
+            }
             flashlightManager.disableFlashlight()
             camera!!.release()
             camera = null
@@ -90,6 +92,7 @@ class CameraManager {
         if (camera != null && !previewing) {
             camera!!.startPreview()
             previewing = true
+            autoFocusManager = AutoFocusManager(camera!!)
         }
     }
 
@@ -99,45 +102,14 @@ class CameraManager {
     fun stopPreview() {
         if (camera != null && previewing) {
             camera!!.stopPreview()
-            previewCallback.setHandler(null, 0)
-            autoFocusCallback.setHandler(null, 0)
+//            previewCallback.setHandler(null, 0)
             previewing = false
-        }
-    }
-
-    /**
-     * A single preview frame will be returned to the handler supplied. The data
-     * will arrive as byte[] in the message.obj field, with width and height
-     * encoded as message.arg1 and message.arg2, respectively.
-     *
-     * @param handler The handler to send the message to.
-     * @param message The what field of the message to be sent.
-     */
-    fun requestPreviewFrame(handler: Handler?, message: Int) {
-        if (camera != null && previewing) {
-            previewCallback.setHandler(handler, message)
-            camera!!.setOneShotPreviewCallback(previewCallback)
-        }
-    }
-
-    /**
-     * Asks the camera hardware to perform an autofocus.
-     *
-     * @param handler The Handler to notify when the autofocus completes.
-     * @param message The message to deliver.
-     */
-    fun requestAutoFocus(handler: Handler?, message: Int) {
-        if (camera != null && previewing) {
-            autoFocusCallback.setHandler(handler, message)
-            // Log.d(TAG, "Requesting auto-focus callback");
-            camera!!.autoFocus(autoFocusCallback)
         }
     }
 
     init {
         flashlightManager = FlashlightManager()
         configManager = CameraConfigurationManager()
-        previewCallback = PreviewCallback(configManager)
-        autoFocusCallback = AutoFocusCallback()
+//        previewCallback = PreviewCallback(configManager)
     }
 }

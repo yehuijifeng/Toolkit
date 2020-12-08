@@ -29,6 +29,7 @@ class CaptureActivity : BaseActivity() {
     private var onCallBack: OnCallBack? = null//透明画布回调
     private var decodeThread: DecodeThread? = null//解码线程
     private var state: State = State.DEF//当前解码状态
+
     override fun isRegisterEventBus(): Boolean {
         return true
     }

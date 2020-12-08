@@ -96,14 +96,14 @@ object GsonUtil {
 
     fun getJsonObject(json: String, key: String): JsonObject? {
         val jsonObject = JsonParser.parseString(json).asJsonObject
-        if (jsonObject != null &&  jsonObject.has(key)  && jsonObject[key].isJsonObject)
+        if (jsonObject != null && jsonObject.has(key) && jsonObject[key].isJsonObject)
             return jsonObject[key].asJsonObject
         return null
     }
 
     fun getJsonArray(json: String, key: String): JsonArray? {
         val jsonObject = JsonParser.parseString(json).asJsonObject
-        if (jsonObject != null &&  jsonObject.has(key) && jsonObject[key].isJsonArray)
+        if (jsonObject != null && jsonObject.has(key) && jsonObject[key].isJsonArray)
             return jsonObject[key].asJsonArray
         return null
     }

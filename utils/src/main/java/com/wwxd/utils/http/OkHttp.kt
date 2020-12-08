@@ -10,7 +10,6 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.net.URLEncoder
-import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -206,17 +205,26 @@ object OkHttp {
     //设置post请求参数
     private fun postParams(requestBuilder: Request.Builder, params: Map<String, Any>) {
         if (params.size > 0) {
-            val builder = FormBody.Builder(StandardCharsets.UTF_8)
+            val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
             for (key in params.keys) {
                 try {
                     val value = params[key] ?: continue
                     //传递键值对参数
-                    builder.addEncoded(key, URLEncoder.encode(value.toString(), "utf-8") )
+                    if (value is File) {
+                        val fileBody =
+                            value.asRequestBody("multipart/form-data; charset=utf-8".toMediaType())
+                        requestBody.addFormDataPart(key, value.name, fileBody)
+                    } else {
+                        requestBody.addFormDataPart(
+                            key,
+                            value.toString()
+                        )
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
-            requestBuilder.post(builder.build())
+            requestBuilder.post(requestBody.build())
         }
     }
 

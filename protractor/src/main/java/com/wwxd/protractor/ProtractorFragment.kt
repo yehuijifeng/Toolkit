@@ -23,7 +23,7 @@ class ProtractorFragment : BaseFragment(), SurfaceHolder.Callback {
     override fun init(view: View) {
         cameraManager = CameraManager()
         hasSurface = false
-        sCamera.isChecked=true
+        sCamera.isChecked = true
         sCamera.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 surface.setVisibility(View.VISIBLE)
@@ -85,8 +85,10 @@ class ProtractorFragment : BaseFragment(), SurfaceHolder.Callback {
     }
 
     override fun onDestroy() {
-        if (cameraManager != null)
+        if (cameraManager != null) {
             cameraManager!!.stopPreview()
+            cameraManager!!.closeDriver()
+        }
         super.onDestroy()
     }
 

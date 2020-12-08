@@ -51,6 +51,8 @@
     <string name="str_trans_asr">识别结果：</string>
     <string name="str_trans_result">翻译结果：</string>
     <string name="str_trans_def_tips">输入单词/短语</string>
+    <string name="str_camera_trans_src">识别的原文:</string>
+    <string name="str_camera_trans_dst">翻译的结果:</string>
     <string-array name="lauage_code_from_list">
         <item name="str_lauage_code_from_auto">@string/str_lauage_code_auto</item>
         <item name="str_lauage_code_from_zh">@string/str_lauage_code_zh</item>
