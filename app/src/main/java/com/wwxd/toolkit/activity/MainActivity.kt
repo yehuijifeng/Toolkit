@@ -3,6 +3,8 @@ package com.wwxd.toolkit.activity
 import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Handler
 import android.view.*
 import android.widget.ImageView
@@ -14,6 +16,7 @@ import com.wwxd.toolkit.enums.MainMenuType
 import com.wwxd.toolkit.fragment.RewardFragment
 import com.wwxd.utils.*
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 import kotlin.reflect.KClass
 
 
@@ -24,7 +27,6 @@ import kotlin.reflect.KClass
  */
 class MainActivity : BaseActivity() {
     private val fragmentMap = HashMap<KClass<*>, BaseFragment?>()
-
     override fun isFullWindow(): Boolean {
         return true
     }
@@ -71,11 +73,67 @@ class MainActivity : BaseActivity() {
         return true
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        val menuItem = menu.findItem(R.id.menuCache)
+        menuItem.title = String.format(getString(R.string.str_clean_cache), getCacheFileSize())
+        return super.onPrepareOptionsMenu(menu)
+    }
+
+    private fun getCacheFileSize(): String {
+        val fileSize1 = FileUtil.getFileSize(AppFile.DOWNLOADS_APP.ObtainAppFilePath())
+        val fileSize2 = FileUtil.getFileSize(AppFile.IMAGE_CACHE.ObtainAppFilePath())
+        val fileSize3 = FileUtil.getFileSize(AppFile.DOCUMENTS_FILE.ObtainAppFilePath())
+        val fileSize4 = FileUtil.getFileSize(AppFile.LOG_ERROR.ObtainAppFilePath())
+        val fileSize = fileSize1 + fileSize2 + fileSize3 + fileSize4
+        return FileUtil.getFileSizeStr(fileSize)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
-            R.id.menuAbout -> ToastUtil.showLongToast(R.string.str_about)
-            R.id.menuSetting -> ToastUtil.showLongToast(R.string.str_setting)
+            R.id.menuPrivacy -> {
+                //隐私政策
+                startActivity(PrivacyActivity::class)
+            }
+            R.id.menuService -> {
+                //联系客服
+                getDefaultDialog().getBuilder()
+                    .setTitle(getString(R.string.str_help_title))
+                    .setContent(getString(R.string.str_help_content))
+                    .setCancelText(getString(R.string.str_help_tel))
+                    .setOkText(getString(R.string.str_help_qq))
+                    .isBackDismiss(true)
+                    .setOkClick(object : IDefaultDialogClickListener {
+                        override fun onClick(v: View) {
+                            if (isQQClientAvailable()) {
+                                val qqUrl = "mqqwpa://im/chat?chat_type=wpa&uin=928186846&version=1"
+                                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(qqUrl)))
+                            } else {
+                                ToastUtil.showLongToast(getString(R.string.str_install_not_qq))
+                            }
+                        }
+                    })
+                    .setCancelClick(object : IDefaultDialogClickListener {
+                        override fun onClick(v: View) {
+                            PhoneUtil.toTel(this@MainActivity, AppConstant.serviceTel)
+                        }
+                    })
+                    .show()
+            }
+            R.id.menuShare -> {
+                //分享
+                val sendIntent = Intent()
+                sendIntent.action = Intent.ACTION_SEND
+                var apkFile = File(AppUtil.getThisApkFilePath())
+                apkFile = FileUtil.copyFile(
+                    apkFile,
+                    AppFile.DOWNLOADS_APP.ObtainAppFilePath() + "Toolkit_Share.apk"
+                )!!
+                sendIntent.putExtra(Intent.EXTRA_STREAM, FileUtil.toUri(apkFile))
+                sendIntent.setType("application/vnd.android.package-archive")
+                startActivity(Intent.createChooser(sendIntent, "将该APP分享给好友"))
+            }
             R.id.menuReward -> {
+                //打赏
                 getDefaultDialog().getBuilder()
                     .setTitle(getString(R.string.str_reward_title))
                     .setContent(getString(R.string.str_reward_content))
@@ -85,7 +143,7 @@ class MainActivity : BaseActivity() {
                     .setCancelClick(object : IDefaultDialogClickListener {
                         @SuppressLint("WrongConstant")
                         override fun onClick(v: View) {
-                            Handler().postDelayed(object :Runnable{
+                            Handler().postDelayed(object : Runnable {
                                 override fun run() {
                                     getDefaultDialog().getBuilder()
                                         .setContent(getString(R.string.str_wx_content))
@@ -112,7 +170,10 @@ class MainActivity : BaseActivity() {
                                                             "com.tencent.mm",
                                                             "com.tencent.mm.ui.LauncherUI"
                                                         )
-                                                    intent.putExtra("LauncherUI.From.Scaner.Shortcut", true)
+                                                    intent.putExtra(
+                                                        "LauncherUI.From.Scaner.Shortcut",
+                                                        true
+                                                    )
                                                     intent.flags =
                                                         Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                                                     intent.action = Intent.ACTION_VIEW
@@ -124,7 +185,7 @@ class MainActivity : BaseActivity() {
                                         })
                                         .show()
                                 }
-                            },500L)
+                            }, 500L)
                         }
                     })
                     .setOkClick(object : IDefaultDialogClickListener {
@@ -155,27 +216,30 @@ class MainActivity : BaseActivity() {
                     .show()
             }
             R.id.menuFeedback -> {
-                getDefaultDialog().getBuilder()
-                    .setTitle(getString(R.string.str_help_title))
-                    .setContent(getString(R.string.str_help_content))
-                    .setOkText(getString(R.string.str_help_tel))
-                    .setCancelText(getString(R.string.str_help_email))
-                    .isBackDismiss(true)
-                    .setCancelClick(object : IDefaultDialogClickListener {
-                        override fun onClick(v: View) {
-                            PhoneUtil.sendHelpEmail(this@MainActivity)
-                        }
-                    })
-                    .setOkClick(object : IDefaultDialogClickListener {
-                        override fun onClick(v: View) {
-                            PhoneUtil.toTel(this@MainActivity, AppConstant.serviceTel)
-                        }
-                    })
-                    .show()
-
+                //意见反馈
+                startActivity(FeedbackActivity::class)
+            }
+            R.id.menuCache -> {
+                //清除缓存
+                FileUtil.cleanDirectory(AppFile.DOWNLOADS_APP.ObtainAppFilePath())
+                FileUtil.cleanDirectory(AppFile.IMAGE_CACHE.ObtainAppFilePath())
+                FileUtil.cleanDirectory(AppFile.DOCUMENTS_FILE.ObtainAppFilePath())
+                FileUtil.cleanDirectory(AppFile.LOG_ERROR.ObtainAppFilePath())
             }
         }
         return true
+    }
+
+    private fun isQQClientAvailable(): Boolean {
+        val packageManager: PackageManager = getPackageManager()
+        val pinfo = packageManager.getInstalledPackages(0)
+        for (i in pinfo.indices) {
+            val pn = pinfo[i].packageName
+            if (pn == "com.tencent.mobileqq") {
+                return true
+            }
+        }
+        return false
     }
 
     //展示fragment

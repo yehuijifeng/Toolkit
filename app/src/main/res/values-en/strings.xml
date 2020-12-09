@@ -5,7 +5,7 @@
 
     <string name="str_calculator">Calculator</string>
     <string name="str_setting">设置</string>
-    <string name="str_about">关于</string>
+    <string name="str_share">分享给好友</string>
     <string name="str_exceptional">打赏</string>
     <string name="str_feedback">意见反馈</string>
     <string name="str_again_click_exit">再按一次退出应用</string>
@@ -18,7 +18,7 @@
     <string name="str_help_title">寻求帮助</string>
     <string name="str_help_content">使用遇到问题？\n您可以选择拨打客服电话描述问题\n或者向客服邮箱编写您遇到的问题</string>
     <string name="str_help_tel">打电话</string>
-    <string name="str_help_email">发邮件</string>
+    <string name="str_help_qq">QQ聊天</string>
     <string name="str_compass">指南针</string>
     <string name="str_home">首页</string>
     <string name="str_subtitles">LED字幕</string>
@@ -29,4 +29,16 @@
     <string name="str_reward_ok">支付宝打赏</string>
     <string name="str_wx_content">因为微信无法直接支付，所以请选择系统相册中的二维码进行扫码支付</string>
     <string name="str_wx_ok">微信扫一扫</string>
+    <string name="str_install_not_qq">没有安装QQ客户端！</string>
+    <string name="str_service">联系客服</string>
+    <string name="str_clean_cache">清除缓存(%s)</string>
+    <string name="str_privacy">隐私政策</string>
+    <string name="str_agreement_title">温馨提示</string>
+    <string name="str_agreement_content">1.For better service of scan recommendation,information publication,communication,verification and other related features,we would collect necessary user information(May involve with account, device information) according to the specific service you choose to use; 2.We would not share/gain your information from/to a third party without your consent; 3.you can visit, update and delete your personal information, we would also provide a way to write off/appeal your account.</string>
+    <string name="str_agreement_ok">同意</string>
+    <string name="str_agreement_clean">不同意</string>
+    <string name="str_agreement_title_tips">欢迎来到：</string>
+    <string name="str_agreement_dialog_content">您可以阅读完整版《隐私政策》</string>
+    <string name="str_private_agreement">《隐私政策》</string>
+
 </resources>

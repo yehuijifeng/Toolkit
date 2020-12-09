@@ -45,7 +45,7 @@ object FileUtil {
      * @param filePath 粘贴的文件路径
      * @return 复制成功后的文件
      */
-    fun copyFile(file: File?, filePath: String?): File? {
+    fun copyFile(file: File?, filePath: String): File? {
         return try {
             val input = FileInputStream(file)
             copyFile(input, filePath)
@@ -61,7 +61,7 @@ object FileUtil {
      * @param filePath    粘贴的文件路径
      * @return 复制成功后的文件
      */
-    fun copyFile(inputStream: InputStream?, filePath: String?): File? {
+    fun copyFile(inputStream: InputStream?, filePath: String): File? {
         return try {
             if (inputStream == null) return null
             val copyFile = File(filePath)
@@ -88,13 +88,19 @@ object FileUtil {
      * @param filePath 文件路径
      * @return 文件大小 B
      */
-    fun getFileSize(filePath: String?): Long {
+    fun getFileSize(filePath: String): Long {
         var size: Long = 0
         try {
             if (!TextUtils.isEmpty(filePath)) {
                 val file = File(filePath)
-                if (file.exists() && file.isFile) {
-                    size = file.length()
+                if (file.exists()) {
+                    if (file.isFile)
+                        size = file.length()
+                    else if (file.isDirectory && file.listFiles() != null) {
+                        file.listFiles().forEach { file1 ->
+                            size += file1.length()
+                        }
+                    }
                 }
             }
         } catch (e: Exception) {
@@ -109,8 +115,33 @@ object FileUtil {
      * @param filePath 文件路径
      * @return 文件大小
      */
-    fun getFileSizeStr(filePath: String?): String {
+    fun getFileSizeStr(filePath: String): String {
         val size = getFileSize(filePath) / 1024
+        val sizeStr: String
+        sizeStr = if (size / 1024 > 0) {
+            if (size / 1024 / 1024 > 0) {
+                if (size / 1024 / 1024 / 1024 > 0) {
+                    (size / 1024 / 1024 / 1024).toString() + " GB"
+                } else {
+                    (size / 1024 / 1024).toString() + " MB"
+                }
+            } else {
+                (size / 1024).toString() + " KB"
+            }
+        } else {
+            "$size B"
+        }
+        return sizeStr
+    }
+
+    /**
+     * 查看文件大小
+     *
+     * @param fileSize 文件大小，单位：B
+     * @return 文件大小
+     */
+    fun getFileSizeStr(fileSize: Long): String {
+        val size = fileSize / 1024
         val sizeStr: String
         sizeStr = if (size / 1024 > 0) {
             if (size / 1024 / 1024 > 0) {
@@ -711,6 +742,16 @@ object FileUtil {
             e.printStackTrace()
         }
         return false
+    }
+
+    //清空文件夹
+    fun cleanDirectory(filePath: String) {
+        if (TextUtils.isEmpty(filePath)) return
+        val file = File(filePath)
+        if (!file.exists() || !file.isDirectory || file.listFiles() == null) return
+        file.listFiles().forEach { file1 ->
+            deleteFile(file1)
+        }
     }
 
 }

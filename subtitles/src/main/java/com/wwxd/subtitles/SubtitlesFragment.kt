@@ -27,7 +27,7 @@ class SubtitlesFragment : BaseFragment() {
     private var backColor: Int = 0
     private var textColor: Int = 0
     private var textSize: Int = 50
-    private var textContent: String = "林俊杰"
+    private var textContent: String = ""
 
     init {
         colorList = ArrayList()

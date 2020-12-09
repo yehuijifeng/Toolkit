@@ -74,7 +74,8 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".activity.SubtitlesActivity" />
+        <activity android:name=".activity.FeedbackActivity" />
+        <activity android:name=".activity.PrivacyActivity" />
     </application>
 
 

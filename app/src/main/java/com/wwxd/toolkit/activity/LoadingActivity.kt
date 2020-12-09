@@ -2,11 +2,15 @@ package com.wwxd.toolkit.activity
 
 import android.os.Handler
 import android.view.View
+import com.wwxd.base.AppConstant
 import com.wwxd.base.BaseActivity
 import com.wwxd.base.IDefaultDialogClickListener
 import com.wwxd.toolkit.R
+import com.wwxd.toolkit.dialog.AgreementDialog
+import com.wwxd.toolkit.listener.IAgreementListener
 import com.wwxd.utils.AppUtil
 import com.wwxd.utils.PermissionsUtil
+import com.wwxd.utils.SharedPreferencesUtil
 
 /**
  * user：LuHao
@@ -24,16 +28,42 @@ class LoadingActivity : BaseActivity() {
     }
 
     override fun init() {
-        if (!PermissionsUtil.lacksPermission(PermissionsUtil.getSdCardPermissions())) {
-            Handler().postDelayed(object : Runnable {
-                override fun run() {
-                    startActivity(MainActivity::class)
-                    finish()
-                }
-            }, 1000)
+        if (SharedPreferencesUtil.getBoolean(AppConstant.isStartPrivacy, false)) {
+            startApp()
         } else {
-            PermissionsUtil.requestPermissions(this, PermissionsUtil.getSdCardPermissions(), sdCode)
+            val agreementDialog = AgreementDialog(this)
+            agreementDialog.showView(object : IAgreementListener {
+                override fun clean() {
+                    AppUtil.exitApp()
+                }
+
+                override fun confirm() {
+                    SharedPreferencesUtil.saveBoolean(AppConstant.isStartPrivacy, true)
+                    startApp()
+                }
+            })
         }
+    }
+
+    private fun startApp() {
+        if (!PermissionsUtil.lacksPermission(PermissionsUtil.getSdCardPermissions())) {
+            startMain()
+        } else {
+            PermissionsUtil.requestPermissions(
+                this,
+                PermissionsUtil.getSdCardPermissions(),
+                sdCode
+            )
+        }
+    }
+
+    private fun startMain() {
+        Handler().postDelayed(object : Runnable {
+            override fun run() {
+                startActivity(MainActivity::class)
+                finish()
+            }
+        }, 500)
     }
 
     override fun onRequestPermissionsResult(
@@ -44,10 +74,7 @@ class LoadingActivity : BaseActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == sdCode) {
             if (!PermissionsUtil.lacksPermission(PermissionsUtil.getSdCardPermissions())) {
-                Handler().postDelayed({
-                    startActivity(MainActivity::class)
-                    finish()
-                }, 1000)
+                startMain()
             } else {
                 getDefaultDialog().getBuilder()
                     .isShowTiltle(false)
@@ -66,7 +93,6 @@ class LoadingActivity : BaseActivity() {
                         }
                     })
                     .show()
-
             }
         }
     }

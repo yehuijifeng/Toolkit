@@ -242,4 +242,5 @@
     <dimen name="space_198_dp">198dp</dimen>
     <dimen name="space_199_dp">199dp</dimen>
     <dimen name="space_200_dp">200dp</dimen>
+    <dimen name="space_230_dp">230dp</dimen>
 </resources>

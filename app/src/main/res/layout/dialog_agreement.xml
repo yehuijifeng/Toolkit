@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/space_23_dp"
+        android:layout_marginRight="@dimen/space_23_dp"
+        android:background="@drawable/bg_dialog_default_layout"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/space_29_dp"
+        android:paddingRight="@dimen/space_29_dp"
+        android:paddingTop="@dimen/space_18_dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/space_14_dp"
+            android:gravity="center"
+            android:lines="1"
+            android:text="@string/str_agreement_title"
+            android:textColor="@color/color_303030"
+            android:textSize="@dimen/text_size_21_sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/space_26_dp"
+            android:layout_marginBottom="@dimen/space_14_dp"
+            android:lines="1"
+            android:textColor="@color/color_242424"
+            android:textSize="@dimen/text_size_21_sp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_230_dp" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/str_agreement_content"
+                android:textColor="@color/color_303030"
+                android:textSize="@dimen/text_size_14_sp" />
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/textContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_242424"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/space_23_dp"
+            android:layout_marginBottom="@dimen/space_20_dp"
+            android:textSize="@dimen/text_size_13_sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/space_15_dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/btnOk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/space_12_dp"
+                android:paddingBottom="@dimen/space_12_dp"
+                android:background="@drawable/bg_dialog_default_ok_btn"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/str_agreement_ok"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_17_sp" />
+
+            <TextView
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_10_dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:padding="@dimen/space_5_dp"
+                android:text="@string/str_agreement_clean"
+                android:textColor="@color/color_cdcdcd"
+                android:textSize="@dimen/text_size_13_sp" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

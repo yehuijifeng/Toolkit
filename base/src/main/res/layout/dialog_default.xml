@@ -55,9 +55,11 @@
 
                 <TextView
                     android:id="@+id/btnCancel"
-                    android:layout_width="@dimen/space_75_dp"
+                    android:layout_width="wrap_content"
+                    android:minWidth="@dimen/space_75_dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="@dimen/space_9_dp"
+                    android:paddingLeft="@dimen/space_5_dp"
+                    android:paddingRight="@dimen/space_5_dp"
                     android:background="@drawable/bg_dialog_default_clean_btn"
                     android:ellipsize="end"
                     android:gravity="center"
@@ -72,9 +74,11 @@
 
                 <TextView
                     android:id="@+id/btnOk"
-                    android:layout_width="@dimen/space_75_dp"
+                    android:layout_width="wrap_content"
+                    android:minWidth="@dimen/space_75_dp"
+                    android:paddingLeft="@dimen/space_5_dp"
+                    android:paddingRight="@dimen/space_5_dp"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="@dimen/space_9_dp"
                     android:background="@drawable/bg_dialog_default_ok_btn"
                     android:ellipsize="end"
                     android:gravity="center"

@@ -21,16 +21,6 @@ enum class AppFile {
         }
 
     },
-    LOG_TEST {
-        override fun getFilePath(): String {
-            return "test_log"
-        }
-
-        override fun getEnvironment(): String {
-            return Environment.DIRECTORY_DOCUMENTS
-        }
-
-    },
     IMAGE_CACHE {
         override fun getFilePath(): String {
             return "cache_image"

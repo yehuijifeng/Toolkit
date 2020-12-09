@@ -3,7 +3,7 @@
     <string name="str_pyramid">股市金字塔</string>
     <string name="str_calculator">计算器</string>
     <string name="str_setting">设置</string>
-    <string name="str_about">关于</string>
+    <string name="str_share">分享给好友</string>
     <string name="str_exceptional">打赏</string>
     <string name="str_feedback">意见反馈</string>
     <string name="str_again_click_exit">再按一次退出应用</string>
@@ -16,7 +16,7 @@
     <string name="str_help_title">寻求帮助</string>
     <string name="str_help_content">使用遇到问题？\n您可以选择拨打客服电话描述问题\n或者向客服邮箱编写您遇到的问题</string>
     <string name="str_help_tel">打电话</string>
-    <string name="str_help_email">发邮件</string>
+    <string name="str_help_qq">QQ聊天</string>
     <string name="str_compass">指南针</string>
     <string name="str_home">首页</string>
     <string name="str_subtitles">LED字幕</string>
@@ -27,4 +27,16 @@
     <string name="str_reward_cancel">微信扫码打赏</string>
     <string name="str_wx_content">因为微信无法直接支付，请选择系统相册中的二维码进行扫码支付</string>
     <string name="str_wx_ok">微信扫一扫</string>
+    <string name="str_install_not_qq">没有安装QQ客户端！</string>
+    <string name="str_service">联系客服</string>
+    <string name="str_clean_cache">清除缓存(%s)</string>
+    <string name="str_privacy">隐私政策</string>
+    <string name="str_agreement_title">温馨提示</string>
+    <string name="str_agreement_content">1.为更好地提供工具箱各种功能的正常使用以及相关服务的运行，我们会根据您使用功能或服务的具体功能需要，收集必要的设备信息（可能涉及设备名，设备版本等相关信息）； \n\n2.未经您同意，我们不会从第三方获取、共享或对外提供您的设备信息； \n\n3.您可以同意、拒绝相关权限和获取设备信息请求</string>
+    <string name="str_agreement_ok">同意</string>
+    <string name="str_agreement_clean">不同意</string>
+    <string name="str_agreement_title_tips">欢迎来到：</string>
+    <string name="str_agreement_dialog_content">您可以阅读完整版《隐私政策》</string>
+    <string name="str_private_agreement">《隐私政策》</string>
+
 </resources>

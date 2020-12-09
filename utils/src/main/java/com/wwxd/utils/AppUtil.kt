@@ -75,6 +75,10 @@ object AppUtil {
         return null
     }
 
+    fun getThisApkFilePath(): String {
+        return packageInfo!!.applicationInfo.sourceDir
+    }
+
     private var packageInfo: PackageInfo? = null
         get() {
             if (field == null) {

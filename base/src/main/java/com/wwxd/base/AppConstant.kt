@@ -15,7 +15,7 @@ object AppConstant {
     fun getApp(): BaseApp {
         return application!!
     }
-
+    const val isStartPrivacy="isStartPrivacy"
     const val fileProvider = "com.wwxd.toolkit.fileProvider" //存储文件位置配置信息
     const val sharedPreferences_key = "sharedpreferences_key";//sharedpreferences的key
     const val serviceEmail = "928186846@qq.com"
