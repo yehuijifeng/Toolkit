@@ -21,6 +21,8 @@ import kotlin.reflect.KClass
  * describe：首页菜单
  */
 enum class MainMenuType {
+
+
     //首页
     home {
         override fun getMenuNameRes(): Int {
@@ -34,6 +36,7 @@ enum class MainMenuType {
         override fun getMenuFragment(): KClass<*> {
             return HomeFragment::class
         }
+
     },
 
     //股市金字塔
@@ -49,6 +52,7 @@ enum class MainMenuType {
         override fun getMenuFragment(): KClass<*> {
             return PyramidFragment::class
         }
+
     },
 
     //计算器
@@ -64,6 +68,7 @@ enum class MainMenuType {
         override fun getMenuFragment(): KClass<*> {
             return CalculatorFragment::class
         }
+
     },
 
     //二维码
@@ -79,6 +84,7 @@ enum class MainMenuType {
         override fun getMenuFragment(): KClass<*> {
             return QR_codeFragment::class
         }
+
     },
 
     //尺子
@@ -94,6 +100,7 @@ enum class MainMenuType {
         override fun getMenuFragment(): KClass<*> {
             return RuleFragment::class
         }
+
     },
 
     //量角器
@@ -109,6 +116,7 @@ enum class MainMenuType {
         override fun getMenuFragment(): KClass<*> {
             return ProtractorFragment::class
         }
+
     },
 
     //文字识别
@@ -124,6 +132,7 @@ enum class MainMenuType {
         override fun getMenuFragment(): KClass<*> {
             return OcrFragment::class
         }
+
     },
 
     //指南针
@@ -139,6 +148,7 @@ enum class MainMenuType {
         override fun getMenuFragment(): KClass<*> {
             return CompassFragment::class
         }
+
     },
 
     //翻译
@@ -154,7 +164,9 @@ enum class MainMenuType {
         override fun getMenuFragment(): KClass<*> {
             return TranslationFragment::class
         }
+
     },
+
     //LED字幕
     subtitles {
         override fun getMenuNameRes(): Int {
@@ -169,7 +181,20 @@ enum class MainMenuType {
             return SubtitlesFragment::class
         }
     },
+    //补位
+    other {
+        override fun getMenuNameRes(): Int {
+            return R.string.str_add_function
+        }
 
+        override fun getMenuIconRes(): Int {
+            return R.drawable.ic_add_function
+        }
+
+        override fun getMenuFragment(): KClass<*>? {
+            return null
+        }
+    },
     ;
 
     //菜单名
@@ -179,5 +204,6 @@ enum class MainMenuType {
     abstract fun getMenuIconRes(): Int
 
     //菜单对象
-    abstract fun getMenuFragment(): KClass<*>
+    abstract fun getMenuFragment(): KClass<*>?
+
 }

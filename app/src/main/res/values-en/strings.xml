@@ -40,5 +40,9 @@
     <string name="str_agreement_title_tips">欢迎来到：</string>
     <string name="str_agreement_dialog_content">您可以阅读完整版《隐私政策》</string>
     <string name="str_private_agreement">《隐私政策》</string>
+    <string name="str_store">去评分</string>
+    <string name="str_add_function">添加</string>
+    <string name="str_function_dialog_title">选择常用功能</string>
+    <string name="str_function_user">常用功能</string>
 
 </resources>

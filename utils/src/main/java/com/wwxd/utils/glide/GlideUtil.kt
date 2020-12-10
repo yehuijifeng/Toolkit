@@ -252,6 +252,19 @@ object GlideUtil {
             .into(imageView)
     }
 
+    fun show(
+        imageView: ImageView?, width: Int,
+        height: Int, res: Int
+    ) {
+        if (imageView == null || res == 0) return
+        Glide.with(imageView.context)
+            .load(res)
+            .override(width, height)
+            .transform(CenterCrop())
+            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .into(imageView)
+    }
+
     /**
      * 显示圆角图片
      */
@@ -290,7 +303,7 @@ object GlideUtil {
             .error(R.drawable.bg_round_image_error)
             .placeholder(R.drawable.bg_round_image_back)
             .override(width, height)
-            .transform(CenterCrop(), getGlideRoundTransform(scale,  cornerTypes))
+            .transform(CenterCrop(), getGlideRoundTransform(scale, cornerTypes))
             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
             .into(imageView)
     }

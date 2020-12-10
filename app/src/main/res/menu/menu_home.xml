@@ -16,6 +16,11 @@
         android:orderInCategory="80"
         android:title="@string/str_share"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menuStore"
+        android:orderInCategory="80"
+        android:title="@string/str_store" />
     <item
         android:id="@+id/menuPrivacy"
         android:orderInCategory="80"

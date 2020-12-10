@@ -1,17 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:ignore="MissingDefaultResource">
+    android:orientation="vertical">
 
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="侧滑展开工具菜单"
-        android:textColor="@color/black"
-        android:textSize="@dimen/space_20_dp" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/btnCancel"
+            android:layout_width="@dimen/space_60_dp"
+            android:layout_height="@dimen/space_35_dp"
+            android:layout_gravity="left|center_vertical"
+            android:layout_marginLeft="@dimen/space_10_dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/str_cancel"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="@dimen/text_size_12_sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/space_7_dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/str_function_user"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_20_sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="(长按选项可拖拽排序和删除)"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="@dimen/text_size_13_sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnComplete"
+            android:layout_width="@dimen/space_60_dp"
+            android:layout_height="@dimen/space_35_dp"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="@dimen/space_10_dp"
+            android:background="@drawable/bg_btn_def"
+            android:text="@string/str_complete"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_12_sp"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_hour_dp"
+        android:background="@color/color_8a8a8a" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvFunction"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

@@ -32,11 +32,18 @@
     <string name="str_clean_cache">清除缓存(%s)</string>
     <string name="str_privacy">隐私政策</string>
     <string name="str_agreement_title">温馨提示</string>
-    <string name="str_agreement_content">1.为更好地提供工具箱各种功能的正常使用以及相关服务的运行，我们会根据您使用功能或服务的具体功能需要，收集必要的设备信息（可能涉及设备名，设备版本等相关信息）； \n\n2.未经您同意，我们不会从第三方获取、共享或对外提供您的设备信息； \n\n3.您可以同意、拒绝相关权限和获取设备信息请求</string>
+    <string name="str_agreement_content">1.为更好地提供工具箱各种功能的正常使用以及相关服务的运行，我们会根据您使用功能或服务的具体功能需要，收集必要的设备信息（可能涉及设备名，设备版本等相关信息）；
+        \n\n2.未经您同意，我们不会从第三方获取、共享或对外提供您的设备信息；
+        \n\n3.您可以同意、拒绝相关权限和获取设备信息请求
+    \n\n4.产品集成友盟+SDK，友盟+SDK需要收集您的设备Mac地址、唯一设备识别码（IMEI/android ID/IDFA/OPENUDID/GUID、SIM 卡 IMSI 信息）以提供统计分析服务，并通过地理位置校准报表数据准确性，提供基础反作弊能力</string>
     <string name="str_agreement_ok">同意</string>
     <string name="str_agreement_clean">不同意</string>
     <string name="str_agreement_title_tips">欢迎来到：</string>
     <string name="str_agreement_dialog_content">您可以阅读完整版《隐私政策》</string>
     <string name="str_private_agreement">《隐私政策》</string>
+    <string name="str_store">去评分</string>
+    <string name="str_add_function">添加</string>
+    <string name="str_function_dialog_title">选择常用功能</string>
+    <string name="str_function_user">常用功能</string>
 
 </resources>

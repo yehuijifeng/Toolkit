@@ -46,7 +46,8 @@ class MainActivity : BaseActivity() {
         }
         for (i in 0 until MainMenuType.values().size) {
             val action = MainMenuType.values()[i]
-            fragmentMap.put(action.getMenuFragment(), null)
+            if (action.getMenuFragment() == null) continue
+            fragmentMap.put(action.getMenuFragment()!!, null)
             val itemView = View.inflate(this, R.layout.item_menu_layout, null)
             val imgMainMenu = itemView.findViewById<ImageView>(R.id.imgMainMenu)
             val textMainMenu = itemView.findViewById<TextView>(R.id.textMainMenu)
@@ -55,7 +56,7 @@ class MainActivity : BaseActivity() {
             itemView.setOnClickListener(OnItemMenuClick(action))
             llMenu.addView(itemView)
             if (i == 0) {
-                showFragment(action.getMenuFragment())
+                showFragment(action.getMenuFragment()!!)
             }
         }
         fragmentMap.put(RewardFragment::class, null)
@@ -64,7 +65,7 @@ class MainActivity : BaseActivity() {
     private inner class OnItemMenuClick(private val mainMenuType: MainMenuType) :
         NoDoubleClickListener() {
         override fun onNoDoubleClick(v: View) {
-            showFragment(mainMenuType.getMenuFragment())
+            showFragment(mainMenuType.getMenuFragment()!!)
         }
     }
 
@@ -90,6 +91,10 @@ class MainActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
+            R.id.menuStore -> {
+                //去评分
+                AppUtil.openAppStore(this)
+            }
             R.id.menuPrivacy -> {
                 //隐私政策
                 startActivity(PrivacyActivity::class)
