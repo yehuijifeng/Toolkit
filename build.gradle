@@ -7,6 +7,7 @@ buildscript {
         google()
         jcenter()
         maven { url 'https://jitpack.io' }
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.2"
@@ -21,10 +22,12 @@ allprojects {
         mavenCentral()
         flatDir {
             dirs 'src/main/jniLibs',
-            project(':tesseract_ocr').file('src/main/jniLibs'),
-            project(':translation').file('src/main/jniLibs')
+                    project(':tesseract_ocr').file('src/main/jniLibs'),
+                    project(':utils').file('src/main/jniLibs'),
+                    project(':translation').file('src/main/jniLibs')
         }
         maven { url 'https://jitpack.io' }
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
 }
 
